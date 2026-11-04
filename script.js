@@ -1,0 +1,6568 @@
+// ══════════════════════════════════════════════════════════
+//  🔥 FIREBASE CONFIG
+// ══════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey:            "AIzaSyB6odEt5wEdtq6H-NyXK2BpLqrxxW5WENA",
+  authDomain:        "wms-ahi-sidoarjo.firebaseapp.com",
+  databaseURL:       "https://wms-ahi-sidoarjo-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "wms-ahi-sidoarjo",
+  storageBucket:     "wms-ahi-sidoarjo.firebasestorage.app",
+  messagingSenderId: "834978642750",
+  appId:             "1:834978642750:web:e0ed9877bc9281dba94a6f",
+  measurementId:     "G-8ZPFL4DH0D"
+};
+
+// Register ChartDataLabels plugin
+if (typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);
+
+const GAS_USER_URL = 'https://script.google.com/macros/s/AKfycbxTVbfZUlgGGJL9YgO6XLuCS6Ro4ksk9Iy8t486SFvCB-xRnHIFo1X6b8-PD9Qjn4qp/exec';
+const GAS_DASHBOARD_URL = 'https://script.google.com/macros/s/AKfycbxxjijcpvbfzKtZH1gJKPswP1heNpopp2TERUESg5mJiLu7t8qZuSpVist4uAMwxZzN/exec';
+
+const URLS = {
+  profildc:  'https://script.google.com/a/macros/kawanlamacorp.com/s/AKfycbwdUoZgbkaJmfaHuNYIqxUaygZ6t64GS666eQ38fI5dVOIzIQBypvtp5oNpfFKOOnnR/exec',
+  planner:   'https://plannerazko.github.io/DashboardPlanning/',
+  inventory: 'https://script.google.com/a/macros/kawanlamacorp.com/s/AKfycbwgrzzsmS8Nab4WhTLIOdFiknXfV4Ak-jE8Ewd9qBvR_uh93c2VBa3OInHAzbEI8HrdUw/exec',
+  outbound:  'https://script.google.com/a/macros/kawanlamacorp.com/s/AKfycbxj7b_WAVkKu8AmyyMVPQbvn7I1ycbbjpZCTVZ_EzUN/dev',
+  // analyst: (menu Analyst diganti Tools; alamat lama disimpan di sini kalau mau dipasang lagi) 'https://script.google.com/a/macros/kawanlamacorp.com/s/AKfycbzbsvn8Tiu3N3WGjBRbN_6-CsqAI9vTl2IxW1bsYi92Gk15Alzzk1JBvL4iyyvnL8nj/exec',
+  inbound:   'https://script.google.com/macros/s/AKfycbyXFO0rz1pQeRzT8ZBk6v1AHxcbvw4iqsuYcFxLIa_f6Sj5XrDncYUVkkE5RwHj_TAYZA/exec', storing: 'https://script.google.com/a/macros/kawanlamacorp.com/s/AKfycbyBTR01ZrItlvxh1C83yxFs5B8lwK5t-a4kuKHir8s8a1SprmUA_6TsRkzDZpWOaBL9Ew/exec',
+  ga:        'https://script.google.com/macros/s/AKfycbzAKPAl_-Bb36LP1qAXgK1DRaYqxz2GUP_4-sbkGHpkxdmzIU4BlaPBYhUvvi04EV7d/exec',
+  hr:        'https://script.google.com/a/macros/kawanlamacorp.com/s/AKfycbyNQYijkh5bA5TBLY33OYgWxzyGlhKmqWs0qHowjBthmU1xO3nRA7mtHEbMa5Z-yOgt/exec',
+  mtc:       'https://ndckawanlamasidoarjo.github.io/MHEControlCenter/',
+  fbi:       'https://noviantoscm-dev.github.io/dashboard-utama/',
+  kls:       'https://plannerazko.github.io/logisaleskawanlama/',
+};
+const IFRAME_PAGES   = ['profildc','inventory','outbound','planner','ga','storing','inbound','hr','mtc','fbi','kls'];
+const GAS_AI_URL     = 'https://script.google.com/macros/s/AKfycbxxjijcpvbfzKtZH1gJKPswP1heNpopp2TERUESg5mJiLu7t8qZuSpVist4uAMwxZzN/exec';
+
+const AVATAR_COLORS = [
+  { bg: 'linear-gradient(145deg,#3b82f6,#1d4ed8)', hex: '#3b82f6' },
+  { bg: 'linear-gradient(145deg,#ec4899,#db2777)', hex: '#ec4899' },
+  { bg: 'linear-gradient(145deg,#06b6d4,#0891b2)', hex: '#06b6d4' },
+  { bg: 'linear-gradient(145deg,#10b981,#059669)', hex: '#10b981' },
+  { bg: 'linear-gradient(145deg,#f59e0b,#d97706)', hex: '#f59e0b' },
+  { bg: 'linear-gradient(145deg,#8b5cf6,#7c3aed)', hex: '#8b5cf6' },
+  { bg: 'linear-gradient(145deg,#ef4444,#dc2626)', hex: '#ef4444' },
+  { bg: 'linear-gradient(145deg,#64748b,#475569)', hex: '#64748b' },
+];
+const THEME_COLORS = {
+  '#3b82f6': { accent:'#2563eb', dark:'#1d4ed8', light:'#eff6ff', mid:'#bfdbfe' },
+  '#ec4899': { accent:'#db2777', dark:'#be185d', light:'#fdf2f8', mid:'#fbcfe8' },
+  '#06b6d4': { accent:'#0891b2', dark:'#0e7490', light:'#ecfeff', mid:'#a5f3fc' },
+  '#10b981': { accent:'#059669', dark:'#047857', light:'#ecfdf5', mid:'#a7f3d0' },
+  '#f59e0b': { accent:'#d97706', dark:'#b45309', light:'#fffbeb', mid:'#fde68a' },
+  '#8b5cf6': { accent:'#7c3aed', dark:'#6d28d9', light:'#f5f3ff', mid:'#ddd6fe' },
+  '#ef4444': { accent:'#dc2626', dark:'#b91c1c', light:'#fef2f2', mid:'#fecaca' },
+  '#64748b': { accent:'#475569', dark:'#334155', light:'#f8fafc', mid:'#cbd5e1' },
+};
+function applyTheme(hexColor) {
+  const theme = THEME_COLORS[hexColor] || THEME_COLORS['#3b82f6'];
+  const root = document.documentElement;
+  root.style.setProperty('--accent', theme.accent);
+  root.style.setProperty('--accent-dark', theme.dark);
+  root.style.setProperty('--accent-light', theme.light);
+  root.style.setProperty('--accent-mid', theme.mid);
+}
+
+// ── User session — SEMUA DEKLARASI DI ATAS ──
+let me = { nip: '', name: '', jabatan: '', color: AVATAR_COLORS[0], initials: '' };
+let fbReady = false;
+let db = null, chatRef = null, onlineRef = null;
+let settingsOpen = false;
+let notifList = [], notifOpen = false, lastSeenTs = 0;
+const CHAT_PATH     = 'wms_ahi_chat/messages';
+const ADMIN_NIPS    = ['182126', '098592'];
+const ONLINE_PATH = 'wms_ahi_chat/online';
+
+// ── Init Firebase ──
+function initFirebase() {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    chatRef   = db.ref(CHAT_PATH);
+    onlineRef = db.ref(ONLINE_PATH);
+    fbReady = true;
+    console.log('✅ Firebase connected!');
+  } catch(e) { console.error('Firebase init error:', e); }
+}
+initFirebase();
+
+// ══════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════
+const colorOptions = document.getElementById('colorOptions');
+let selectedColorIdx = 0;
+colorOptions.querySelectorAll('.color-opt').forEach(el => {
+  el.addEventListener('click', () => {
+    colorOptions.querySelectorAll('.color-opt').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedColorIdx = parseInt(el.dataset.idx || '0');
+  });
+});
+let nipVerified = false, verifiedData = null;
+document.getElementById('loginBtn').addEventListener('click', handleLoginClick);
+document.getElementById('loginNip').addEventListener('keydown', e => { if (e.key === 'Enter') handleLoginClick(); });
+
+function handleLoginClick() { if (!nipVerified) checkNip(); else doLogin(); }
+
+async function checkNip() {
+  const nipInput = document.getElementById('loginNip');
+  const nip = nipInput.value.trim();
+  const errEl = document.getElementById('loginErr');
+  const loadEl = document.getElementById('loginLoading');
+  const btn = document.getElementById('loginBtn');
+  if (!nip) { errEl.textContent='NIP tidak boleh kosong!'; errEl.classList.add('show'); nipInput.focus(); return; }
+  errEl.classList.remove('show'); loadEl.classList.add('show'); btn.disabled=true; nipInput.disabled=true;
+  try {
+    const res = await fetch(GAS_USER_URL + '?action=checkNip&nip=' + encodeURIComponent(nip));
+    const data = await res.json();
+    if (data.found) {
+      verifiedData = data; nipVerified = true;
+      document.getElementById('previewName').textContent    = data.name    || '—';
+      document.getElementById('previewJabatan').textContent = data.jabatan || 'Staff';
+      document.getElementById('loginFoundBox').classList.add('show');
+      document.getElementById('loginColorsWrap').style.display = 'block';
+      btn.textContent = 'Masuk ke Dashboard →'; btn.disabled = false; nipInput.disabled = true;
+    } else {
+      errEl.textContent = '❌ NIP tidak terdaftar! Hubungi admin. (Latif Subaktiar_0838-3084-8989)';
+      errEl.classList.add('show'); btn.disabled=false; nipInput.disabled=false; nipInput.focus();
+    }
+  } catch(e) {
+    errEl.textContent='⚠️ Gagal terhubung ke server. Coba lagi.'; errEl.classList.add('show');
+    btn.disabled=false; nipInput.disabled=false;
+  }
+  loadEl.classList.remove('show');
+}
+
+function doLogin() {
+  if (!verifiedData) return;
+  me.nip      = verifiedData.nip || document.getElementById('loginNip').value.trim();
+  me.name     = verifiedData.name || '—';
+  me.jabatan  = verifiedData.jabatan || 'Staff';
+  me.color    = AVATAR_COLORS[selectedColorIdx];
+  me.initials = me.name.slice(0,2).toUpperCase();
+  applyTheme(me.color.hex);
+  localStorage.setItem('wms_nip',     me.nip);
+  localStorage.setItem('wms_name',    me.name);
+  localStorage.setItem('wms_jabatan', me.jabatan);
+  localStorage.setItem('wms_color',   selectedColorIdx);
+  applyLogin();
+}
+function saveLoginHistory() {
+  if (!me.nip || !me.name) return;
+  try {
+    const url = GAS_DASHBOARD_URL + '?action=saveLoginHistory' +
+      '&nip='     + encodeURIComponent(me.nip) +
+      '&name='    + encodeURIComponent(me.name) +
+      '&jabatan=' + encodeURIComponent(me.jabatan||'');
+    fetch(url).catch(e => console.warn('saveLoginHistory error:', e));
+  } catch(e) { console.warn('saveLoginHistory error:', e); }
+}
+
+function applyLogin() {
+  const av = document.getElementById('headerAvatar');
+  av.textContent = me.initials; av.style.background = me.color.bg;
+  document.getElementById('headerName').textContent = me.name;
+  const resetBtn = document.getElementById('resetDiscBtn');
+  if (resetBtn) resetBtn.style.display = ADMIN_NIPS.includes(String(me.nip)) ? '' : 'none';
+  const aiHistoryBtn = document.getElementById('aiHistoryBtn');
+  if (aiHistoryBtn) aiHistoryBtn.style.display = ADMIN_NIPS.includes(String(me.nip)) ? '' : 'none';
+  if (fbReady && onlineRef) {
+    const safeKey = me.name.replace(/[.#$/[\]\s]/g,'_');
+    const myOnlineRef = onlineRef.child(safeKey);
+    myOnlineRef.set({ name:me.name, jabatan:me.jabatan, color:me.color.hex, nip:me.nip, ts:firebase.database.ServerValue.TIMESTAMP });
+    myOnlineRef.onDisconnect().remove();
+    onlineRef.on('value', snap => {
+      const count = snap.numChildren();
+      document.getElementById('onlineCount').textContent = count + ' online';
+      const discCount = document.getElementById('onlineCountDisc');
+      if (discCount) discCount.textContent = count + ' user';
+      const list = document.getElementById('onlineList');
+      if (!list) return;
+      const users = [];
+      snap.forEach(child => { users.push(child.val()); });
+      if (!users.length) { list.innerHTML='<div style="text-align:center;color:var(--text-3);font-size:12px;padding:20px 0">Belum ada yang online</div>'; return; }
+      list.innerHTML = users.map(u => `
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.5);border:1px solid rgba(200,215,240,0.3);">
+          <div style="width:36px;height:36px;border-radius:50%;background:${u.color||'#2563eb'};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);">${(u.name||'?').slice(0,2).toUpperCase()}</div>
+          <div style="min-width:0;"><div style="font-size:12.5px;font-weight:700;color:var(--text)">${u.name||'User'}</div><div style="font-size:10.5px;color:var(--text-3)">${u.jabatan||'Staff'}</div></div>
+          ${u.name===me.name?'<span style="font-size:10px;background:var(--accent-light);color:var(--accent);padding:2px 8px;border-radius:10px;font-weight:700;margin-left:auto">Kamu</span>':''}
+        </div>`).join('');
+    });
+  }
+  lastSeenTs = parseInt(localStorage.getItem('lastSeenTs_'+me.name)||'0');
+  startChat();
+  const overlay = document.getElementById('loginOverlay');
+  overlay.style.opacity='0'; overlay.style.transition='opacity 0.3s ease';
+  setTimeout(saveLoginHistory, 1500); // simpan history setelah Firebase ready
+  setTimeout(()=>overlay.classList.add('hidden'),300);
+  setTimeout(updateSettingsUser,350);
+}
+
+(function checkSavedLogin() {
+  const savedNip=localStorage.getItem('wms_nip'), savedName=localStorage.getItem('wms_name');
+  const savedJabatan=localStorage.getItem('wms_jabatan'), savedColor=parseInt(localStorage.getItem('wms_color')||'0');
+  if (savedNip && savedName) {
+    nipVerified=true; verifiedData={nip:savedNip,name:savedName,jabatan:savedJabatan||'Staff'};
+    selectedColorIdx=savedColor; applyTheme(AVATAR_COLORS[savedColor].hex);
+    const nipInput=document.getElementById('loginNip');
+    if(nipInput){nipInput.value=savedNip;nipInput.disabled=true;}
+    document.getElementById('previewName').textContent=savedName;
+    document.getElementById('previewJabatan').textContent=savedJabatan||'Staff';
+    document.getElementById('loginFoundBox').classList.add('show');
+    document.getElementById('loginColorsWrap').style.display='block';
+    colorOptions.querySelectorAll('.color-opt').forEach((el,i)=>el.classList.toggle('selected',i===savedColor));
+    const btn=document.getElementById('loginBtn'); if(btn) btn.textContent='Masuk ke Dashboard →';
+  }
+})();
+
+function doLogout() {
+  localStorage.removeItem('wms_nip'); localStorage.removeItem('wms_name');
+  localStorage.removeItem('wms_jabatan'); localStorage.removeItem('wms_color');
+  nipVerified=false; verifiedData=null;
+  document.getElementById('loginNip').value=''; document.getElementById('loginNip').disabled=false;
+  document.getElementById('loginFoundBox').classList.remove('show');
+  document.getElementById('loginColorsWrap').style.display='none';
+  document.getElementById('loginBtn').textContent='Masuk ke Dashboard →';
+  document.getElementById('loginErr').classList.remove('show');
+  settingsOpen=false;
+  document.getElementById('settingsPanel').classList.remove('open');
+  const overlay=document.getElementById('loginOverlay');
+  overlay.classList.remove('hidden'); overlay.style.opacity='1';
+}
+
+// ══════════════════════════════════════
+//  CHAT ENGINE
+// ══════════════════════════════════════
+const seenIds = new Set();
+function startChat() {
+  if (!fbReady) { document.getElementById('discStatus').textContent='⚠️ Offline — Firebase error'; loadDemoMessages(); setupOfflineChat('miniDiscIn','miniDiscBtn','miniDiscMsg'); setupOfflineChat('fullDiscIn','fullDiscBtn','fullDiscMsg'); return; }
+  document.getElementById('discStatus').textContent='🟢 Terhubung';
+  const loadTime=Date.now();
+  chatRef.limitToLast(100).on('child_added', snap=>{
+    const msg=snap.val(); if(!msg||seenIds.has(snap.key)) return;
+    seenIds.add(snap.key);
+    const isNew=msg.timestamp&&msg.timestamp>(loadTime-3000);
+    renderMessage(msg,snap.key,'miniDiscMsg',5,isNew); renderMessage(msg,snap.key,'fullDiscMsg',999,isNew);
+    if(isNew) addNotif(msg);
+  });
+  setupFirebaseChat('miniDiscIn','miniDiscBtn','miniDiscMsg');
+  setupFirebaseChat('fullDiscIn','fullDiscBtn','fullDiscMsg');
+}
+function renderMessage(msg,key,listId,maxItems,isNew=true){
+  const list=document.getElementById(listId); if(!list) return;
+  if(list.querySelector(`[data-key="${key}"]`)) return;
+  while(list.children.length>=maxItems) list.removeChild(list.firstChild);
+  const isMine=msg.name===me.name, timeStr=msg.timestamp?formatTime(new Date(msg.timestamp)):'';
+  const row=document.createElement('div'); row.className='disc-msg'+(isMine?' mine':''); row.dataset.key=key;
+  row.innerHTML=`<div class="disc-avatar" style="background:${msg.color||'linear-gradient(145deg,#3b82f6,#1d4ed8)'}">${(msg.name||'?').slice(0,2).toUpperCase()}</div><div class="disc-bubble-wrap"><div class="disc-meta">${isMine?`<span class="disc-time">${timeStr}</span><span class="disc-name">Kamu</span>`:`<span class="disc-name">${escHtml(msg.name)}</span><span class="disc-time">${timeStr}</span>`}</div><div class="disc-bubble">${escHtml(msg.text)}</div></div>`;
+  list.appendChild(row); if(isNew) list.scrollTop=list.scrollHeight;
+}
+function setupFirebaseChat(inId,btnId,listId){
+  const inp=document.getElementById(inId),btn=document.getElementById(btnId); if(!inp||!btn) return;
+  function send(){ const text=inp.value.trim(); if(!text) return; inp.value=''; inp.disabled=true; btn.disabled=true; chatRef.push({name:me.name,text,color:me.color.bg,initials:me.initials,timestamp:firebase.database.ServerValue.TIMESTAMP}).finally(()=>{inp.disabled=false;btn.disabled=false;inp.focus();}); }
+  btn.addEventListener('click',send); inp.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+}
+const demoMessages=[{name:'Rani',text:'Stok ABC mulai menipis, perlu restock segera.',color:'linear-gradient(145deg,#ec4899,#db2777)',timestamp:Date.now()-120000},{name:'Budi',text:'Besok ada inbound besar jam 10 pagi.',color:'linear-gradient(145deg,#06b6d4,#0891b2)',timestamp:Date.now()-80000},{name:'Tapes',text:'Forklift sudah stand by di loading area.',color:'linear-gradient(145deg,#10b981,#059669)',timestamp:Date.now()-30000}];
+function loadDemoMessages(){ demoMessages.forEach((msg,i)=>{renderMessage(msg,'demo-'+i,'miniDiscMsg',5);renderMessage(msg,'demo-'+i,'fullDiscMsg',999);}); }
+function setupOfflineChat(inId,btnId,listId){
+  const inp=document.getElementById(inId),btn=document.getElementById(btnId); if(!inp||!btn) return;
+  function send(){ const text=inp.value.trim(); if(!text) return; const msg={name:me.name,text,color:me.color.bg,timestamp:Date.now()}; renderMessage(msg,'local-'+Date.now(),'miniDiscMsg',5); renderMessage(msg,'local-'+Date.now()+1,'fullDiscMsg',999); inp.value=''; inp.focus(); }
+  btn.addEventListener('click',send); inp.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+}
+function formatTime(date){ const now=new Date(),diff=now-date; if(diff<60000) return 'baru saja'; if(diff<3600000) return Math.floor(diff/60000)+' mnt lalu'; if(date.toDateString()===now.toDateString()) return date.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); return date.toLocaleDateString('id-ID',{day:'numeric',month:'short'}); }
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+const d=new Date();
+const dateStr=d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+document.getElementById('todayDate').textContent=dateStr;
+document.getElementById('todayDate2').textContent=dateStr;
+
+// ══════════════════════════════════════
+//  OUTBOUND DETAIL PANEL
+// ══════════════════════════════════════
+let outboundPanelOpen   = false;
+let inventoryPanelOpen  = false;  // ✅ di sini bersama panel lainnya
+let inventoryDetailLoaded = false;
+
+function toggleOutboundPanel() {
+  outboundPanelOpen = !outboundPanelOpen;
+  const panel       = document.getElementById('outboundDetailPanel');
+  const midGrid     = document.querySelector('.mid-grid');
+  const progressRow = document.querySelector('.progress-row');
+  const bottomGrid  = document.querySelector('.bottom-grid');
+  if (!panel) return;
+
+  if (inboundPanelOpen)   { inboundPanelOpen   = false; const p=document.getElementById('inboundDetailPanel');   if(p) p.style.display='none'; }
+  if (storingPanelOpen)   { storingPanelOpen   = false; const p=document.getElementById('storingDetailPanel');   if(p) p.style.display='none'; }
+  if (inventoryPanelOpen) { inventoryPanelOpen = false; const p=document.getElementById('inventoryDetailPanel'); if(p) p.style.display='none'; }
+  if (plannerPanelOpen)   { plannerPanelOpen   = false; const p=document.getElementById('plannerDetailPanel');   if(p) p.style.display='none'; }
+
+  if (outboundPanelOpen) {
+    panel.style.display = 'block';
+    if (midGrid)     midGrid.style.display     = 'none';
+    if (progressRow) progressRow.style.display = 'none';
+    if (bottomGrid)  bottomGrid.style.display  = 'none';
+    const sgOut=document.querySelector('.stats-grid'); if(sgOut) sgOut.style.display='none';
+    const lgOut=document.getElementById('lppbdoGrid'); if(lgOut) lgOut.style.display='none';
+    fetchOutboundPanel();
+    setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  } else {
+    panel.style.display = 'none';
+    if (midGrid)     midGrid.style.display     = '';
+    if (progressRow) progressRow.style.display = '';
+    if (bottomGrid)  bottomGrid.style.display  = '';
+    const sgOutR=document.querySelector('.stats-grid'); if(sgOutR) sgOutR.style.display='';
+    const lgOutR=document.getElementById('lppbdoGrid'); if(lgOutR) lgOutR.style.display='grid';
+    lineOutboundLoaded = false;
+    // switchOutboundTab removed
+  }
+}
+
+// ══════════════════════════════════════
+//  INVENTORY CONTROL DETAIL PANEL
+// ══════════════════════════════════════
+function toggleInventoryPanel() {
+  inventoryPanelOpen = !inventoryPanelOpen;
+  const panel       = document.getElementById('inventoryDetailPanel');
+  const midGrid     = document.querySelector('.mid-grid');
+  const progressRow = document.querySelector('.progress-row');
+  const bottomGrid  = document.querySelector('.bottom-grid');
+  if (!panel) return;
+
+  // Tutup semua panel lain
+  if (inboundPanelOpen)  { inboundPanelOpen  = false; const p=document.getElementById('inboundDetailPanel');  if(p) p.style.display='none'; }
+  if (storingPanelOpen)  { storingPanelOpen  = false; const p=document.getElementById('storingDetailPanel');  if(p) p.style.display='none'; }
+  if (outboundPanelOpen) { outboundPanelOpen = false; const p=document.getElementById('outboundDetailPanel'); if(p) p.style.display='none'; }
+  if (plannerPanelOpen)  { plannerPanelOpen  = false; const p=document.getElementById('plannerDetailPanel');  if(p) p.style.display='none'; }
+
+  if (inventoryPanelOpen) {
+    panel.style.display = 'block';
+    if (midGrid)     midGrid.style.display     = 'none';
+    if (progressRow) progressRow.style.display = 'none';
+    if (bottomGrid)  bottomGrid.style.display  = 'none';
+    const sgInv=document.querySelector('.stats-grid'); if(sgInv) sgInv.style.display='none';
+    const lgInv=document.getElementById('lppbdoGrid'); if(lgInv) lgInv.style.display='none';
+    if (!inventoryDetailLoaded) fetchInventoryDetail();
+    fetchInventoryAccuracy(); // Load stat card data saat klik!
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  } else {
+    panel.style.display = 'none';
+    if (midGrid)     midGrid.style.display     = '';
+    if (progressRow) progressRow.style.display = '';
+    if (bottomGrid)  bottomGrid.style.display  = '';
+    const sgR=document.querySelector('.stats-grid'); if(sgR) sgR.style.display='';
+    const lgR=document.getElementById('lppbdoGrid'); if(lgR) lgR.style.display='grid';
+  }
+}
+
+// ══════════════════════════════════════
+//  OUTBOUND TODAY KPI LOADER
+// ══════════════════════════════════════
+async function loadOutboundTodayKPI() {
+  try {
+    const res = await fetch(GAS_DASHBOARD_URL + '?action=getOutboundTodayKPI');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Gagal load KPI');
+
+    const { totalLoad, selesai, proses, antri, belum } = data;
+    const isDark = document.body.classList.contains('dark');
+
+    // Helper: Buat SVG donut chart
+    const makeSVGKpi = (elId, pct, color) => {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const r = 26, cx = 32, cy = 32, circ = 2 * Math.PI * r;
+      const dash = Math.min(pct, 100) / 100 * circ;
+      const bg = isDark ? '#334155' : '#e2e8f0';
+      el.innerHTML = `<svg width="64" height="64" viewBox="0 0 64 64">
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${bg}" stroke-width="7"/>
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="7"
+          stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}"
+          stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+        <text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="900" fill="${color}">${pct}%</text>
+      </svg>`;
+    };
+
+    // Calculate percentages
+    const pctTotal = 100;
+    const pctSelesai = totalLoad > 0 ? Math.round((selesai / totalLoad) * 100) : 0;
+    const pctBelum = totalLoad > 0 ? Math.round((belum / totalLoad) * 100) : 0;
+    const pctAntri = totalLoad > 0 ? Math.round((antri / totalLoad) * 100) : 0;
+    const pctProses = totalLoad > 0 ? Math.round((proses / totalLoad) * 100) : 0;
+
+    // Update KPI Cards
+    // 1. Total Load (Orange)
+    const elTotalLoad = document.getElementById('outKpiTotalLoadVal');
+    if (elTotalLoad) elTotalLoad.textContent = totalLoad;
+    makeSVGKpi('chartOutKpiTotalLoad', pctTotal, '#d97706');
+    const footTotalLoad = document.getElementById('footOutKpiTotalLoad');
+    if (footTotalLoad) footTotalLoad.textContent = pctTotal + '%';
+    const box1TotalLoad = document.getElementById('box1TotalLoad');
+    if (box1TotalLoad) box1TotalLoad.textContent = totalLoad;
+    const box2TotalLoad = document.getElementById('box2TotalLoad');
+    if (box2TotalLoad) box2TotalLoad.textContent = pctTotal + '%';
+
+    // 2. Belum Datang (Red)
+    const elBelum = document.getElementById('outKpiBelumVal');
+    if (elBelum) elBelum.textContent = belum;
+    makeSVGKpi('chartOutKpiBelum', pctBelum, '#dc2626');
+    const footBelum = document.getElementById('footOutKpiBelum');
+    if (footBelum) footBelum.textContent = pctBelum + '%';
+    const box1Belum = document.getElementById('box1Belum');
+    if (box1Belum) box1Belum.textContent = totalLoad;
+    const box2Belum = document.getElementById('box2Belum');
+    if (box2Belum) box2Belum.textContent = pctBelum + '%';
+
+    // 3. Antri (Yellow)
+    const elAntri = document.getElementById('outKpiAntriVal');
+    if (elAntri) elAntri.textContent = antri;
+    makeSVGKpi('chartOutKpiAntri', pctAntri, '#eab308');
+    const footAntri = document.getElementById('footOutKpiAntri');
+    if (footAntri) footAntri.textContent = pctAntri + '%';
+    const box1Antri = document.getElementById('box1Antri');
+    if (box1Antri) box1Antri.textContent = belum;
+    const box2Antri = document.getElementById('box2Antri');
+    if (box2Antri) box2Antri.textContent = pctAntri + '%';
+
+    // 4. Proses (Blue)
+    const elProses = document.getElementById('outKpiProsesVal');
+    if (elProses) elProses.textContent = proses;
+    makeSVGKpi('chartOutKpiProses', pctProses, '#2563eb');
+    const footProses = document.getElementById('footOutKpiProses');
+    if (footProses) footProses.textContent = pctProses + '%';
+    const box1Proses = document.getElementById('box1Proses');
+    if (box1Proses) box1Proses.textContent = antri;
+    const box2Proses = document.getElementById('box2Proses');
+    if (box2Proses) box2Proses.textContent = pctProses + '%';
+
+    // 5. Selesai (Green)
+    const elSelesai = document.getElementById('outKpiSelesaiVal');
+    if (elSelesai) elSelesai.textContent = selesai;
+    makeSVGKpi('chartOutKpiSelesai', pctSelesai, '#16a34a');
+    const footSelesai = document.getElementById('footOutKpiSelesai');
+    if (footSelesai) footSelesai.textContent = pctSelesai + '%';
+    const box1Selesai = document.getElementById('box1Selesai');
+    if (box1Selesai) box1Selesai.textContent = selesai;
+    const box2Selesai = document.getElementById('box2Selesai');
+    if (box2Selesai) box2Selesai.textContent = pctSelesai + '%';
+
+    // Update Progress Bars
+    const progTotalLoad = document.getElementById('progTotalLoad');
+    if (progTotalLoad) progTotalLoad.style.width = pctTotal + '%';
+    const progBelum = document.getElementById('progBelum');
+    if (progBelum) progBelum.style.width = pctBelum + '%';
+    const progAntri = document.getElementById('progAntri');
+    if (progAntri) progAntri.style.width = pctAntri + '%';
+    const progProses = document.getElementById('progProses');
+    if (progProses) progProses.style.width = pctProses + '%';
+    const progSelesai = document.getElementById('progSelesai');
+    if (progSelesai) progSelesai.style.width = pctSelesai + '%';
+
+  } catch (e) {
+    console.error('Error loading Outbound Today KPI:', e);
+  }
+}
+
+
+async function loadCBMSummary() {
+  try {
+    console.log('📦 loadCBMSummary started...');
+    const res = await fetch(GAS_DASHBOARD_URL + '?action=getCBMSummary');
+    const data = await res.json();
+    console.log('📦 CBM Response:', data);
+    if (!data.ok) {
+      console.warn('❌ CBM data error:', data.error);
+      return;
+    }
+    
+    // Update TARGET CBM card
+    const targetCbmEl = document.getElementById('cbmTargetValue');
+    const targetLabelEl = document.getElementById('cbmTargetLabel');
+    console.log('🔍 cbmTargetValue element:', targetCbmEl);
+    console.log('🔍 cbmTargetLabel element:', targetLabelEl);
+    if (targetCbmEl) {
+      targetCbmEl.textContent = data.targetCbm.toFixed(2);
+      console.log('✅ Updated cbmTargetValue to', data.targetCbm.toFixed(2));
+    }
+    if (targetLabelEl) {
+      targetLabelEl.textContent = data.targetCbm.toFixed(2);
+      console.log('✅ Updated cbmTargetLabel to', data.targetCbm.toFixed(2));
+    }
+    
+    // Update PENCAPAIAN CBM card
+    const pencapaianCbmEl = document.getElementById('cbmPencapaianValue');
+    console.log('🔍 cbmPencapaianValue element:', pencapaianCbmEl);
+    if (pencapaianCbmEl) {
+      pencapaianCbmEl.textContent = data.pencapaianCbm.toFixed(2);
+      console.log('✅ Updated cbmPencapaianValue to', data.pencapaianCbm.toFixed(2));
+    }
+    
+    // Update Rencana Muatan CBM
+    const rencanaEl = document.getElementById('cbmRencanaValue');
+    console.log('🔍 cbmRencanaValue element:', rencanaEl);
+    if (rencanaEl) {
+      rencanaEl.textContent = data.targetCbm.toFixed(2);
+      console.log('✅ Updated cbmRencanaValue to', data.targetCbm.toFixed(2));
+    }
+    
+    // Update Terealisasi CBM
+    const terealisasiEl = document.getElementById('cbmTerealisasiValue');
+    console.log('🔍 cbmTerealisasiValue element:', terealisasiEl);
+    if (terealisasiEl) {
+      terealisasiEl.textContent = data.pencapaianCbm.toFixed(2);
+      console.log('✅ Updated cbmTerealisasiValue to', data.pencapaianCbm.toFixed(2));
+    }
+    
+    // Update Belum Realisasi
+    const belumEl = document.getElementById('cbmBelumValue');
+    console.log('🔍 cbmBelumValue element:', belumEl);
+    if (belumEl) {
+      belumEl.textContent = data.belumRealisasi.toFixed(2);
+      console.log('✅ Updated cbmBelumValue to', data.belumRealisasi.toFixed(2));
+    }
+    
+    // Update progress bar & percentage
+    const progressBar = document.getElementById('cbmProgressBar');
+    const percentageEl = document.getElementById('cbmPercentage');
+    console.log('🔍 cbmProgressBar element:', progressBar);
+    console.log('🔍 cbmPercentage element:', percentageEl);
+    if (data.targetCbm > 0) {
+      const pct = Math.round((data.pencapaianCbm / data.targetCbm) * 100);
+      if (progressBar) {
+        progressBar.style.width = Math.min(pct, 100) + '%';
+        console.log('✅ Updated progress bar to', pct, '%');
+      }
+      if (percentageEl) {
+        percentageEl.textContent = pct + '%';
+        console.log('✅ Updated percentage to', pct, '%');
+      }
+    }
+  } catch(e) {
+    console.error('❌ loadCBMSummary error:', e);
+  }
+}
+
+async function loadDeliveryPerformance() {
+  try {
+    console.log('🚚 loadDeliveryPerformance started...');
+    const res = await fetch(GAS_DASHBOARD_URL + '?action=getDeliveryPerformance');
+    const data = await res.json();
+    console.log('🚚 Delivery Performance Response:', data);
+    if (!data.ok) {
+      console.warn('❌ Delivery Performance data error:', data.error);
+      return;
+    }
+    
+    const onTimePercent = data.onTimePercent;
+    const onTimeCount = data.onTimeCount;
+    const overSlaCount = data.overSlaCount;
+    const totalCount = data.totalCount;
+    const overSlaPercent = 100 - onTimePercent;
+    
+    // Update pie chart center percentage
+    const perfPctEl = document.getElementById('deliveryPerfPercentage');
+    if (perfPctEl) {
+      perfPctEl.textContent = onTimePercent + '%';
+      console.log('✅ Updated chart percentage to', onTimePercent, '%');
+    }
+    
+    // Update total delivery count
+    const totalEl = document.getElementById('deliveryTotalCount');
+    if (totalEl) {
+      totalEl.textContent = totalCount;
+      console.log('✅ Updated total count to', totalCount);
+    }
+    
+    // Update On Time Rate
+    const onTimeRateEl = document.getElementById('deliveryOnTimeRateValue');
+    if (onTimeRateEl) {
+      onTimeRateEl.textContent = (onTimePercent).toFixed(1) + '%';
+      console.log('✅ Updated On Time Rate to', onTimePercent.toFixed(1), '%');
+    }
+    
+    // Update On Time count and percentage
+    const onTimeCountEl = document.getElementById('deliveryOnTimeCount');
+    if (onTimeCountEl) {
+      onTimeCountEl.textContent = onTimeCount;
+      console.log('✅ Updated On Time count to', onTimeCount);
+    }
+    
+    const onTimePercentEl = document.getElementById('deliveryOnTimePercent');
+    if (onTimePercentEl) {
+      onTimePercentEl.textContent = (onTimePercent).toFixed(1) + '%';
+      console.log('✅ Updated On Time percent to', onTimePercent.toFixed(1), '%');
+    }
+    
+    // Update Over SLA count and percentage
+    const overSlaCountEl = document.getElementById('deliveryOverSlaCount');
+    if (overSlaCountEl) {
+      overSlaCountEl.textContent = overSlaCount;
+      console.log('✅ Updated Over SLA count to', overSlaCount);
+    }
+    
+    const overSlaPercentEl = document.getElementById('deliveryOverSlaPercent');
+    if (overSlaPercentEl) {
+      overSlaPercentEl.textContent = (overSlaPercent).toFixed(1) + '%';
+      console.log('✅ Updated Over SLA percent to', overSlaPercent.toFixed(1), '%');
+    }
+  } catch(e) {
+    console.error('❌ loadDeliveryPerformance error:', e);
+  }
+}
+
+
+async function fetchOutboundPanel() {
+  const tbody   = document.getElementById('outboundPanelBody');
+  const summary = document.getElementById('outboundPanelSummary');
+  const footer  = document.getElementById('outboundPanelFooter');
+  const sub     = document.getElementById('outboundPanelSubtitle');
+  if (!tbody) return;
+  
+  // Load Outbound Today KPI first
+  await loadOutboundTodayKPI();
+  
+  tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:24px;color:var(--text-3)">Memuat data outbound...</td></tr>';
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getOutboundDetail');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Gagal');
+
+    const rows = data.data || [];
+    const selesai = rows.filter(r=>String(r.status).toUpperCase().includes('SELESAI')||String(r.status).toUpperCase().includes('KELUAR')).length;
+    const proses  = rows.filter(r=>String(r.status).toUpperCase().includes('PROSES')||String(r.status).toUpperCase().includes('LOADING')).length;
+    const antri   = rows.filter(r=>String(r.status).toUpperCase().includes('ANTRI')).length;
+    const belum   = rows.length - selesai - proses - antri;
+    const total   = rows.length || 1;
+
+    const toNum = (v) => { const n=parseFloat(String(v).replace('%','')||'0'); return isNaN(n)?0:(n>1?n:Math.round(n*100)); };
+    const avgPc  = rows.length ? Math.round(rows.reduce((s,r)=>s+toNum(r.ppc),0)/total)  : 0;
+    const avgStg = rows.length ? Math.round(rows.reduce((s,r)=>s+toNum(r.pstg),0)/total) : 0;
+    const avgLd  = rows.length ? Math.round(rows.reduce((s,r)=>s+toNum(r.pld),0)/total)  : 0;
+    const pctSel = Math.round((selesai/total)*100);
+
+    if (sub)    sub.textContent = `Total: ${rows.length} armada hari ini`;
+    if (footer) footer.textContent = rows.length + ' data outbound hari ini';
+    if (summary) summary.innerHTML = `
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(22,163,74,0.12);color:#16a34a;border:1px solid rgba(22,163,74,0.25)">✅ ${selesai} Selesai</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(37,99,235,0.12);color:#3b82f6;border:1px solid rgba(37,99,235,0.25)">⏳ ${proses} Proses</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.25)">🕐 ${antri} Antri</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.25)">🔴 ${belum} Belum</span>
+    `;
+
+    const isDark = document.body.classList.contains('dark');
+
+    const makeSVGOut = (elId, pct, color) => {
+      const el=document.getElementById(elId); if(!el) return;
+      const r=26,cx=32,cy=32,circ=2*Math.PI*r;
+      const dash=Math.min(pct,100)/100*circ;
+      const bg=isDark?'#334155':'#e2e8f0';
+      el.innerHTML=`<svg width="64" height="64" viewBox="0 0 64 64">
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${bg}" stroke-width="7"/>
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="7"
+          stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}"
+          stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+        <text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="900" fill="${color}">${pct}%</text>
+      </svg>`;
+    };
+
+    // renderOutboundPanelTable removed
+  setTimeout(()=>{
+      const speeds=['3s','3.5s','4s','4.5s'];
+      document.querySelectorAll('#outboundDetailPanel [style*="overflow:hidden;box-shadow"]').forEach((card,i)=>{
+        if(card.querySelector('.out-beam')) return;
+        const b=document.createElement('div');
+        b.className='out-beam';
+        b.style.cssText=`position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(245,158,11,0.18),transparent);transform:skewX(-15deg);pointer-events:none;z-index:10;animation:kpiBodyBeam ${speeds[i]||'3.5s'} ease-in-out infinite;`;
+        card.style.position='relative';
+        card.style.overflow='hidden';
+        card.appendChild(b);
+      });
+    },300);
+  } catch(e) {
+    if(tbody) tbody.innerHTML = `<tr><td colspan="13" style="text-align:center;padding:24px;color:var(--red)">Gagal: ${e.message}</td></tr>`;
+  }
+}
+
+// ══════════════════════════════════════
+//  SLIDESHOW MODE
+// ══════════════════════════════════════
+let slideshowActive = false;
+let slideshowIndex  = 0;
+let slideshowRAF    = null;
+let slideshowTimer  = null;
+const SLIDES=[{name:'🏠 Dashboard'},{name:'📦 Inbound Data'},{name:'📋 Putaway'},{name:'🏗️ Storing'},{name:'🚚 Outbound'},{name:'📊 Line OB'}];
+function toggleSlideshow(){if(slideshowActive)stopSlideshow();else startSlideshow();}
+function startSlideshow(){
+  slideshowActive=true;slideshowIndex=0;
+  const el=document.documentElement;if(el.requestFullscreen)el.requestFullscreen().catch(()=>{});
+  const h=document.querySelector('.header'),s=document.querySelector('.sidebar');
+  if(h)h.style.display='none';if(s)s.style.display='none';
+  const sh=document.querySelector('.shell');if(sh){sh.style.gridTemplateColumns='1fr';sh.style.gridTemplateRows='1fr';}
+  document.body.classList.add('slideshow-mode');
+  const btn=document.getElementById('slideshowBtn');if(btn)btn.innerHTML='<span style="font-size:14px">⏹</span> Stop';
+  createFadeOverlay();showSlideshowIndicator();
+  document.addEventListener('keydown',onSlideshowKey);
+  document.addEventListener('fullscreenchange',onFullscreenChange);
+  runSlide(0);
+}
+function stopSlideshow(){
+  slideshowActive=false;
+  if(slideshowRAF){cancelAnimationFrame(slideshowRAF);slideshowRAF=null;}
+  if(slideshowTimer){clearTimeout(slideshowTimer);slideshowTimer=null;}
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  const h=document.querySelector('.header'),s=document.querySelector('.sidebar');
+  if(h)h.style.display='';if(s)s.style.display='';
+  const sh=document.querySelector('.shell');if(sh){sh.style.gridTemplateColumns='';sh.style.gridTemplateRows='';}
+  document.body.classList.remove('slideshow-mode');
+  document.getElementById('slideshowOverlay')?.remove();
+  document.getElementById('slideshowIndicator')?.remove();
+  const btn=document.getElementById('slideshowBtn');if(btn)btn.innerHTML='<span style="font-size:14px">▶</span> Slide Show';
+  if(inboundPanelOpen){inboundPanelOpen=false;document.getElementById('inboundDetailPanel').style.display='none';}
+  if(storingPanelOpen){storingPanelOpen=false;document.getElementById('storingDetailPanel').style.display='none';}
+  if(outboundPanelOpen){outboundPanelOpen=false;document.getElementById('outboundDetailPanel').style.display='none';}
+  if(plannerPanelOpen){plannerPanelOpen=false;const pp=document.getElementById('plannerDetailPanel');if(pp)pp.style.display='none';}
+  ['mid-grid','progress-row','bottom-grid'].forEach(cls=>{const e=document.querySelector('.'+cls);if(e)e.style.display='';});
+  document.removeEventListener('keydown',onSlideshowKey);
+  document.removeEventListener('fullscreenchange',onFullscreenChange);
+}
+function onSlideshowKey(e){if(e.key==='Escape')stopSlideshow();}
+function onFullscreenChange(){if(!document.fullscreenElement&&slideshowActive)stopSlideshow();}
+function createFadeOverlay(){
+  document.getElementById('slideshowOverlay')?.remove();
+  const div=document.createElement('div');
+  div.id='slideshowOverlay';
+  div.style.cssText='position:fixed;inset:0;z-index:9998;background:#000;opacity:0;pointer-events:none;transition:opacity 0.45s ease;';
+  document.body.appendChild(div);
+}
+function fadeOut(){return new Promise(res=>{const ov=document.getElementById('slideshowOverlay');if(!ov){res();return;}ov.style.opacity='0.65';setTimeout(res,480);});}
+function fadeIn(){return new Promise(res=>{const ov=document.getElementById('slideshowOverlay');if(!ov){res();return;}ov.style.opacity='0';setTimeout(res,480);});}
+function ssleep(ms){return new Promise(res=>{if(!slideshowActive){res();return;}slideshowTimer=setTimeout(res,ms);});}
+async function runSlide(idx){
+  if(!slideshowActive)return;
+  slideshowIndex=idx%SLIDES.length;
+  updateSlideshowIndicator(slideshowIndex);
+  await fadeOut();
+  await prepareSlide(slideshowIndex);
+  const tbl=getSlideTableEl(slideshowIndex);
+  if(tbl)tbl.scrollTop=0;
+  if(slideshowIndex===0){const m=document.querySelector('.main');if(m)m.scrollTop=0;}
+  await fadeIn();
+  await ssleep(1000);
+  await scrollTableSlowly(tbl);
+  await ssleep(3500);
+  if(slideshowActive)runSlide(slideshowIndex+1);
+}
+function getSlideTableEl(idx){ return document.querySelector('.main'); }
+async function scrollTableSlowly(el){
+  if(!el||!slideshowActive)return;
+  return new Promise(resolve=>{
+    const maxMs=20000,start=Date.now(),px=0.55;
+    function step(){
+      if(!slideshowActive||Date.now()-start>maxMs){resolve();return;}
+      const max=el.scrollHeight-el.clientHeight;
+      if(max<5||el.scrollTop>=max-2){resolve();return;}
+      el.scrollTop+=px;
+      slideshowRAF=requestAnimationFrame(step);
+    }
+    if(el.scrollHeight-el.clientHeight<5){resolve();return;}
+    slideshowRAF=requestAnimationFrame(step);
+  });
+}
+async function prepareSlide(idx){
+  const hideG=()=>['mid-grid','progress-row','bottom-grid'].forEach(cls=>{const e=document.querySelector('.'+cls);if(e)e.style.display='none';});
+  const closeAll=(keep)=>{
+    if(keep!=='inbound'&&inboundPanelOpen){inboundPanelOpen=false;document.getElementById('inboundDetailPanel').style.display='none';}
+    if(keep!=='storing'&&storingPanelOpen){storingPanelOpen=false;document.getElementById('storingDetailPanel').style.display='none';}
+    if(keep!=='outbound'&&outboundPanelOpen){outboundPanelOpen=false;document.getElementById('outboundDetailPanel').style.display='none';}
+    if(plannerPanelOpen){plannerPanelOpen=false;const pp=document.getElementById('plannerDetailPanel');if(pp)pp.style.display='none';}
+  };
+  switch(idx){
+    case 0:
+      if(inboundPanelOpen){inboundPanelOpen=false;document.getElementById('inboundDetailPanel').style.display='none';}
+      if(storingPanelOpen){storingPanelOpen=false;document.getElementById('storingDetailPanel').style.display='none';}
+      if(outboundPanelOpen){outboundPanelOpen=false;document.getElementById('outboundDetailPanel').style.display='none';}
+      ['mid-grid','progress-row','bottom-grid'].forEach(cls=>{const e=document.querySelector('.'+cls);if(e)e.style.display='';});
+      break;
+    case 1:
+      closeAll('inbound');
+      if(!inboundPanelOpen){inboundPanelOpen=true;const p=document.getElementById('inboundDetailPanel');if(p)p.style.display='block';hideG();renderPanelInboundTable(window._inboundRows||[]);fetchInlineProses();}
+      switchPanelTab('inbound');break;
+    case 2:switchPanelTab('inline');break;
+    case 3:
+      closeAll('storing');
+      if(!storingPanelOpen){storingPanelOpen=true;const p=document.getElementById('storingDetailPanel');if(p)p.style.display='block';hideG();if(window._storingData)renderStoringPanel(window._storingData);else await fetchStoringToday();}
+      break;
+    case 4:
+      closeAll('outbound');
+      if(!outboundPanelOpen){outboundPanelOpen=true;const p=document.getElementById('outboundDetailPanel');if(p)p.style.display='block';hideG();await fetchOutboundPanel();}
+      // switchOutboundTab removedbreak;
+    case 5:switchOutboundTab('line');await fetchLineOutbound();break;
+  }
+}
+function jumpSlide(idx){if(slideshowRAF)cancelAnimationFrame(slideshowRAF);if(slideshowTimer)clearTimeout(slideshowTimer);runSlide(idx);}
+
+function showSlideshowIndicator(){
+  document.getElementById('slideshowIndicator')?.remove();
+  const div=document.createElement('div');
+  div.id='slideshowIndicator';
+  div.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;align-items:center;gap:12px;background:rgba(4,6,14,0.88);backdrop-filter:blur(16px);border:1px solid rgba(79,142,247,0.2);border-radius:40px;padding:10px 22px;box-shadow:0 8px 32px rgba(0,0,0,0.5);';
+  div.innerHTML=SLIDES.map((s,i)=>`<div onclick="jumpSlide(${i})" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:2px 4px;"><div id="sdot${i}" style="width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s;"></div><span id="slbl${i}" style="font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;white-space:nowrap;transition:all 0.3s;">${s.name}</span></div>`).join('')+'<div style="width:1px;height:28px;background:rgba(255,255,255,0.1);margin:0 4px;"></div><button onclick="stopSlideshow()" style="background:rgba(239,68,68,0.85);border:none;border-radius:20px;padding:5px 14px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">✕ Stop</button>';
+  document.body.appendChild(div);
+  updateSlideshowIndicator(0);
+}
+function updateSlideshowIndicator(idx){
+  SLIDES.forEach((_,i)=>{
+    const dot=document.getElementById('sdot'+i),lbl=document.getElementById('slbl'+i),on=i===idx;
+    if(dot){dot.style.background=on?'#4f8ef7':'rgba(255,255,255,0.2)';dot.style.transform=on?'scale(1.6)':'scale(1)';dot.style.boxShadow=on?'0 0 10px rgba(79,142,247,0.9)':'none';}
+    if(lbl){lbl.style.color=on?'#93c5fd':'rgba(255,255,255,0.3)';lbl.style.fontWeight=on?'800':'600';}
+  });
+}
+let storingPanelOpen = false;
+let storingLoaded    = false;
+
+function toggleStoringPanel() {
+  storingPanelOpen = !storingPanelOpen;
+  const panel       = document.getElementById('storingDetailPanel');
+  const midGrid     = document.querySelector('.mid-grid');
+  const progressRow = document.querySelector('.progress-row');
+  const bottomGrid  = document.querySelector('.bottom-grid');
+  const inboundPanel= document.getElementById('inboundDetailPanel');
+  if (!panel) return;
+
+  if (storingPanelOpen) {
+    if (inboundPanelOpen)   { inboundPanelOpen   = false; if(inboundPanel) inboundPanel.style.display='none'; }
+    if (outboundPanelOpen)  { outboundPanelOpen  = false; const p=document.getElementById('outboundDetailPanel');  if(p) p.style.display='none'; }
+    if (inventoryPanelOpen) { inventoryPanelOpen = false; const p=document.getElementById('inventoryDetailPanel'); if(p) p.style.display='none'; }
+    if (plannerPanelOpen)   { plannerPanelOpen   = false; const p=document.getElementById('plannerDetailPanel');   if(p) p.style.display='none'; }
+    panel.style.display = 'block';
+    if (midGrid)     midGrid.style.display     = 'none';
+    if (progressRow) progressRow.style.display = 'none';
+    if (bottomGrid)  bottomGrid.style.display  = 'none';
+    const sgStr=document.querySelector('.stats-grid'); if(sgStr) sgStr.style.display='none';
+    const lgStr=document.getElementById('lppbdoGrid'); if(lgStr) lgStr.style.display='none';
+    if (!storingLoaded) fetchStoringToday();
+    setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  } else {
+    panel.style.display = 'none';
+    if (midGrid)     midGrid.style.display     = '';
+    if (progressRow) progressRow.style.display = '';
+    if (bottomGrid)  bottomGrid.style.display  = '';
+    const sgStrR=document.querySelector('.stats-grid'); if(sgStrR) sgStrR.style.display='';
+    const lgStrR=document.getElementById('lppbdoGrid'); if(lgStrR) lgStrR.style.display='grid';
+  }
+}
+
+async function fetchStoringStatCard() {
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getStoringToday');
+    const data = await res.json();
+    if (!data.ok) return;
+    const s = data.summary;
+    const el = document.querySelector('#storingStatCard .stat-value');
+    if (el) { el.textContent = s.total; el.style.color = '#db2777'; }
+    // Mini boxes
+    const sr=document.getElementById('strStatRelease'); if(sr) sr.textContent=(s.sumRelease||0).toLocaleString('id-ID');
+    const sp=document.getElementById('strStatPicked');  if(sp) sp.textContent=(s.sumPicked||0).toLocaleString('id-ID');
+    const ss=document.getElementById('strStatStaged');  if(ss) ss.textContent=(s.sumStaged||0).toLocaleString('id-ID');
+    const si=document.getElementById('strStatSisa');    if(si) si.textContent=(s.sumSisa||0).toLocaleString('id-ID');
+    // Pie chart
+    const strPct = s.sumRelease>0 ? Math.round(s.sumPicked/s.sumRelease*100) : 0;
+    _makeSVGStatChart('storingStatChart', strPct, '#ec4899');
+    const strBar  = document.querySelector('#storingStatCard .stat-bar-fill');
+    const strFoot = document.querySelector('#storingStatCard .stat-foot-val');
+    if(strBar) setTimeout(()=>strBar.style.width=Math.min(strPct,100)+'%',300);
+    if(strFoot) strFoot.textContent=strPct+'%';
+    window._storingData = data;
+    renderDashStoringChart();
+    if (window._lastInTotal !== undefined) updateInventoryStatusDonut(window._lastInTotal, window._lastInSelesai, window._lastOutTotal, window._lastOutSelesai);
+  } catch(e) { console.warn('Storing stat card error:', e); }
+}
+
+async function fetchStoringToday() {
+  if (window._storingData && window._storingData.ok) {
+    renderStoringPanel(window._storingData);
+    return;
+  }
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getStoringToday');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Gagal');
+    window._storingData = data;
+    renderStoringPanel(data);
+  } catch(e) {
+    console.warn('Storing error:', e);
+    const tb = document.getElementById('storingTableBody');
+    if (tb) tb.innerHTML = `<tr><td colspan="16" style="text-align:center;padding:20px;color:var(--red)">Gagal: ${e.message}</td></tr>`;
+  }
+}
+
+function renderStoringPanel(data) {
+  storingLoaded = true;
+  const s = data.summary;
+  const isDark = document.body.classList.contains('dark');
+
+  // Matikan efek hover (naik+scale) di seluruh panel Storing, KECUALI KPI cards & Batch cards
+  {
+    let st = document.getElementById('storingNoHoverStyle');
+    if (!st) {
+      st = document.createElement('style');
+      st.id = 'storingNoHoverStyle';
+      document.head.appendChild(st);
+    }
+    st.textContent = `
+      #storingDetailPanel.card:hover, #storingDetailPanel .card:hover { transform:none !important; }
+      #storingKpiRow > div { transition: transform 0.2s, box-shadow 0.2s; }
+      #storingKpiRow > div:hover { transform: translateY(-3px) !important; box-shadow: 0 10px 26px rgba(153,27,27,0.4) !important; }
+      #storingBatchGrid > div { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s; }
+      #storingBatchGrid > div:hover { transform: translateY(-5px) !important; }
+      #storingBatchGrid > div:nth-child(4n+1):hover { box-shadow: 0 10px 28px rgba(99,102,241,0.45) !important; }
+      #storingBatchGrid > div:nth-child(4n+2):hover { box-shadow: 0 10px 28px rgba(16,185,129,0.45) !important; }
+      #storingBatchGrid > div:nth-child(4n+3):hover { box-shadow: 0 10px 28px rgba(245,158,11,0.45) !important; }
+      #storingBatchGrid > div:nth-child(4n+4):hover { box-shadow: 0 10px 28px rgba(168,85,247,0.45) !important; }
+    `;
+  }
+
+  document.getElementById('storingSubtitle').textContent = `Total: ${s.total} LC/PO | Release: ${s.sumRelease.toLocaleString()} Case`;
+  document.getElementById('storingFooter').textContent = s.total + ' LC/PO terdaftar';
+
+  const makeSVG = (elId, pct, color) => {
+    const el = document.getElementById(elId); if(!el) return;
+    const r=26,cx=32,cy=32,circ=2*Math.PI*r;
+    const dash=Math.min(pct,100)/100*circ;
+    const bg=isDark?'#334155':'#e2e8f0';
+    el.innerHTML=`<svg width="64" height="64" viewBox="0 0 64 64">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${bg}" stroke-width="7"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="7"
+        stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}"
+        stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+    </svg>`;
+  };
+
+  const p1 = s.pctPickingOverall;
+  const p2 = s.pctStagedOverall;
+  const p3 = s.avgKapasitas;
+
+  renderStoringTable(data.data);
+  renderStoringKPI(data.data, s);
+  renderStoringBatchCards(data.data);
+
+  // Beam kilat — sequential satu per satu dari Total LC sampai Completion Rate, lalu ulang
+  setTimeout(()=>{
+    const cards = document.querySelectorAll('#storingKpiRow > div');
+    const beamDuration = 0.9;          // durasi 1 kilat nyala (detik)
+    const gapBetween   = 0.3;          // jeda antar card (detik)
+    const stepTime     = beamDuration + gapBetween;
+    const totalCycle   = stepTime * cards.length; // total durasi 1 putaran penuh
+    cards.forEach((card,i)=>{
+      if(card.querySelector('.store-beam')) return;
+      const b=document.createElement('div');
+      b.className='store-beam';
+      const delay = i * stepTime;
+      b.style.cssText=`position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(153,27,27,0.22),transparent);transform:skewX(-15deg);pointer-events:none;z-index:10;animation:storingKpiBeamSeq ${totalCycle}s linear ${delay}s infinite;`;
+      card.style.position='relative';
+      card.style.overflow='hidden';
+      card.appendChild(b);
+    });
+  },300);
+}
+
+
+function renderStoringKPI(rows, s) {
+  let kpiRow = document.getElementById('storingKpiRow');
+  if (!kpiRow) {
+    const panel = document.getElementById('storingDetailPanel');
+    if (!panel) return;
+    const card = panel.querySelector('.card');
+    if (!card) return;
+    kpiRow = document.createElement('div');
+    kpiRow.id = 'storingKpiRow';
+    kpiRow.style.cssText = 'display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:16px 20px;border-bottom:1px solid rgba(200,215,240,0.2);';
+    card.insertBefore(kpiRow, card.children[1]);
+  }
+
+  const num = n => Math.round(n||0).toLocaleString('id-ID');
+  const totalLc  = new Set(rows.map(r=>r.noLc)).size;
+  const relCase  = s.sumRelease || 0;
+  const pickCase = s.sumPicked  || 0;
+  const stgCase  = s.sumStaged  || 0;
+  const sisaCase = s.sumSisa    || 0;
+  const pickPct  = relCase>0 ? (Math.round(pickCase/relCase*10000)/100) : 0;
+  const stgPct   = relCase>0 ? (Math.round(stgCase/relCase*10000)/100)  : 0;
+  const sisaPct  = relCase>0 ? (Math.round(sisaCase/relCase*10000)/100) : 0;
+
+  const RED = '#991b1b';
+  const kpis = [
+    { label:'Total LC',       val:totalLc,       sub:'Semua · CID',           badge:'Visible',    accent:RED, icon:'🗒️', bar:100,      foot:'DATA AKTIF',    footVal:'LIVE',
+      mini:[ {l:'LC',v:totalLc,c:'#2563eb'}, {l:'BATCH',v:4,c:'#2563eb'} ] },
+    { label:'Release CID',    val:num(relCase),   sub:'Baseline total proses',  badge:'100%',       accent:RED, icon:'📦', bar:100,      foot:'TARGET AWAL',   footVal:'100%',
+      mini:[ {l:'CASE',v:num(relCase),c:'#2563eb'}, {l:'TARGET',v:'100%',c:'#2563eb'} ] },
+    { label:'Picked CID',     val:num(pickCase),  sub:pickPct+'% dari release', badge:pickPct+'%',  accent:RED, icon:'✅', bar:pickPct,  foot:'PROGRESS PICK', footVal:pickPct+'%',
+      mini:[ {l:'PICKED',v:num(pickCase),c:'#2563eb'}, {l:'SISA',v:num(relCase-pickCase),c:'#dc2626'} ] },
+    { label:'Staged CID',     val:num(stgCase),   sub:stgPct+'% dari picked',   badge:stgPct+'%',   accent:RED, icon:'🚛', bar:stgPct,   foot:'READY TO LOAD', footVal:stgPct+'%',
+      mini:[ {l:'STAGED',v:num(stgCase),c:'#2563eb'}, {l:'SISA',v:num(pickCase-stgCase),c:'#dc2626'} ] },
+    { label:'Sisa CID',       val:num(sisaCase),  sub:sisaPct+'% outstanding',  badge:sisaPct+'%',  accent:RED, icon:'⏳', bar:sisaPct,  foot:'BELUM PICKED',  footVal:sisaPct+'%',
+      mini:[ {l:'SISA',v:num(sisaCase),c:'#dc2626'}, {l:'TARGET',v:'0',c:'#2563eb'} ] },
+    { label:'Completion Rate',val:pickPct+'%',    sub:'Release → Picked',       badge:'Semua',      accent:RED, icon:'🎯', bar:pickPct,  foot:'EFEKTIVITAS',   footVal:pickPct+'%',
+      mini:[ {l:'TERCAPAI',v:pickPct+'%',c:'#2563eb'}, {l:'TARGET',v:'100%',c:'#2563eb'} ] },
+  ];
+
+  kpiRow.innerHTML = kpis.map(k => `
+    <div style="background:#ffffff;border:1px solid #e5e7eb;border-left:3px solid ${k.accent};border-radius:0;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;flex-direction:column;">
+      <div style="padding:14px 16px 0;flex:1;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;">${k.label}</div>
+          <span style="font-size:10px;font-weight:800;padding:2px 10px;border-radius:20px;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;">${k.badge}</span>
+        </div>
+        <div style="font-size:32px;font-weight:900;color:#1e293b;letter-spacing:-1.5px;line-height:1;margin-bottom:4px;">${k.val}</div>
+        <div style="font-size:10.5px;color:#94a3b8;margin-bottom:10px;">${k.sub}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:12px;">
+          ${k.mini.map(m => `<div style="background:#f1f5f9;border-left:3px solid ${m.c};padding:5px 7px;"><div style="font-size:7.5px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;">${m.l}</div><div style="font-size:14px;font-weight:900;color:#1e293b;line-height:1;">${m.v}</div></div>`).join('')}
+        </div>
+        <div style="height:4px;background:#f1f5f9;border-radius:10px;overflow:hidden;">
+          <div style="width:${Math.min(k.bar,100)}%;height:100%;background:${k.accent};border-radius:10px;transition:width 1.2s cubic-bezier(0.22,1,0.36,1);"></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 16px;margin-top:8px;font-size:9.5px;border-top:1px solid #f1f5f9;">
+        <span style="color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">${k.foot}</span>
+        <span style="font-weight:900;color:#991b1b;">${k.footVal}</span>
+      </div>
+    </div>`).join('');
+}
+function renderStoringBatchCards(rows) {
+  const grid = document.getElementById('storingBatchGrid');
+  if (!grid || !rows || !rows.length) return;
+
+  const batches = {};
+  rows.forEach(r => {
+    const b = String(r.batch||'').trim() || '?';
+    if (!batches[b]) batches[b] = { noLc:new Set(), releaseCase:0, pickedCase:0, stagedCase:0, sisaCase:0 };
+    batches[b].noLc.add(r.noLc);
+    batches[b].releaseCase += parseFloat(r.releaseCase)||0;
+    batches[b].pickedCase  += parseFloat(r.pickedCase)||0;
+    batches[b].stagedCase  += parseFloat(r.stagedCase)||0;
+    batches[b].sisaCase    += parseFloat(r.sisaCase)||0;
+  });
+
+  const batchList = Object.entries(batches).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true}));
+  const count = batchList.length;
+  grid.style.gridTemplateColumns = `repeat(${Math.min(count,4)},1fr)`;
+
+  // Semua batch warna biru, background gelap tema dashboard
+  const BLUE = '#2563eb';
+  const colors = [
+    { accent:BLUE, numBg:BLUE, ring:BLUE, pickBar:BLUE, stgBar:'#0891b2' },
+    { accent:BLUE, numBg:BLUE, ring:BLUE, pickBar:BLUE, stgBar:'#0891b2' },
+    { accent:BLUE, numBg:BLUE, ring:BLUE, pickBar:BLUE, stgBar:'#0891b2' },
+    { accent:BLUE, numBg:BLUE, ring:BLUE, pickBar:BLUE, stgBar:'#0891b2' },
+  ];
+
+  const makeSVGDonut = (pct, color) => {
+    const r=26,cx=32,cy=32,circ=2*Math.PI*r;
+    const dash=Math.min(pct,100)/100*circ;
+    return `<svg width="58" height="58" viewBox="0 0 64 64">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="7"/>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="7"
+        stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}"
+        stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+      <text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="900" fill="${color}">${Math.round(pct)}%</text>
+    </svg>`;
+  };
+
+  grid.innerHTML = batchList.map(([batchNum, d], i) => {
+    const col      = colors[i % colors.length];
+    const pickPct  = d.releaseCase>0 ? (Math.round(d.pickedCase/d.releaseCase*10000)/100)  : 0;
+    const stagePct = d.releaseCase>0 ? (Math.round(d.stagedCase/d.releaseCase*10000)/100)  : 0;
+    const lcCount  = d.noLc.size;
+    const num = n => Math.round(n).toLocaleString('id-ID');
+
+    return `<div style="background:#ffffff;border:1px solid #e5e7eb;border-left:4px solid ${col.accent};border-radius:0;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+      <div style="padding:16px 16px 0;">
+        <!-- Header: nomor batch + nama + donut -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:34px;height:34px;border-radius:0;background:${col.numBg};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;box-shadow:0 4px 10px ${col.numBg}55;">${batchNum}</div>
+            <div>
+              <div style="font-size:14px;font-weight:900;color:#1e293b;">Batch ${batchNum}</div>
+              <div style="font-size:9.5px;color:#94a3b8;">${lcCount} LC · Semua · CID</div>
+            </div>
+          </div>
+          ${makeSVGDonut(pickPct, col.ring)}
+        </div>
+        <!-- 4 boxes horizontal: RELEASE PICKED STAGED SISA -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+          <div style="background:#f1f5f9;border-left:4px solid #7c3aed;padding:6px 8px;">
+            <div style="font-size:8px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:3px;">RELEASE</div>
+            <div style="font-size:16px;font-weight:900;color:#1e293b;line-height:1;">${num(d.releaseCase)}</div>
+          </div>
+          <div style="background:#f1f5f9;border-left:4px solid #0284c7;padding:6px 8px;">
+            <div style="font-size:8px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:3px;">PICKED</div>
+            <div style="font-size:16px;font-weight:900;color:#1e293b;line-height:1;">${num(d.pickedCase)}</div>
+          </div>
+          <div style="background:#f1f5f9;border-left:4px solid #db2777;padding:6px 8px;">
+            <div style="font-size:8px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:3px;">STAGED</div>
+            <div style="font-size:16px;font-weight:900;color:#1e293b;line-height:1;">${num(d.stagedCase)}</div>
+          </div>
+          <div style="background:#f1f5f9;border-left:4px solid #ea580c;padding:6px 8px;">
+            <div style="font-size:8px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:3px;">SISA</div>
+            <div style="font-size:16px;font-weight:900;color:${d.sisaCase>0?'#dc2626':'#1e293b'};line-height:1;">${num(d.sisaCase)}</div>
+          </div>
+        </div>
+        <!-- Pick Rate -->
+        <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:#64748b;margin-bottom:4px;">
+          <span>Pick Rate</span><span style="color:${col.accent};">${pickPct}%</span>
+        </div>
+        <div style="height:5px;background:#f1f5f9;border-radius:10px;margin-bottom:10px;">
+          <div style="width:${pickPct}%;height:100%;background:${col.pickBar};border-radius:10px;transition:width 1s;"></div>
+        </div>
+        <!-- Stage Rate -->
+        <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:#64748b;margin-bottom:4px;">
+          <span>Stage Rate</span><span style="color:${col.accent};">${stagePct}%</span>
+        </div>
+        <div style="height:5px;background:#f1f5f9;border-radius:10px;margin-bottom:16px;">
+          <div style="width:${stagePct}%;height:100%;background:${col.stgBar};border-radius:10px;transition:width 1s;"></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderStoringTable(rows) {
+  const tbody = document.getElementById('storingTableBody');
+  if (!tbody) return;
+  if (!rows || !rows.length) {
+    tbody.innerHTML = '<tr><td colspan="20" style="text-align:center;padding:20px;color:var(--text-3)">Tidak ada data</td></tr>';
+    return;
+  }
+
+  const BATCH_COL = {
+    1: '#6366f1', 2: '#10b981', 3: '#f59e0b', 4: '#a855f7', 5: '#0891b2'
+  };
+
+  const isDarkS=document.body.classList.contains('dark');
+  const txS=isDarkS?'#f0f4ff':'#1e293b';
+  const ct = `text-align:center;font-size:11px;font-weight:600;color:${txS};`;
+  const cn = `text-align:center;font-size:11px;font-family:"JetBrains Mono",monospace;font-weight:600;color:${txS};`;
+  const num = (v) => (v!==undefined&&v!==null&&!isNaN(Number(v))&&v!=='') ? Number(v).toLocaleString() : '—';
+  const dec = (v) => (v!==undefined&&v!==null&&!isNaN(Number(v))&&v!=='') ? Number(v).toFixed(2) : '—';
+
+  // Badge BATCH bulat premium
+  const batchBadge = (batch) => {
+    const b = parseInt(batch) || 0;
+    const col = BATCH_COL[b] || '#64748b';
+    return `<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 8px;border-radius:20px;background:${col};color:#fff;font-weight:900;font-size:11px;box-shadow:0 2px 6px ${col}55;">${b}</span>`;
+  };
+
+  // Progress bar pill premium (label kiri, bar+pct kanan)
+  const pBar = (pct, labelTxt) => {
+    const n = parseFloat(pct) || 0;
+    const col = n>=100?'#16a34a':'#dc2626';
+    const display = Number.isInteger(n) ? n : n.toFixed(1);
+    return `<div style="display:flex;flex-direction:column;gap:3px;min-width:78px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:8px;font-weight:800;color:${col};text-transform:uppercase;letter-spacing:0.04em;">${labelTxt}</span>
+        <span style="font-size:10px;font-weight:900;color:${col};">${display}%</span>
+      </div>
+      <div style="width:100%;height:6px;background:#e5e7eb;border-radius:10px;overflow:hidden;">
+        <div style="width:${Math.min(n,100)}%;height:100%;background:linear-gradient(90deg,${col},${col}cc);border-radius:10px;transition:width 0.8s;"></div>
+      </div>
+    </div>`;
+  };
+
+  tbody.innerHTML = rows.map((r,i) => {
+    const batchNum = parseInt(r.batch) || 0;
+    const batchCol = BATCH_COL[batchNum] || '#64748b';
+    const rowBg = isDarkS ? `${batchCol}1a` : `${batchCol}0d`;
+    const rowBgHover = isDarkS ? `${batchCol}30` : `${batchCol}1f`;
+    return `<tr style="background:${rowBg};border-bottom:1px solid ${isDarkS?'#1e293b':'#f1f5f9'};border-left:3px solid ${batchCol}55;transition:background 0.15s;" onmouseover="this.style.background='${rowBgHover}'" onmouseout="this.style.background='${rowBg}'">
+    <td style="${ct}padding:10px 8px;">${i+1}</td>
+    <td style="font-weight:800;font-size:11px;font-family:'JetBrains Mono',monospace;text-align:center;color:${txS};padding:10px 8px;">${escHtml(r.noLc)}</td>
+    <td style="text-align:center;padding:10px 8px;">${batchBadge(r.batch)}</td>
+    <td style="font-size:11px;font-weight:600;color:${txS};text-align:center;padding:10px 8px;word-wrap:break-word;">${escHtml(r.tujuan)}</td>
+    <td style="${ct}padding:10px 8px;">${escHtml(r.tipeArmada)}</td>
+    <td style="${cn}padding:10px 8px;">${num(r.kapasitas)}</td>
+    <td style="${cn}padding:10px 8px;">${num(r.releaseCase)}</td>
+    <td style="${cn}padding:10px 8px;">${dec(r.releaseCbm)}</td>
+    <td style="${cn}padding:10px 8px;">${dec(r.astorCbm)}</td>
+    <td style="${cn}padding:10px 8px;">${num(r.pickedCase)}</td>
+    <td style="${cn}padding:10px 8px;">${dec(r.pickedCbm)}</td>
+    <td style="${cn}padding:10px 8px;color:${r.sisaCase>0?'#dc2626':'#16a34a'};font-weight:900;">${num(r.sisaCase)}</td>
+    <td style="padding:10px 8px;">${pBar(r.pctPicking, 'PICK')}</td>
+    <td style="${cn}padding:10px 8px;">${num(r.stagedCase)}</td>
+    <td style="${cn}padding:10px 8px;">${dec(r.stagedCbm)}</td>
+    <td style="padding:10px 8px;">${pBar(r.pctKapasitas, 'KAP')}</td>
+  </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════
+//  INBOUND DETAIL PANEL
+// ══════════════════════════════════════
+let inboundPanelOpen = false;
+let inlineLoaded     = false;
+
+function toggleInboundPanel() {
+  inboundPanelOpen = !inboundPanelOpen;
+  const panel       = document.getElementById('inboundDetailPanel');
+  const midGrid     = document.querySelector('.mid-grid');
+  const progressRow = document.querySelector('.progress-row');
+  const bottomGrid  = document.querySelector('.bottom-grid');
+  if (!panel) return;
+
+  if (inboundPanelOpen) {
+    if (storingPanelOpen)   { storingPanelOpen   = false; const sp=document.getElementById('storingDetailPanel');   if(sp) sp.style.display='none'; }
+    if (outboundPanelOpen)  { outboundPanelOpen  = false; const op=document.getElementById('outboundDetailPanel');  if(op) op.style.display='none'; }
+    if (inventoryPanelOpen) { inventoryPanelOpen = false; const ip=document.getElementById('inventoryDetailPanel'); if(ip) ip.style.display='none'; }
+    if (plannerPanelOpen)   { plannerPanelOpen   = false; const pp=document.getElementById('plannerDetailPanel');   if(pp) pp.style.display='none'; }
+    panel.style.display = 'block';
+    if (midGrid)     midGrid.style.display     = 'none';
+    if (progressRow) progressRow.style.display = 'none';
+    if (bottomGrid)  bottomGrid.style.display  = 'none';
+    const sgInb=document.querySelector('.stats-grid'); if(sgInb) sgInb.style.display='none';
+    const lgInb=document.getElementById('lppbdoGrid'); if(lgInb) lgInb.style.display='none';
+    renderPanelInboundTable(window._inboundRows || []);
+    fetchInlineProses();
+    setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  } else {
+    panel.style.display = 'none';
+    if (midGrid)     midGrid.style.display     = '';
+    if (progressRow) progressRow.style.display = '';
+    if (bottomGrid)  bottomGrid.style.display  = '';
+    const sgR=document.querySelector('.stats-grid'); if(sgR) sgR.style.display='';
+    const lgR=document.getElementById('lppbdoGrid'); if(lgR) lgR.style.display='grid';
+  }
+}
+
+function switchPanelTab(tab) {
+  const tblIn=document.getElementById('panelInboundTable'), tblInl=document.getElementById('panelInlineTable');
+  const btnIn=document.getElementById('panelTabInbound'),   btnInl=document.getElementById('panelTabInline');
+  if (tab==='inbound') {
+    tblIn.style.display=''; tblInl.style.display='none';
+    btnIn.style.color='var(--accent)'; btnIn.style.borderBottom='2px solid var(--accent)';
+    btnInl.style.color='var(--text-3)'; btnInl.style.borderBottom='2px solid transparent';
+  } else {
+    tblIn.style.display='none'; tblInl.style.display='';
+    btnIn.style.color='var(--text-3)'; btnIn.style.borderBottom='2px solid transparent';
+    btnInl.style.color='var(--accent)'; btnInl.style.borderBottom='2px solid var(--accent)';
+    if (!inlineLoaded) fetchInlineProses();
+  }
+}
+
+function renderPanelInboundTable(rows) {
+  const tbody=document.getElementById('panelInboundBody'); if(!tbody) return;
+  if (!rows||!rows.length) { tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--text-3)">Tidak ada data inbound hari ini</td></tr>'; return; }
+  const getWt=(s)=>{const m=s&&s.match(/WT\s*(\d+)/i);return m?parseInt(m[1]):999;};
+  const wtBg=(s,i)=>{const wt=getWt(s);if(wt===1)return i%2===0?'#f0f9ff':'#e0f2fe';if(wt===2)return i%2===0?'#f5f3ff':'#ede9fe';if(wt===3)return i%2===0?'#fdf4ff':'#fae8ff';return i%2===0?'#f8fafc':'#fff';};
+  const wtLeft=(s)=>{const wt=getWt(s);if(wt===1)return 'border-left:3px solid #2563eb';if(wt===2)return 'border-left:3px solid #8b5cf6';if(wt===3)return 'border-left:3px solid #ec4899';return 'border-left:3px solid #e2e8f0';};
+  const sorted=[...rows].sort((a,b)=>getWt(a.stuffing)-getWt(b.stuffing));
+  tbody.innerHTML=sorted.map((r,i)=>`<tr style="background:${wtBg(r.stuffing,i)};${wtLeft(r.stuffing)};border-bottom:1px solid rgba(200,215,240,0.3);">
+    <td style="text-align:center;font-size:11px;color:#94a3b8;padding:9px 8px;">${i+1}</td>
+    <td style="font-weight:800;font-size:12px;color:#1e293b;padding:9px 10px;">${escHtml(r.noLc)}</td>
+    <td style="font-size:11.5px;color:#475569;padding:9px 10px;">${escHtml(r.noPolisi)}</td>
+    <td style="font-size:11.5px;color:#475569;padding:9px 10px;">${escHtml(r.ekspedisi)}</td>
+    <td style="font-size:11px;font-weight:600;color:#64748b;padding:9px 10px;text-align:center;">${escHtml(r.type)}</td>
+    <td style="font-size:11px;font-weight:700;color:#64748b;padding:9px 10px;text-align:center;">${escHtml(r.bu)}</td>
+    <td style="font-size:12px;font-weight:800;color:${r.checkIn?'#16a34a':'#94a3b8'};padding:9px 10px;text-align:center;">${r.checkIn||'—'}</td>
+    <td style="font-size:11.5px;font-weight:700;color:#1e293b;padding:9px 10px;text-align:center;">${r.stuffing||'—'}</td>
+    <td style="padding:7px 10px;text-align:center;">${
+      r.updateUnload
+        ? String(r.updateUnload).toUpperCase()==='FINISH'
+          ? '<span class="badge badge-green">✅ FINISH</span>'
+          : String(r.updateUnload).toUpperCase()==='PROSES'
+          ? '<span class="badge badge-blue">⏳ PROSES</span>'
+          : String(r.updateUnload).toUpperCase()==='ANTRI'
+          ? '<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;background:rgba(234,179,8,0.15);color:#92400e;border:1px solid rgba(234,179,8,0.3)">🕐 ANTRI</span>'
+          : `<span style="font-size:11px;font-weight:700;padding:3px 10px;background:#f1f5f9;color:#475569;">${escHtml(r.updateUnload)}</span>`
+        : '<span style="color:#94a3b8;font-size:12px">—</span>'
+    }</td>
+    <td style="padding:7px 10px;text-align:center;">${r.hitMiss&&r.hitMiss.toString().toUpperCase().includes('HIT')?'<span class="badge badge-green">🎯 HIT</span>':r.hitMiss&&r.hitMiss.toString().toUpperCase().includes('MISS')?'<span class="badge badge-red">⚠️ MISS</span>':'<span style="color:#94a3b8;font-size:12px">—</span>'}</td>
+  </tr>`).join('');
+}
+
+async function fetchInlineProses() {
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getInlineProses');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error||'Gagal');
+    inlineLoaded = true;
+    const tgl=document.getElementById('inlineTanggal'); if(tgl) tgl.textContent='📅 Tanggal Unload: '+data.tanggalUnload;
+    const footer=document.getElementById('panelFooter'); if(footer) footer.textContent=data.total+' LC/PO terdaftar hari ini';
+    const s=data.summary, isDark=document.body.classList.contains('dark'), border=isDark?'#161b22':'#ffffff';
+
+    // SVG donut - lebih reliable dari Chart.js canvas
+    const makeSVGDonut=(elId,pct,color)=>{
+      const el=document.getElementById(elId); if(!el) return;
+      const r=26,cx=32,cy=32,circ=2*Math.PI*r;
+      const dash=Math.min(pct,100)/100*circ;
+      const bg=isDark?'#334155':'#e2e8f0';
+      el.innerHTML=`<svg width="64" height="64" viewBox="0 0 64 64">
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${bg}" stroke-width="7"/>
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="7"
+          stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}"
+          stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+      </svg>`;
+    };
+
+    const inboundRows=window._inboundRows||[];
+    const putawayRows=data.data||[]; // data dari GAS inline proses - punya aktQty, putInQty dll
+    const finishArmada=inboundRows.filter(r=>r&&r.updateUnload&&['DONE','FINISH'].includes(String(r.updateUnload).toUpperCase())).length;
+    const prosesArmada=inboundRows.filter(r=>r&&r.updateUnload&&String(r.updateUnload).toUpperCase()==='PROSES').length;
+    const antriArmada =inboundRows.filter(r=>r&&r.updateUnload&&String(r.updateUnload).toUpperCase()==='ANTRI').length;
+    const belumArmada =inboundRows.filter(r=>r&&(!r.updateUnload||String(r.updateUnload).trim()==='')).length;
+    const totalArmada =inboundRows.length||0;
+    const pctUnload=totalArmada>0?Math.round((finishArmada/totalArmada)*100):(s&&s.pctUnloading||0);
+    document.getElementById('pctUnloading').textContent='';
+    document.getElementById('infoUnloading') && (document.getElementById('infoUnloading').textContent='');
+    // Mini boxes
+    const mf=document.getElementById('inbMiniFinish'); if(mf) mf.textContent=finishArmada;
+    const mp=document.getElementById('inbMiniProses'); if(mp) mp.textContent=prosesArmada;
+    const ma=document.getElementById('inbMiniAntri');  if(ma) ma.textContent=antriArmada;
+    const mb=document.getElementById('inbMiniBelum');  if(mb) mb.textContent=belumArmada;
+    // Pie chart dengan % di dalam
+    const unEl=document.getElementById('chartUnloading');
+    if(unEl){
+      const r=26,cx=32,cy=32,circ=2*Math.PI*r;
+      const dash=Math.min(pctUnload,100)/100*circ;
+      unEl.innerHTML=`<svg width="72" height="72" viewBox="0 0 64 64">
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e2e8f0" stroke-width="7"/>
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#16a34a" stroke-width="7"
+          stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}"
+          stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+        <text x="${cx}" y="${cy-4}" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="900" fill="#16a34a">${pctUnload}%</text>
+        <text x="${cx}" y="${cy+9}" text-anchor="middle" dominant-baseline="middle" font-size="8" font-weight="600" fill="#94a3b8">Selesai</text>
+      </svg>`;
+    }
+    const fu=document.getElementById('pctUnloadingFoot'); if(fu) fu.textContent=pctUnload+'%';
+    const bu=document.getElementById('barUnloading'); if(bu) setTimeout(()=>bu.style.width=pctUnload+'%',300);
+
+    // % Aktual Receive
+    const pctAkt=(s&&s.avgPctAkt)||0;
+    document.getElementById('pctAktualRcv') && (document.getElementById('pctAktualRcv').textContent='');
+    // mini boxes aktual
+    const sumAktQty=putawayRows.reduce((a,r)=>a+(parseFloat(r.aktQty)||0),0);
+    const sumAktLpn=putawayRows.reduce((a,r)=>a+(parseFloat(r.aktLpn)||0),0);
+    const aqb=document.getElementById('aktQtyBox'); if(aqb) aqb.textContent=sumAktQty.toLocaleString('id-ID');
+    const alb=document.getElementById('aktLpnBox'); if(alb) alb.textContent=sumAktLpn.toLocaleString('id-ID');
+    // chart aktual
+    const aktEl=document.getElementById('chartAktualRcv');
+    if(aktEl){const r2=26,cx2=32,cy2=32,c2=2*Math.PI*r2,d2=Math.min(pctAkt,100)/100*c2;aktEl.innerHTML=`<svg width="72" height="72" viewBox="0 0 64 64"><circle cx="${cx2}" cy="${cy2}" r="${r2}" fill="none" stroke="#e2e8f0" stroke-width="7"/><circle cx="${cx2}" cy="${cy2}" r="${r2}" fill="none" stroke="#059669" stroke-width="7" stroke-dasharray="${d2.toFixed(2)} ${c2.toFixed(2)}" stroke-linecap="round" transform="rotate(-90 ${cx2} ${cy2})"/><text x="${cx2}" y="${cy2-4}" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="900" fill="#059669">${pctAkt}%</text><text x="${cx2}" y="${cy2+9}" text-anchor="middle" dominant-baseline="middle" font-size="8" font-weight="600" fill="#94a3b8">Selesai</text></svg>`;}
+    const ba=document.getElementById('barAktualRcv'); if(ba) setTimeout(()=>ba.style.width=pctAkt+'%',300);
+    const fa=document.getElementById('pctAktualRcvFoot'); if(fa) fa.textContent=pctAkt+'%';
+
+    // % Putaway Inbound = LPN Putaway IN / LPN Aktual Receive
+    const sumLpnAkt = putawayRows.reduce((acc,r)=>acc+(parseFloat(r.aktLpn)||0),0);
+    const sumLpnPutIn = putawayRows.reduce((acc,r)=>acc+(parseFloat(r.putInLpn)||0),0);
+    const sumQtyPutIn = putawayRows.reduce((acc,r)=>acc+(parseFloat(r.putInQty)||0),0);
+    const sumSisaPutIn = putawayRows.reduce((acc,r)=>acc+(parseFloat(r.sisaInLpn)||0),0);
+    const pctPutIn = sumLpnAkt>0 ? Math.round(sumLpnPutIn/sumLpnAkt*100) : (s&&s.avgPctPutIn2)||0;
+    document.getElementById('pctPutawayIn') && (document.getElementById('pctPutawayIn').textContent='');
+    // mini boxes putIn
+    const piqb=document.getElementById('putInQtyBox'); if(piqb) piqb.textContent=sumQtyPutIn.toLocaleString('id-ID');
+    const pilb=document.getElementById('putInLpnBox'); if(pilb) pilb.textContent=sumLpnPutIn.toLocaleString('id-ID');
+    const pisb=document.getElementById('putInSisaBox'); if(pisb) pisb.textContent=sumSisaPutIn.toLocaleString('id-ID');
+    // chart putIn
+    const piEl=document.getElementById('chartPutawayIn');
+    if(piEl){const r3=26,cx3=32,cy3=32,c3=2*Math.PI*r3,d3=Math.min(pctPutIn,100)/100*c3;piEl.innerHTML=`<svg width="72" height="72" viewBox="0 0 64 64"><circle cx="${cx3}" cy="${cy3}" r="${r3}" fill="none" stroke="#e2e8f0" stroke-width="7"/><circle cx="${cx3}" cy="${cy3}" r="${r3}" fill="none" stroke="#7c3aed" stroke-width="7" stroke-dasharray="${d3.toFixed(2)} ${c3.toFixed(2)}" stroke-linecap="round" transform="rotate(-90 ${cx3} ${cy3})"/><text x="${cx3}" y="${cy3-4}" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="900" fill="#7c3aed">${pctPutIn}%</text><text x="${cx3}" y="${cy3+9}" text-anchor="middle" dominant-baseline="middle" font-size="8" font-weight="600" fill="#94a3b8">Selesai</text></svg>`;}
+    const bpi=document.getElementById('barPutawayIn'); if(bpi) setTimeout(()=>bpi.style.width=Math.min(pctPutIn,100)+'%',300);
+    const fpi=document.getElementById('pctPutawayInFoot'); if(fpi) fpi.textContent=pctPutIn+'%';
+
+    // % Putaway Storing = LPN Putaway STR / LPN Putaway IN
+    const sumLpnPutStr = putawayRows.reduce((acc,r)=>acc+(parseFloat(r.putStrLpn)||0),0);
+    const sumQtyPutStr = putawayRows.reduce((acc,r)=>acc+(parseFloat(r.putStrQty)||0),0);
+    const sumSisaPutStr = putawayRows.reduce((acc,r)=>acc+(parseFloat(r.sisaStrLpn)||0),0);
+    const pctPutStr = sumLpnPutIn>0 ? Math.round(sumLpnPutStr/sumLpnPutIn*100) : (s&&s.avgPctPutStr)||0;
+    document.getElementById('pctPutawayStr') && (document.getElementById('pctPutawayStr').textContent='');
+    // mini boxes putStr
+    const psqb=document.getElementById('putStrQtyBox'); if(psqb) psqb.textContent=sumQtyPutStr.toLocaleString('id-ID');
+    const pslb=document.getElementById('putStrLpnBox'); if(pslb) pslb.textContent=sumLpnPutStr.toLocaleString('id-ID');
+    const pssb=document.getElementById('putStrSisaBox'); if(pssb) pssb.textContent=sumSisaPutStr.toLocaleString('id-ID');
+    // chart putStr
+    const psEl=document.getElementById('chartPutawayStr');
+    if(psEl){const r4=26,cx4=32,cy4=32,c4=2*Math.PI*r4,d4=Math.min(pctPutStr,100)/100*c4;psEl.innerHTML=`<svg width="72" height="72" viewBox="0 0 64 64"><circle cx="${cx4}" cy="${cy4}" r="${r4}" fill="none" stroke="#e2e8f0" stroke-width="7"/><circle cx="${cx4}" cy="${cy4}" r="${r4}" fill="none" stroke="#d97706" stroke-width="7" stroke-dasharray="${d4.toFixed(2)} ${c4.toFixed(2)}" stroke-linecap="round" transform="rotate(-90 ${cx4} ${cy4})"/><text x="${cx4}" y="${cy4-4}" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="900" fill="#d97706">${pctPutStr}%</text><text x="${cx4}" y="${cy4+9}" text-anchor="middle" dominant-baseline="middle" font-size="8" font-weight="600" fill="#94a3b8">Selesai</text></svg>`;}
+    const bps=document.getElementById('barPutawayStr'); if(bps) setTimeout(()=>bps.style.width=Math.min(pctPutStr,100)+'%',300);
+    const fps=document.getElementById('pctPutawayStrFoot'); if(fps) fps.textContent=pctPutStr+'%';
+
+    renderPanelInlineTable(data.data);
+  } catch(e) {
+    console.warn('Inline proses error:',e);
+    const tbody=document.getElementById('panelInlineBody');
+    if(tbody) tbody.innerHTML=`<tr><td colspan="36" style="text-align:center;padding:20px;color:var(--red)">Gagal: ${e.message}</td></tr>`;
+  }
+}
+
+function renderPanelInlineTable(rows) {
+  const tbody=document.getElementById('panelInlineBody'); if(!tbody) return;
+  if(!rows||!rows.length){tbody.innerHTML='<tr><td colspan="36" style="text-align:center;padding:20px;color:var(--text-3)">Tidak ada data</td></tr>';return;}
+  const isDarkI=document.body.classList.contains('dark');
+  const txI=isDarkI?'#f0f4ff':'#0a0f1e';
+  const c=`text-align:center;font-size:11px;font-weight:600;color:${txI};`;
+  const cn=`text-align:center;font-size:11px;font-family:"JetBrains Mono",monospace;font-weight:600;color:${txI};`;
+  const pBar=(pct)=>{const n=parseInt(pct)||0;const col=n>=100?'#15803d':n>=90?'#1d4ed8':n>=70?'#b45309':'#b91c1c';return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:52px;height:5px;background:rgba(0,0,0,0.12);border-radius:3px;"><div style="width:${Math.min(n,100)}%;height:100%;background:${col};border-radius:3px;"></div></div><span style="font-size:10px;font-weight:900;color:${col}">${pct||'—'}</span></div>`;};
+  const statusBadge=(s)=>{const col=s==='OUT'?'#15803d':'#b45309',bg=s==='OUT'?'rgba(21,128,61,0.15)':'rgba(180,83,9,0.15)';return `<span style="display:inline-block;padding:2px 8px;border-radius:12px;background:${bg};color:${col};font-weight:900;font-size:10px;border:1px solid ${col}66">${escHtml(s)||'—'}</span>`;};
+  const num=(v)=>(v!==undefined&&v!==null&&v!=='')&&!isNaN(Number(v))?Number(v).toLocaleString():'—';
+  const sisa=(v)=>{const n=Number(v)||0;return `<span style="font-weight:900;color:${n>0?'#b45309':'#15803d'}">${n}</span>`;};
+  tbody.innerHTML=rows.map((r,i)=>`<tr>
+    <td style="${c}">${i+1}</td>
+    <td style="font-weight:900;font-size:11px;font-family:'JetBrains Mono',monospace;text-align:center;color:${txI}">${escHtml(r.noLc)}</td>
+    <td style="${c}">${escHtml(r.type)}</td><td style="${cn}">${escHtml(r.nopol)}</td>
+    <td style="${c}">${escHtml(r.batch)}</td>
+    <td style="${cn}font-size:10px">${r.tglIn||'—'}</td><td style="${cn}font-size:10px">${r.tglOpen||'—'}</td><td style="${cn}font-size:10px">${r.tglClose||'—'}</td>
+    <td style="${c}">${statusBadge(r.status)}</td>
+    <td style="${cn}background:rgba(8,145,178,0.10)">${num(r.planQty)}</td><td style="${cn}background:rgba(8,145,178,0.10)">${r.planCbm||'—'}</td><td style="${cn}background:rgba(8,145,178,0.10)">${num(r.planEstLpn)}</td>
+    <td style="${cn}background:rgba(22,163,74,0.10)">${num(r.aktQty)}</td><td style="${cn}background:rgba(22,163,74,0.10)">${num(r.aktLpn)}</td>
+    <td style="background:rgba(22,163,74,0.10);${c}" colspan="2">${pBar(r.pctAkt)}</td>
+    <td style="${cn}background:rgba(139,92,246,0.10)">${num(r.ftQty)}</td><td style="${cn}background:rgba(139,92,246,0.10)">${num(r.ftLpn)}</td>
+    <td style="${cn}background:rgba(37,99,235,0.10)">${num(r.putInQty)}</td><td style="${cn}background:rgba(37,99,235,0.10)">${num(r.putInLpn)}</td>
+    <td style="${cn}background:rgba(37,99,235,0.10)">${sisa(r.sisaInLpn)}</td>
+    <td style="background:rgba(37,99,235,0.10);${c}" colspan="2">${pBar(r.putInPct)}</td>
+    <td style="${cn}background:rgba(234,179,8,0.10)">${num(r.sh1InQty)}</td><td style="${cn}background:rgba(234,179,8,0.10)">${num(r.sh1InLpn)}</td>
+    <td style="${cn}background:rgba(59,130,246,0.10)">${num(r.sh2InQty)}</td><td style="${cn}background:rgba(59,130,246,0.10)">${num(r.sh2InLpn)}</td>
+    <td style="${cn}background:rgba(22,163,74,0.10)">${num(r.putStrQty)}</td><td style="${cn}background:rgba(22,163,74,0.10)">${num(r.putStrLpn)}</td>
+    <td style="${cn}background:rgba(22,163,74,0.10)">${sisa(r.sisaStrLpn)}</td>
+    <td style="background:rgba(22,163,74,0.10);${c}" colspan="2">${pBar(r.putStrPct)}</td>
+    <td style="${cn}background:rgba(234,179,8,0.10)">${num(r.sh1StrQty)}</td><td style="${cn}background:rgba(234,179,8,0.10)">${num(r.sh1StrLpn)}</td>
+    <td style="${cn}background:rgba(59,130,246,0.10)">${num(r.sh2StrQty)}</td><td style="${cn}background:rgba(59,130,246,0.10)">${num(r.sh2StrLpn)}</td>
+  </tr>`).join('');
+}
+
+// ══════════════════════════════════════
+//  TAB SWITCH (bottom table)
+// ══════════════════════════════════════
+let currentDashTab = 'inbound';
+let outboundDetailLoaded = false;
+
+function switchDashTab(tab) {
+  currentDashTab = tab;
+  const inWrap  = document.getElementById('tableInboundWrap');
+  const stWrap  = document.getElementById('tableStoringWrap');
+  const outWrap = document.getElementById('tableOutboundWrap');
+  const btnIn   = document.getElementById('tabBtnInbound');
+  const btnSt   = document.getElementById('tabBtnStoring');
+  const btnOut  = document.getElementById('tabBtnOutbound');
+  const cnt     = document.getElementById('dashTableCount');
+
+  [inWrap,stWrap,outWrap].forEach(w=>{ if(w) w.style.display='none'; });
+  [btnIn,btnSt,btnOut].forEach(b=>{ if(b){ b.style.color='var(--text-3)'; b.style.borderBottom='2px solid transparent'; }});
+
+  if (tab === 'inbound') {
+    if(inWrap)  inWrap.style.display  = '';
+    if(btnIn) { btnIn.style.color='var(--accent)'; btnIn.style.borderBottom='2px solid var(--accent)'; }
+    if(cnt) cnt.textContent = (window._inboundRows||[]).length + ' data inbound hari ini';
+  } else if (tab === 'storing') {
+    if(stWrap)  stWrap.style.display  = '';
+    if(btnSt) { btnSt.style.color='#8b5cf6'; btnSt.style.borderBottom='2px solid #8b5cf6'; }
+    if (window._storingData && window._storingData.data) {
+      renderDashStoringBody(window._storingData.data);
+      if(cnt) cnt.textContent = window._storingData.total + ' data storing hari ini';
+    } else {
+      fetchStoringStatCard().then(()=>{
+        if(window._storingData) { renderDashStoringBody(window._storingData.data); if(cnt) cnt.textContent=window._storingData.total+' data storing hari ini'; }
+      });
+    }
+  } else {
+    if(outWrap) outWrap.style.display = '';
+    if(btnOut){ btnOut.style.color='var(--accent)'; btnOut.style.borderBottom='2px solid var(--accent)'; }
+    if(!outboundDetailLoaded) fetchOutboundDetail();
+  }
+}
+
+function renderDashStoringBody(rows) {
+  const tbody = document.getElementById('dashStoringBody'); if(!tbody) return;
+  if(!rows||!rows.length){tbody.innerHTML='<tr><td colspan="20" style="text-align:center;padding:20px;color:var(--text-3)">Tidak ada data storing hari ini</td></tr>';return;}
+  const c  = 'text-align:center;font-size:11px;color:var(--text-2);';
+  const cn = 'text-align:center;font-size:11px;font-family:"JetBrains Mono",monospace;color:var(--text-2);';
+  const num = (v) => (!isNaN(Number(v))&&v!=='') ? Number(v).toLocaleString() : '—';
+  const dec = (v) => (!isNaN(Number(v))&&v!=='') ? Number(v).toFixed(2) : '—';
+  const pBar = (pct) => {
+    const n=parseInt(pct)||0, col=n>=80?'#16a34a':n>=50?'#f59e0b':'#ef4444';
+    return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:44px;height:4px;background:rgba(148,163,184,0.2);border-radius:3px;"><div style="width:${Math.min(n,100)}%;height:100%;background:${col};border-radius:3px;"></div></div><span style="font-size:10px;font-weight:800;color:${col}">${pct||'0%'}</span></div>`;
+  };
+  tbody.innerHTML = rows.map((r,i)=>`<tr>
+    <td style="${c}">${i+1}</td>
+    <td style="font-weight:700;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text)">${escHtml(r.noLc)}</td>
+    <td style="${c}">${escHtml(r.batch)}</td>
+    <td style="font-size:11px;color:var(--text-2);max-width:130px">${escHtml(r.tujuan)}</td>
+    <td style="${c}">${escHtml(r.tipeArmada)}</td>
+    <td style="${cn}">${num(r.kapasitas)}</td>
+    <td style="${cn}background:rgba(37,99,235,0.05)">${num(r.releaseCase)}</td>
+    <td style="${cn}background:rgba(37,99,235,0.05)">${dec(r.releaseCbm)}</td>
+    <td style="${cn}background:rgba(139,92,246,0.05)">${dec(r.astorCbm)}</td>
+    <td style="${cn}background:rgba(22,163,74,0.05)">${num(r.pickedCase)}</td>
+    <td style="${cn}background:rgba(22,163,74,0.05)">${dec(r.pickedCbm)}</td>
+    <td style="${cn}background:rgba(239,68,68,0.05);color:${r.sisaCase>0?'#ef4444':'#16a34a'};font-weight:800">${num(r.sisaCase)}</td>
+    <td style="background:rgba(16,185,129,0.05);${c}">${pBar(r.pctPicking)}</td>
+    <td style="${cn}background:rgba(16,185,129,0.05)">${dec(r.pencPickCbm)}</td>
+    <td style="${cn}background:rgba(245,158,11,0.05);color:${r.sisaPick99>0?'#f59e0b':'#16a34a'};font-weight:800">${num(r.sisaPick99)}</td>
+    <td style="${cn}background:rgba(99,102,241,0.05)">${num(r.stagedCase)}</td>
+    <td style="${cn}background:rgba(99,102,241,0.05)">${dec(r.stagedCbm)}</td>
+    <td style="${cn}background:rgba(59,130,246,0.05)">${num(r.pencDsCase)}</td>
+    <td style="${cn}background:rgba(59,130,246,0.05)">${dec(r.pencDsCbm)}</td>
+    <td style="background:rgba(234,179,8,0.05);${c}">${pBar(r.pctKapasitas)}</td>
+  </tr>`).join('');
+}
+
+async function fetchOutboundDetail() {
+  const tbody=document.getElementById('dashOutboundBody'); if(!tbody) return;
+  tbody.innerHTML='<tr><td colspan="13" style="text-align:center;padding:24px;color:var(--text-3)">Memuat data outbound...</td></tr>';
+  try {
+    const res=await fetch(GAS_DASHBOARD_URL+'?action=getOutboundDetail');
+    const data=await res.json();
+    if(!data.ok) throw new Error(data.error||'Gagal');
+    outboundDetailLoaded=true; renderDashOutboundTable(data.data);
+    const cnt=document.getElementById('dashTableCount'); if(cnt) cnt.textContent=data.total+' data outbound hari ini';
+  } catch(e) { tbody.innerHTML=`<tr><td colspan="13" style="text-align:center;padding:24px;color:var(--red)">Gagal memuat: ${e.message}</td></tr>`; }
+}
+
+function renderDashOutboundTable(rows) {
+  const tbody=document.getElementById('dashOutboundBody'); if(!tbody) return;
+  if(!rows||!rows.length){tbody.innerHTML='<tr><td colspan="13" style="text-align:center;padding:24px;color:var(--text-3)">Tidak ada data outbound hari ini</td></tr>';return;}
+  tbody.innerHTML=rows.map((r,i)=>`<tr>
+    <td class="mono" style="font-size:12px">${i+1}</td>
+    <td style="font-size:12px;font-weight:600">${escHtml(r.penyelesaian)}</td>
+    <td class="mono" style="font-size:11px">${escHtml(r.transno)}</td>
+    <td style="font-size:12px;text-align:center;color:${r.ppc==='100%'?'var(--green)':'var(--orange)'};font-weight:700">${r.ppc||'—'}</td>
+    <td style="font-size:12px;text-align:center;color:${r.pstg==='100%'?'var(--green)':'var(--orange)'};font-weight:700">${r.pstg||'—'}</td>
+    <td style="font-size:12px;text-align:center;color:${r.pld==='100%'?'var(--green)':'var(--orange)'};font-weight:700">${r.pld||'—'}</td>
+    <td style="font-size:11px">${escHtml(r.shippingline)}</td>
+    <td class="mono" style="font-size:12px">${escHtml(r.bu)}</td>
+    <td style="font-size:11px">${escHtml(r.carrierId)}</td>
+    <td style="font-size:12px;font-weight:600">${r.stuffingTime||'—'}</td>
+    <td style="font-size:11px">${escHtml(r.jenisArmada)}</td>
+    <td class="mono" style="font-size:11px">${escHtml(r.nopol)}</td>
+    <td>${r.status.toUpperCase().includes('SELESAI')||r.status.toUpperCase().includes('KELUAR')?`<span class="badge badge-green">✅ ${escHtml(r.status)}</span>`:r.status.toUpperCase().includes('TERLAMBAT')?`<span class="badge badge-red">⚠️ ${escHtml(r.status)}</span>`:`<span class="badge badge-orange">⏳ ${escHtml(r.status)}</span>`}</td>
+  </tr>`).join('');
+}
+
+// ══════════════════════════════════════
+//  STAT CARDS + CHARTS
+// ══════════════════════════════════════
+let dashInboundChart=null, dashOutboundChart=null;
+
+function renderDashInboundChart(total,selesai,proses,antri,belum,hit,miss) {
+  const pct=total>0?Math.round((selesai/total)*100):0;
+  const _e=(id)=>document.getElementById(id);
+  if(_e('dashInboundPct')) _e('dashInboundPct').textContent=pct+'%';
+  if(_e('inboundPctBadge')) _e('inboundPctBadge').textContent=pct+'% Selesai';
+  if(_e('piInSelesai')) _e('piInSelesai').textContent=selesai+' truck';
+  if(_e('piInProses')) _e('piInProses').textContent=proses+' truck';
+  const piAntri=_e('piInAntri'); if(piAntri) piAntri.textContent=antri+' truck';
+  if(_e('piInBelum')) _e('piInBelum').textContent=belum+' truck';
+  if(_e('piInHitMiss')) _e('piInHitMiss').textContent=hit+' HIT / '+miss+' MISS';
+  const isDark=document.body.classList.contains('dark'), border=isDark?'#161b22':'#ffffff';
+  if(dashInboundChart) dashInboundChart.destroy();
+  const cvIn=_e('dashInboundChart'); if(!cvIn) return;
+  dashInboundChart=new Chart(cvIn.getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['Selesai Unloading','Proses','Antri','Belum Datang'],datasets:[{data:[selesai,proses,antri,belum],backgroundColor:['#16a34a','#2563eb','#f59e0b','#dc2626'],borderColor:border,borderWidth:3,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{backgroundColor:isDark?'rgba(22,27,34,0.95)':'rgba(17,24,39,0.9)',titleColor:'#fff',bodyColor:'rgba(255,255,255,0.8)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10,cornerRadius:10,callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} truck`}}}}
+  });
+}
+
+function renderDashOutboundChart(total,selesai,proses,antri,belum,hit,miss) {
+  proses=proses||0; antri=antri||0; belum=belum||0; hit=hit||0; miss=miss||0;
+  const pct=total>0?Math.round((selesai/total)*100):0;
+  const _eo=(id)=>document.getElementById(id);
+  if(_eo('dashOutboundPct')) _eo('dashOutboundPct').textContent=pct+'%';
+  if(_eo('outboundPctBadge')) _eo('outboundPctBadge').textContent=pct+'% Selesai';
+  if(_eo('piOutSelesai')) _eo('piOutSelesai').textContent=selesai+' armada';
+  const elP=_eo('piOutProses'),elA=_eo('piOutAntri'),elHM=_eo('piOutHitMiss');
+  if(elP) elP.textContent=proses+' armada';
+  if(elA) elA.textContent=antri+' armada';
+  if(_eo('piOutBelum')) _eo('piOutBelum').textContent=belum+' armada';
+  if(elHM) elHM.textContent=hit+' HIT / '+miss+' MISS';
+  const isDark=document.body.classList.contains('dark'), border=isDark?'#161b22':'#ffffff';
+  if(dashOutboundChart) dashOutboundChart.destroy();
+  const cvOut=_eo('dashOutboundChart'); if(!cvOut) return;
+  dashOutboundChart=new Chart(cvOut.getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['Selesai','Proses','Antri','Belum Datang'],datasets:[{data:[selesai,proses,antri,belum],backgroundColor:['#16a34a','#2563eb','#f59e0b','#dc2626'],borderColor:border,borderWidth:3,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{backgroundColor:isDark?'rgba(22,27,34,0.95)':'rgba(17,24,39,0.9)',titleColor:'#fff',bodyColor:'rgba(255,255,255,0.8)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,padding:10,cornerRadius:10,callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw} armada`}}}}
+  });
+}
+
+function renderDashInboundTable(rows) {
+  window._inboundRows=rows||[];
+  const tbody=document.getElementById('dashInboundBody'), count=document.getElementById('dashTableCount');
+  if(!tbody) return;
+  if(!rows||!rows.length){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--text-3)">Tidak ada data inbound hari ini</td></tr>';if(count&&currentDashTab==='inbound')count.textContent='0 data inbound hari ini';return;}
+  const getWt=(s)=>{const m=s&&s.match(/WT\s*(\d+)/i);return m?parseInt(m[1]):999;};
+  const wtBg=(s)=>{const wt=getWt(s);if(wt===2)return 'rgba(59,130,246,0.20)';if(wt===3)return 'rgba(139,92,246,0.20)';return '';};
+  const wtBL=(s)=>{const wt=getWt(s);if(wt===2)return 'border-left:4px solid rgba(59,130,246,1)';if(wt===3)return 'border-left:4px solid rgba(139,92,246,1)';return '';};
+  const wtCol=(s)=>{const wt=getWt(s);if(wt===2)return 'var(--text)';if(wt===3)return 'var(--text)';return 'var(--text-2)';};
+  const sorted=[...rows].sort((a,b)=>getWt(a.stuffing)-getWt(b.stuffing));
+  tbody.innerHTML=sorted.map((r,i)=>`<tr style="background:${wtBg(r.stuffing)};${wtBL(r.stuffing)}">
+    <td class="mono" style="font-size:12px">${i+1}</td>
+    <td style="font-weight:700;font-size:12px;font-family:'JetBrains Mono',monospace">${escHtml(r.noLc)}</td>
+    <td class="mono" style="font-size:12px">${escHtml(r.noPolisi)}</td>
+    <td style="font-size:12px">${escHtml(r.ekspedisi)}</td>
+    <td style="font-size:12px">${escHtml(r.type)}</td>
+    <td class="mono" style="font-size:12px">${escHtml(r.bu)}</td>
+    <td style="font-size:12px;color:${r.checkIn?'var(--green)':'var(--text-3)'};font-weight:${r.checkIn?'700':'400'}">${r.checkIn||'—'}</td>
+    <td style="font-size:11px;max-width:140px;white-space:normal;font-weight:700;color:${wtCol(r.stuffing)}">${r.stuffing||'—'}</td>
+    <td>${r.hitMiss&&r.hitMiss.toString().toUpperCase().includes('HIT')?'<span class="badge badge-green">🎯 HIT</span>':r.hitMiss&&r.hitMiss.toString().toUpperCase().includes('MISS')?'<span class="badge badge-red">⚠️ MISS</span>':'<span style="color:var(--text-3);font-size:12px">—</span>'}</td>
+  </tr>`).join('');
+  if(count&&currentDashTab==='inbound') count.textContent=rows.length+' data inbound hari ini';
+}
+
+async function fetchDashboardStats() {
+  let inboundTotal=0,inboundSelesai=0,inboundCheckedIn=0,inboundHit=0,inboundMiss=0;
+  let outboundTotal=0,outboundSelesai=0;
+  try {
+    const resIn=await fetch(GAS_DASHBOARD_URL+'?action=getInbound');
+    const dataIn=await resIn.json();
+    if(dataIn.ok){
+      const{total,checkedIn,selesai,proses,antri,belum,hit,miss}=dataIn.summary;
+      inboundTotal=total; inboundSelesai=selesai; inboundCheckedIn=checkedIn; inboundHit=hit; inboundMiss=miss;
+      const el=document.querySelector('#inboundStatCard .stat-value');
+      if(el) el.textContent=total;
+      // Mini boxes
+      const sf=document.getElementById('inbStatFinish'); if(sf) sf.textContent=selesai;
+      const sp=document.getElementById('inbStatProses'); if(sp) sp.textContent=proses;
+      const sa=document.getElementById('inbStatAntri');  if(sa) sa.textContent=antri;
+      const sb2=document.getElementById('inbStatBelum'); if(sb2) sb2.textContent=belum;
+      // Pie chart
+      const inPct = total>0 ? Math.round(selesai/total*100) : 0;
+      _makeSVGStatChart('inboundStatChart', inPct, '#16a34a');
+      const inBar = document.querySelector('#inboundStatCard .stat-bar-fill');
+      const inFoot = document.querySelector('#inboundStatCard .stat-foot-val');
+      if(inBar) setTimeout(()=>inBar.style.width=inPct+'%',300);
+      if(inFoot) inFoot.textContent=inPct+'%';
+      renderDashInboundChart(total,selesai,proses,antri,belum,hit,miss);
+      renderDashInboundTable(dataIn.data);
+    }
+  } catch(e){console.warn('Inbound stats error:',e);}
+  try {
+    const resOut=await fetch(GAS_DASHBOARD_URL+'?action=getOutbound');
+    const dataOut=await resOut.json();
+    if(dataOut.ok){
+      outboundTotal=dataOut.total; outboundSelesai=dataOut.selesai;
+      const el=document.querySelector('#outboundStatCard .stat-value');
+      if(el) el.textContent=dataOut.total;
+      // Mini boxes
+      const os=document.getElementById('outStatSelesai'); if(os) os.textContent=dataOut.selesai||0;
+      const op=document.getElementById('outStatProses');  if(op) op.textContent=dataOut.proses||0;
+      const oa=document.getElementById('outStatAntri');   if(oa) oa.textContent=dataOut.antri||0;
+      const ob=document.getElementById('outStatBelum');   if(ob) ob.textContent=dataOut.belum||0;
+      // Pie chart
+      const outPct = dataOut.total>0 ? Math.round((dataOut.selesai/dataOut.total)*100) : 0;
+      _makeSVGStatChart('outboundStatChart', outPct, '#d97706');
+      const outBar = document.querySelector('#outboundStatCard .stat-bar-fill');
+      const outFoot = document.querySelector('#outboundStatCard .stat-foot-val');
+      if(outBar) setTimeout(()=>outBar.style.width=outPct+'%',300);
+      if(outFoot) outFoot.textContent=outPct+'%';
+      renderDashOutboundChart(dataOut.total,dataOut.selesai,dataOut.proses||0,dataOut.antri||0,dataOut.belum||0,dataOut.hit||0,dataOut.miss||0);
+    }
+  } catch(e){console.warn('Outbound stats error:',e);}
+  updateInventoryStatusDonut(inboundTotal,inboundSelesai,outboundTotal,outboundSelesai);
+  window._lastInTotal=inboundTotal; window._lastInSelesai=inboundSelesai;
+  window._lastOutTotal=outboundTotal; window._lastOutSelesai=outboundSelesai;
+  fetchInventoryValue();
+  fetchStoringStatCard();
+
+  // ✅ INVENTORY CONTROL — fetch akurasi dari sheet INVENTORY J26
+  fetchInventoryAccuracy();
+  // ✅ SLA PLANNER — fetch SLA GRW & SLA CUSTOMER
+  fetchSLAPlanner();
+}
+
+// ══════════════════════════════════════
+//  ✅ INVENTORY CONTROL ACCURACY
+// ══════════════════════════════════════
+
+async function fetchInventoryDetail() {
+  const lorongBody = document.getElementById('invLorongBody');
+  const areaBody   = document.getElementById('invAreaBody');
+  if (lorongBody) lorongBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-3)">Memuat data...</td></tr>';
+  if (areaBody)   areaBody.innerHTML   = '<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--text-3)">Memuat data...</td></tr>';
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getInventoryDetail');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Gagal');
+    inventoryDetailLoaded = true;
+    renderInventoryPanel(data);
+  } catch(e) {
+    const lb = document.getElementById('invLorongBody');
+    const ab = document.getElementById('invAreaBody');
+    const sb = document.getElementById('invPanelSubtitle');
+    if (lb) lb.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--red)">Gagal memuat: ${e.message}</td></tr>`;
+    if (ab) ab.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--red)">Gagal</td></tr>`;
+    if (sb) sb.textContent = 'Gagal memuat data';
+    console.error('fetchInventoryDetail error:', e);
+  }
+}
+
+function renderInventoryPanel(data) {
+  const s    = data.summary;
+  const rows = data.rows || [];
+
+  const subtitle = document.getElementById('invPanelSubtitle');
+  const footer   = document.getElementById('invPanelFooter');
+
+  const totalLok = Number(s.totalLokasi).toLocaleString('id-ID');
+  const totalCcN = Number(s.totalCc).toLocaleString('id-ID');
+  if (subtitle) subtitle.textContent = `${data.bulan || ''} · Total ${totalLok} Lokasi · ${totalCcN} CC`;
+
+  // Update stat card mini boxes dengan data lengkap
+  const il2=document.getElementById('invStatLokasi'); if(il2) il2.textContent=totalLok;
+  const ic2=document.getElementById('invStatCC');     if(ic2) ic2.textContent=totalCcN;
+  const ih2=document.getElementById('invStatHit');    if(ih2) ih2.textContent=Number(s.totalHit||0).toLocaleString('id-ID');
+  const im2=document.getElementById('invStatMiss');   if(im2) im2.textContent=Number(s.totalMiss||0).toLocaleString('id-ID');
+  const ccPct2 = Math.round(parseFloat(String(s.pctCcTotal||'0').replace('%',''))||0);
+  _makeSVGStatChart('invStatChart', ccPct2, '#10b981');
+  if (footer)   footer.textContent   = `${rows.filter(r=>!r.isAreaRow).length} lorong terdaftar · Akurasi keseluruhan: ${s.akurasiTotal} · Diperbarui: ${new Date().toLocaleTimeString('id-ID')}`;
+
+  // ── KPI CARDS (top-border accent, like image 2) ──
+  const kpiRow  = document.getElementById('invKpiRow');
+  const MISS    = Number(s.totalMiss);
+  const akuNum  = parseFloat(s.akurasiTotal) || 0;
+  const belumN  = Math.max(0, Number(s.totalLokasi) - Number(s.totalCc));
+
+  const kpis = [
+    { label:'PROGRESS CC',   val: s.pctCcTotal,
+      sub1l:'SUDAH CC', sub1v: totalCcN, sub2l:'TOTAL LOKASI', sub2v: totalLok,
+      color:'#2563eb', icon:'📊' },
+    { label:'TOTAL LOKASI',  val: totalLok,
+      sub1l:'JML TERDAFTAR', sub1v: totalLok, sub2l:'SUDAH CC', sub2v: totalCcN,
+      color:'#7c3aed', icon:'📍' },
+    { label:'TOTAL CC SCAN', val: totalCcN,
+      sub1l:'SUDAH SCAN', sub1v: totalCcN, sub2l:'BELUM CC', sub2v: belumN.toLocaleString('id-ID'),
+      color:'#0891b2', icon:'🔢' },
+    { label:'TOTAL HIT',     val: Number(s.totalHit).toLocaleString('id-ID'),
+      sub1l:'SESUAI FISIK', sub1v: Number(s.totalHit).toLocaleString('id-ID'), sub2l:'DARI CC', sub2v: totalCcN,
+      color:'#16a34a', icon:'✅' },
+    { label:'TOTAL MISS',    val: Number(s.totalMiss).toLocaleString('id-ID'),
+      sub1l:'DISCREPANCY', sub1v: Number(s.totalMiss).toLocaleString('id-ID'), sub2l:'DARI CC', sub2v: totalCcN,
+      color: MISS > 0 ? '#dc2626' : '#16a34a', icon: MISS > 0 ? '❌' : '✅' },
+    { label:'AKURASI TOTAL', val: s.akurasiTotal,
+      sub1l:'HIT / CC SCAN', sub1v:`${Number(s.totalHit).toLocaleString('id-ID')} / ${totalCcN}`, sub2l:'TARGET', sub2v:'≥ 99.5%',
+      color: akuNum >= 99.5 ? '#16a34a' : akuNum >= 98 ? '#d97706' : '#dc2626', icon:'🎯' },
+  ];
+
+  if (kpiRow) {
+    kpiRow.style.cssText = 'display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px 20px;border-bottom:1px solid rgba(200,215,240,0.25);';
+    kpiRow.innerHTML = kpis.map((k,i) => `
+      <div style="background:linear-gradient(160deg,#fff 55%,${k.color}18 100%);border:1px solid #e2e8f0;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;flex-direction:column;position:relative;">
+        <div style="height:3px;background:${k.color};position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.7),transparent);animation:kpiBodyBeam ${3+i*0.4}s ease-in-out infinite;"></div>
+        </div>
+        <div style="padding:11px 12px 0;flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);transform:skewX(-15deg);animation:kpiBodyBeam ${3.5+i*0.4}s ease-in-out infinite;pointer-events:none;z-index:1;"></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+            <div style="font-size:9px;font-weight:700;color:#64748b;letter-spacing:0.1em;text-transform:uppercase;">${k.label}</div>
+            <div style="font-size:14px;line-height:1;">${k.icon}</div>
+          </div>
+          <div style="font-size:${k.val.length>8?'17px':'22px'};font-weight:900;color:${k.color};line-height:1;letter-spacing:-0.5px;margin-bottom:3px;">${k.val}</div>
+          <div style="font-size:8.5px;color:${k.color};font-weight:700;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">— ${k.label}</div>
+          <div style="height:3px;background:rgba(0,0,0,0.06);margin-top:auto;"><div style="height:100%;background:${k.color};width:100%;"></div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;padding:6px 12px;background:#f8fafc;border-top:1px solid #f1f5f9;">
+          <div><div style="color:#94a3b8;margin-bottom:1px;">${k.sub1l}</div><div style="font-weight:700;color:#475569;">${k.sub1v}</div></div>
+          <div style="text-align:right;"><div style="color:#94a3b8;margin-bottom:1px;">${k.sub2l}</div><div style="font-weight:700;color:#475569;">${k.sub2v}</div></div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── PROGRESS BAR ──
+  const pct = parseFloat(s.pctCcTotal) || 0;
+  const pb  = document.getElementById('invProgressBar');
+  const pl  = document.getElementById('invProgressLabel');
+  if (pb) setTimeout(() => pb.style.width = Math.min(pct,100)+'%', 200);
+  if (pl) pl.textContent = s.pctCcTotal;
+
+  // ── RENDER TABLES ──
+  renderInvLorongTable(rows, s);
+  renderInvAreaTable(rows, s);
+}
+
+// ── TABLE KIRI: DETAIL BY LORONG ──
+function renderInvLorongTable(rows, s) {
+  const tbody = document.getElementById('invLorongBody');
+  if (!tbody) return;
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text-3);">Tidak ada data</td></tr>';
+    return;
+  }
+
+  const AREA_COL  = { '1':'#2563eb', '2':'#d97706', '3':'#16a34a' };
+  const AREA_BG   = { '1':'rgba(37,99,235,0.04)', '2':'rgba(217,119,6,0.04)', '3':'rgba(22,163,74,0.04)' };
+  const AREA_SUM  = { '1':'rgba(37,99,235,0.18)', '2':'rgba(217,119,6,0.18)', '3':'rgba(22,163,74,0.18)' };
+
+  // Pre-hitung rowspan untuk SPV AREA (hanya data rows, bukan area summary)
+  const dataOnly = rows.filter(r => !r.isAreaRow);
+  const rowspanMap = new Map(); // index → rowspan count
+  for (let i = 0; i < dataOnly.length; i++) {
+    if (dataOnly[i].spvArea) {
+      let span = 1;
+      while (i + span < dataOnly.length && !dataOnly[i + span].spvArea && !dataOnly[i + span].isAreaRow) span++;
+      rowspanMap.set(i, span);
+    }
+  }
+
+  let curArea = '1';
+  let dataIdx = 0;
+  let html = '';
+
+  rows.forEach(r => {
+    const m = (r.spvArea || '').match(/(\d+)/);
+    if (m) curArea = m[1];
+    const col = AREA_COL[curArea] || '#64748b';
+
+    if (r.isAreaRow) {
+      // AREA summary row
+      const bg     = AREA_SUM[curArea] || 'rgba(100,116,139,0.18)';
+      const akuNum = parseFloat(r.akurasi) || 0;
+      const akuCol = akuNum >= 99.5 ? '#16a34a' : akuNum >= 98 ? '#d97706' : '#dc2626';
+      html += `<tr style="background:${bg};border-top:2px solid ${col}60;border-bottom:2px solid ${col}60;">
+        <td style="padding:9px 10px;font-weight:900;color:${col};font-size:12px;text-align:center;border-right:1px solid ${col}30;">${escHtml(r.spvArea)}</td>
+        <td colspan="2" style="padding:9px 10px;text-align:center;font-size:11px;color:${col};font-weight:700;letter-spacing:0.05em;">— SUBTOTAL —</td>
+        <td style="padding:9px 10px;text-align:right;font-weight:800;color:${col};">${r.jumlahLokasi.toLocaleString('id-ID')}</td>
+        <td style="padding:9px 10px;text-align:right;font-weight:800;color:${col};">${r.cc.toLocaleString('id-ID')}</td>
+        <td style="padding:9px 10px;text-align:right;font-weight:800;color:#16a34a;">${r.hit.toLocaleString('id-ID')}</td>
+        <td style="padding:9px 10px;text-align:right;font-weight:800;color:${r.miss>0?'#dc2626':'#94a3b8'};">${r.miss.toLocaleString('id-ID')}</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:800;color:${col};">${r.pctCc}</td>
+        <td style="padding:9px 10px;text-align:center;font-weight:900;color:${akuCol};">${r.akurasi}</td>
+      </tr>`;
+      return;
+    }
+
+    // Normal lorong row
+    const rowBg  = AREA_BG[curArea] || '';
+    const akuNum = parseFloat(r.akurasi) || 0;
+    const akuColor = akuNum >= 100 ? '#16a34a' : akuNum >= 99 ? '#2563eb' : akuNum >= 98 ? '#d97706' : '#dc2626';
+    const akuBg    = akuNum >= 100 ? 'rgba(22,163,74,0.12)' : akuNum >= 99 ? 'rgba(37,99,235,0.12)' : akuNum >= 98 ? 'rgba(217,119,6,0.12)' : 'rgba(220,38,38,0.12)';
+
+    // SPV AREA cell dengan rowspan + vertical center
+    let spvCell = '';
+    if (r.spvArea && rowspanMap.has(dataIdx)) {
+      const span = rowspanMap.get(dataIdx);
+      spvCell = `<td rowspan="${span}" style="text-align:center;vertical-align:middle;font-size:11px;font-weight:800;color:${col};background:${rowBg};border-right:2px solid ${col}40;padding:4px 8px;line-height:1.4;">${escHtml(r.spvArea).replace(/\n/g,'<br>')}</td>`;
+    }
+    // kalau spvArea kosong = sudah di-merge, skip cell ini
+
+    html += `<tr style="background:${rowBg};border-bottom:1px solid rgba(200,215,240,0.1);">
+      ${spvCell}
+      <td style="padding:7px 10px;font-size:11.5px;color:var(--text-2);">${escHtml(r.pic)}</td>
+      <td style="padding:7px 10px;text-align:center;font-weight:900;color:${col};font-size:13px;">${escHtml(String(r.lorong))}</td>
+      <td style="padding:7px 10px;text-align:right;font-weight:600;color:var(--text-2);">${r.jumlahLokasi.toLocaleString('id-ID')}</td>
+      <td style="padding:7px 10px;text-align:right;font-weight:700;color:#0891b2;">${r.cc.toLocaleString('id-ID')}</td>
+      <td style="padding:7px 10px;text-align:right;font-weight:700;color:#16a34a;">${r.hit.toLocaleString('id-ID')}</td>
+      <td style="padding:7px 10px;text-align:right;font-weight:${r.miss>0?800:600};color:${r.miss>0?'#dc2626':'#94a3b8'};">${r.miss.toLocaleString('id-ID')}</td>
+      <td style="padding:7px 10px;text-align:center;color:var(--text-2);">${r.pctCc}</td>
+      <td style="padding:5px 10px;text-align:center;"><span style="display:inline-block;padding:2px 9px;border-radius:20px;background:${akuBg};color:${akuColor};font-size:11px;font-weight:800;white-space:nowrap;">${r.akurasi}</span></td>
+    </tr>`;
+    dataIdx++;
+  });
+
+  // TOTAL row
+  const ak    = parseFloat(s.akurasiTotal) || 0;
+  const akCol = ak >= 99.5 ? '#4ade80' : '#f87171';
+  html += `<tr style="background:#1e293b;border-top:2px solid rgba(100,116,139,0.4);">
+    <td colspan="3" style="padding:9px 10px;color:#fff;font-weight:900;font-size:11.5px;letter-spacing:0.04em;">TOTAL</td>
+    <td style="padding:9px 10px;text-align:right;color:#fff;font-weight:800;">${Number(s.totalLokasi).toLocaleString('id-ID')}</td>
+    <td style="padding:9px 10px;text-align:right;color:#22d3ee;font-weight:800;">${Number(s.totalCc).toLocaleString('id-ID')}</td>
+    <td style="padding:9px 10px;text-align:right;color:#4ade80;font-weight:800;">${Number(s.totalHit).toLocaleString('id-ID')}</td>
+    <td style="padding:9px 10px;text-align:right;color:${Number(s.totalMiss)>0?'#f87171':'#94a3b8'};font-weight:800;">${Number(s.totalMiss).toLocaleString('id-ID')}</td>
+    <td style="padding:9px 10px;text-align:center;color:#a78bfa;font-weight:800;">${s.pctCcTotal}</td>
+    <td style="padding:9px 10px;text-align:center;color:${akCol};font-weight:900;font-size:12px;">${s.akurasiTotal}</td>
+  </tr>`;
+
+  tbody.innerHTML = html;
+}
+
+// ── TABLE KANAN: SEBARAN AKURASI BY LEVEL RAK ──
+function renderInvAreaTable(rows, s) {
+  const tbody = document.getElementById('invAreaBody');
+  if (!tbody) return;
+
+  const AREA_COL = { '1':'#2563eb', '2':'#d97706', '3':'#16a34a' };
+  const AREA_BG  = { '1':'rgba(37,99,235,0.04)', '2':'rgba(217,119,6,0.04)', '3':'rgba(22,163,74,0.04)' };
+
+  // Helper: warna akurasi level
+  const lvColor = (v) => {
+    if (!v || v === '0%' || v === '—') return '#94a3b8';
+    const n = parseFloat(v);
+    if (n >= 100) return '#16a34a';
+    if (n >= 99)  return '#2563eb';
+    if (n >= 98)  return '#d97706';
+    return '#dc2626';
+  };
+  const lvCell = (v) => {
+    if (!v || v === '0%' || v === '—') return `<td style="padding:6px 7px;text-align:center;color:#94a3b8;font-size:10px;">—</td>`;
+    const col = lvColor(v);
+    const n   = parseFloat(v);
+    const fw  = n < 100 ? 800 : 700;
+    return `<td style="padding:6px 7px;text-align:center;color:${col};font-weight:${fw};font-size:10.5px;">${v}</td>`;
+  };
+
+  const dataRows  = rows.filter(r => !r.isAreaRow);
+  const areaRows  = rows.filter(r =>  r.isAreaRow);
+
+  if (!dataRows.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text-3);">Tidak ada data</td></tr>';
+    return;
+  }
+
+  let curArea = '1';
+  let html = '';
+
+  dataRows.forEach(r => {
+    const m = (r.spvArea || r.area || '').match(/(\d+)/);
+    if (m) curArea = m[1];
+    const col    = AREA_COL[curArea] || '#64748b';
+    const rowBg  = AREA_BG[curArea]  || '';
+    const lv     = r.levelData || [];
+    const akuNum   = parseFloat(r.akurasi) || 0;
+    const akuColor = akuNum >= 100 ? '#16a34a' : akuNum >= 99 ? '#2563eb' : akuNum >= 98 ? '#d97706' : '#dc2626';
+    const akuBg    = akuNum >= 100 ? 'rgba(22,163,74,0.12)' : akuNum >= 99 ? 'rgba(37,99,235,0.12)' : akuNum >= 98 ? 'rgba(217,119,6,0.12)' : 'rgba(220,38,38,0.12)';
+
+    html += `<tr style="background:${rowBg};border-bottom:1px solid rgba(200,215,240,0.08);">
+      <td style="padding:6px 10px;text-align:center;font-weight:900;color:${col};font-size:13px;">${escHtml(String(r.lorong))}</td>
+      <td style="padding:6px 8px;text-align:center;"><span style="display:inline-block;padding:2px 7px;border-radius:20px;background:${akuBg};color:${akuColor};font-size:10.5px;font-weight:800;">${r.akurasi||'—'}</span></td>
+      ${lvCell(lv[0])}${lvCell(lv[1])}${lvCell(lv[2])}${lvCell(lv[3])}
+      ${lvCell(lv[4])}${lvCell(lv[5])}${lvCell(lv[6])}${lvCell(lv[7])}
+    </tr>`;
+  });
+
+  // Area summary rows
+  areaRows.forEach(a => {
+    const m   = (a.spvArea || '').match(/(\d+)/);
+    const key = m ? m[1] : '1';
+    const col = AREA_COL[key] || '#64748b';
+    const lv  = a.levelData || [];
+    const akuNum = parseFloat(a.akurasi) || 0;
+    const akuCol = akuNum >= 99.5 ? '#4ade80' : akuNum >= 98 ? '#fb923c' : '#f87171';
+    html += `<tr style="background:#2d3748;border-top:1px solid rgba(100,116,139,0.3);">
+      <td style="padding:7px 10px;text-align:center;font-weight:900;color:${col};font-size:11px;letter-spacing:0.03em;">${a.spvArea}</td>
+      <td style="padding:7px 8px;text-align:center;font-weight:900;color:${akuCol};font-size:11px;">${a.akurasi||'—'}</td>
+      ${lvCell(lv[0])}${lvCell(lv[1])}${lvCell(lv[2])}${lvCell(lv[3])}
+      ${lvCell(lv[4])}${lvCell(lv[5])}${lvCell(lv[6])}${lvCell(lv[7])}
+    </tr>`;
+  });
+
+  // TOTAL row
+  html += `<tr style="background:#1e293b;border-top:2px solid rgba(100,116,139,0.4);">
+    <td style="padding:9px 10px;text-align:center;color:#fff;font-weight:900;font-size:11px;">TOTAL</td>
+    <td style="padding:9px 8px;text-align:center;color:#4ade80;font-weight:900;font-size:11px;">${s.akurasiTotal}</td>
+    <td colspan="8" style="padding:9px 10px;text-align:center;color:#94a3b8;font-size:10px;">—</td>
+  </tr>`;
+
+  tbody.innerHTML = html;
+}
+
+
+// ── SVG stat chart helper ──
+// ── fetchSLAPlanner ──
+async function fetchSLAPlanner() {
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getSLAPlanner');
+    const data = await res.json();
+    if (!data.ok) return;
+
+    const grwPct  = parseFloat(String(data.slaGrw).replace('%',''))||0;
+    const custPct = parseFloat(String(data.slaCust).replace('%',''))||0;
+    const avgPct  = Math.round((grwPct + custPct) / 2);
+
+    _makeSVGStatChart('plannerStatChart', avgPct, '#991b1b');
+
+    const sg = document.getElementById('plannerSlaGrw');   if(sg) sg.textContent = data.slaGrw;
+    const sc = document.getElementById('plannerSlaCust');  if(sc) sc.textContent = data.slaCust;
+    const pv = document.getElementById('plannerStatVal');  if(pv) pv.textContent = avgPct + '%';
+    const pf = document.getElementById('plannerStatFoot'); if(pf) pf.textContent = avgPct + '%';
+    const pb = document.getElementById('plannerStatBar');
+    if(pb) setTimeout(()=>pb.style.width=Math.min(avgPct,100)+'%',300);
+  } catch(e) { console.warn('SLA Planner error:', e); }
+}
+
+function _makeSVGStatChart(elId, pct, color) {
+  const el = document.getElementById(elId); if(!el) return;
+  const r=30,cx=38,cy=38,circ=2*Math.PI*r;
+  const dash=Math.min(pct,100)/100*circ;
+  const bg='#e2e8f0';
+  el.innerHTML=`<svg width="76" height="76" viewBox="0 0 76 76">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${bg}" stroke-width="7"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="7"
+      stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}"
+      stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="900" fill="${color}">${pct}%</text>
+    <text x="${cx}" y="${cy+11}" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="600" fill="#94a3b8">Progress</text>
+  </svg>`;
+}
+
+async function fetchInventoryAccuracy() {
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getInventoryAccuracy');
+    const data = await res.json();
+    if (!data.ok) return;
+
+    const pct    = parseFloat(data.accuracy);
+    const valEl  = document.getElementById('invAccuracyVal');
+    const subEl  = document.getElementById('invAccuracySub');
+    const card   = document.getElementById('invControlCard');
+    const icon   = document.getElementById('invControlIcon');
+
+    if (!valEl) return;
+
+    // Update value
+    valEl.textContent = pct.toFixed(2) + '%';
+
+    let color, gradColors, label, labelClass, iconBg, borderColor;
+    if (pct >= 99.5) {
+      color = '#10b981'; gradColors = '#10b981,#6ee7b7';
+      label = '✅ Akurasi Sangat Baik'; labelClass = 'up';
+      iconBg = 'rgba(16,185,129,0.08)'; borderColor = 'rgba(16,185,129,0.15)';
+    } else if (pct >= 98) {
+      color = '#d97706'; gradColors = '#d97706,#fbbf24';
+      label = '⚠️ Perlu Perhatian'; labelClass = '';
+      iconBg = 'rgba(217,119,6,0.08)'; borderColor = 'rgba(217,119,6,0.15)';
+    } else {
+      color = '#dc2626'; gradColors = '#dc2626,#f87171';
+      label = '❌ Di Bawah Target'; labelClass = 'dn';
+      iconBg = 'rgba(220,38,38,0.08)'; borderColor = 'rgba(220,38,38,0.15)';
+    }
+
+    valEl.style.color = color;
+    if (subEl) subEl.innerHTML = `<span style="color:${color};font-weight:700">${label}</span>`;
+
+    const topBar = document.getElementById('invControlTopBar');
+    if (card)   card.style.borderColor = borderColor;
+    if (topBar) topBar.innerHTML = `<div style="height:100%;background:linear-gradient(90deg,${gradColors});width:${pct>99?99:pct}%;transition:width 1s;"></div>`;
+    if (icon)   icon.style.background = iconBg;
+
+    // Pie chart Progress CC - ambil dari window._invData jika sudah ada, fallback ke data.summary
+    const invS = (window._invData && window._invData.summary) ? window._invData.summary : (data.summary || {});
+    const rawCcPct = String(invS.pctCcTotal||'0').replace('%','').trim();
+    const ccPct = Math.round(parseFloat(rawCcPct)||0);
+    _makeSVGStatChart('invStatChart', ccPct, color);
+
+    // Mini boxes - dari invS (dengan default values)
+    const il=document.getElementById('invStatLokasi'); if(il) il.textContent=Number(invS.totalLokasi||0).toLocaleString('id-ID');
+    const ic=document.getElementById('invStatCC');     if(ic) ic.textContent=Number(invS.totalCc||0).toLocaleString('id-ID');
+    const ih=document.getElementById('invStatHit');    if(ih) ih.textContent=Number(invS.totalHit||0).toLocaleString('id-ID');
+    const im=document.getElementById('invStatMiss');   if(im) im.textContent=Number(invS.totalMiss||0).toLocaleString('id-ID');
+
+
+  } catch(e) {
+    console.warn('Inventory accuracy error:', e);
+  }
+}
+
+function updateInventoryStatusDonut(inTotal,inSelesai,outTotal,outSelesai){
+  // Ambil % dari KPI card progress yang sudah tampil - lebih akurat
+  const getCardPct = id => {
+    const el = document.querySelector('#'+id+' .kpi-footer-val, #'+id+' [class*="footer"] span:last-child');
+    if (el) { const v = parseInt(el.textContent); if (!isNaN(v)) return v; }
+    // Fallback: cari dari bar progress atau teks %
+    const card = document.getElementById(id);
+    if (card) {
+      const pctEl = card.querySelector('[id$="Pct"], .footer-pct');
+      if (pctEl) { const v = parseInt(pctEl.textContent); if (!isNaN(v)) return v; }
+    }
+    return 0;
+  };
+  const inPct   = inTotal>0  ? Math.round((inSelesai/inTotal)*100)   : 0;
+  const outPct  = outTotal>0 ? Math.round((outSelesai/outTotal)*100) : 0;
+  // Storing: ambil dari KPI card Storing Today (pctPickingOverall = progress card)
+  const s = window._storingData && window._storingData.summary;
+  // Storing: pakai formula sama dengan Storing card footer (sumPicked/sumRelease)
+  const storingS = window._storingData && window._storingData.summary;
+  const storePct = storingS && storingS.sumRelease > 0
+    ? Math.round(storingS.sumPicked / storingS.sumRelease * 100)
+    : (s ? Math.round(((s.pctPickingOverall||0) + (s.pctStagedOverall||0)) / 2) : 0);
+  const sisa   = Math.max(0, 100 - inPct - storePct - outPct);
+  const overall = Math.round((inPct + storePct + outPct) / 3);
+  const centerEl = document.getElementById('donutTotal');
+  if (centerEl) centerEl.textContent = overall + '%';
+  const iv = document.getElementById('donutInboundVal');  if(iv)  iv.textContent  = inPct    + '%';
+  const sv = document.getElementById('donutStoringVal');  if(sv)  sv.textContent  = storePct + '%';
+  // Update total & rata-rata label dengan nilai terbaru
+  const avgNow = Math.round((inPct+storePct+outPct)/3);
+  const ov2 = document.getElementById('donutTotal'); if(ov2) ov2.textContent = avgNow+'%';
+  const lblNow = document.getElementById('pieTotalLabel');
+  if(lblNow) lblNow.innerHTML = `<span style="font-size:22px;font-weight:900;color:#1e293b;">${avgNow}%</span> <span style="font-size:10px;color:#94a3b8;">Rata-rata Progres</span>`;
+  const ov = document.getElementById('donutOutboundVal'); if(ov)  ov.textContent  = outPct   + '%';
+  const bv = document.getElementById('donutBelumVal');    if(bv)  bv.textContent  = sisa     + '%';
+  const ctx = document.getElementById('donutChart'); if(!ctx) return;
+  const isDark = document.body.classList.contains('dark');
+  const belumColor = isDark ? '#1e293b' : '#e2e8f0';
+  const chart = Chart.getChart(ctx);
+  if (chart) {
+    chart.data.datasets[0].data = [inPct, storePct, outPct, sisa];
+    chart.data.datasets[0].backgroundColor = ['#16a34a','#8b5cf6','#d97706', belumColor];
+    chart.data.datasets[0].borderColor = '#fff';
+    chart.data.datasets[0].borderWidth = 2;
+    chart.update('none');
+  } else {
+    // Shadow 3D effect plugin
+    const shadow3d = {
+      id:'shadow3d',
+      beforeDraw(chart) {
+        const {ctx:c} = chart;
+        c.save();
+        c.shadowColor = 'rgba(0,0,0,0.25)';
+        c.shadowBlur = 12;
+        c.shadowOffsetX = 4;
+        c.shadowOffsetY = 8;
+      },
+      afterDraw(chart) {
+        chart.ctx.restore();
+      }
+    };
+
+    // Label plugin
+    const labelPlugin = {
+      id:'pieLabel',
+      afterDatasetsDraw(chart) {
+        const {ctx:c, data} = chart;
+        chart.data.datasets.forEach((dataset, di) => {
+          const meta = chart.getDatasetMeta(di);
+          meta.data.forEach((arc, i) => {
+            const val = dataset.data[i];
+            if (!val || val < 3) return;
+            const mid = (arc.startAngle + arc.endAngle) / 2;
+            const r   = (arc.innerRadius + arc.outerRadius) / 2;
+            const x   = arc.x + Math.cos(mid) * r * 0.75;
+            const y   = arc.y + Math.sin(mid) * r * 0.75;
+            c.save();
+            c.font = 'bold 11px Outfit,sans-serif';
+            c.fillStyle = '#fff';
+            c.textAlign = 'center';
+            c.textBaseline = 'middle';
+            c.shadowColor = 'rgba(0,0,0,0.5)';
+            c.shadowBlur = 3;
+            c.fillText(val + '%', x, y);
+            c.restore();
+          });
+        });
+      }
+    };
+
+    new Chart(ctx.getContext('2d'), {
+      type: 'pie',
+      plugins: [shadow3d, labelPlugin],
+      data: { labels:['Inbound','Storing','Outbound','Belum Selesai'],
+        datasets:[{data:[inPct,storePct,outPct,sisa],
+          backgroundColor:['#16a34a','#8b5cf6','#d97706',belumColor],
+          borderColor:'#fff', borderWidth:2, hoverOffset:10,
+          offset: [4,4,4,2]}] },
+      options: { responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false},
+          tooltip:{backgroundColor:'rgba(17,24,39,0.9)',titleColor:'#fff',bodyColor:'rgba(255,255,255,0.8)',
+            callbacks:{label:ctx2=>` ${ctx2.label}: ${ctx2.raw}%`}},
+          datalabels:{display:false}
+        }
+      }
+    });
+
+    // Tambah total % di bawah chart
+    // Ambil % dari KPI cards yang sudah tampil
+    const kpiInPct  = parseInt(document.querySelector('#inboundStatCard  .kpi-footer-pct, #inboundStatCard  [id$="Pct"]')?.textContent || inPct);
+    const kpiStPct  = parseInt(document.querySelector('#storingStatCard  .kpi-footer-pct, #storingStatCard  [id$="Pct"]')?.textContent || storePct);
+    const kpiOutPct = parseInt(document.querySelector('#outboundStatCard .kpi-footer-pct, #outboundStatCard [id$="Pct"]')?.textContent || outPct);
+    // Gunakan overall dari donutTotal yang sudah dihitung benar
+    // Rata-rata dari 3 KPI cards yang tampil
+    const avgPct = Math.round((inPct + storePct + outPct) / 3);
+    // Update donutTotal
+    const overallEl = document.getElementById('donutTotal');
+    if (overallEl) overallEl.textContent = avgPct + '%';
+    const wrap = ctx.closest('.donut-wrap');
+    if (wrap) {
+      let totalEl = wrap.querySelector('.pie-total-label');
+      if (!totalEl) {
+        totalEl = document.createElement('div');
+        totalEl.className = 'pie-total-label';
+        totalEl.style.cssText = 'text-align:center;padding:6px 0 4px;font-size:11px;font-weight:700;color:#475569;';
+        wrap.appendChild(totalEl);
+      }
+      // Update dengan ID biar bisa di-update nanti
+      totalEl.id = 'pieTotalLabel';
+      totalEl.innerHTML = `<span style="font-size:22px;font-weight:900;color:#1e293b;">${avgPct}%</span> <span style="font-size:10px;color:#94a3b8;">Rata-rata Progres</span>`;
+    }
+  }
+}
+
+function renderDashStoringChart() {
+  const s = window._storingData && window._storingData.summary;
+  if (!s) return;
+  const pickPct  = s.pctPickingOverall || 0;
+  const stagePct = s.pctStagedOverall  || 0;
+  const sisaPct  = Math.max(0, 100 - pickPct);
+  const avgPct   = Math.round((pickPct + stagePct) / 2);
+  const badge = document.getElementById('storingPctBadge');
+  const pctEl = document.getElementById('dashStoringPct');
+  if (badge) badge.textContent = avgPct + '% Progres';
+  if (pctEl) pctEl.textContent = avgPct + '%';
+  const pp = document.getElementById('piStorePickingVal'); if(pp) pp.textContent = pickPct  + '%';
+  const ps = document.getElementById('piStoreStagedVal');  if(ps) ps.textContent = stagePct + '%';
+  const pr = document.getElementById('piStoreSisaVal');    if(pr) pr.textContent = sisaPct  + '%';
+  const pk = document.getElementById('piStoreKapVal');     if(pk) pk.textContent = (s.avgKapasitas||0) + '%';
+  const canvas = document.getElementById('dashStoringChart'); if(!canvas) return;
+  const ex = Chart.getChart(canvas); if(ex) ex.destroy();
+  const isDark = document.body.classList.contains('dark');
+  new Chart(canvas.getContext('2d'), {
+    type: 'doughnut',
+    data: { datasets: [{ data: [pickPct, stagePct, sisaPct], backgroundColor: ['#16a34a','#f59e0b','#dc2626'], borderColor: isDark?'#161b22':'#ffffff', borderWidth: 3, hoverOffset: 6 }] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(17,24,39,0.9)',titleColor:'#fff',bodyColor:'rgba(255,255,255,0.8)',callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw}%`}}} }
+  });
+}
+
+async function fetchInventoryValue(){
+  try{
+    const res=await fetch(GAS_DASHBOARD_URL+'?action=getDashboardData');
+    const data=await res.json(); if(!data.ok) return;
+    const inv=data.mtd&&data.mtd.inventory?data.mtd.inventory:0;
+    const el=document.querySelector('#storingStatCard .stat-value');
+    const sb=document.querySelector('#storingStatCard .stat-sub');
+    if(el&&inv){const fmt=inv>=1000000?'Rp '+(inv/1000000).toFixed(1).replace('.0','')+' Jt':inv>=1000?'Rp '+(inv/1000).toFixed(0)+' Rb':inv;el.textContent=fmt;el.style.fontSize='16px';}
+    if(sb&&data.mtd) sb.textContent='Data bulan '+(data.mtd.monthName||'');
+  }catch(e){console.warn('Inventory value error:',e);}
+}
+
+fetchDashboardStats();
+setInterval(fetchDashboardStats,5*60*1000);
+
+// Load Outbound KPI cards on page load
+loadOutboundTodayKPI();
+
+// Load CBM Summary data
+loadCBMSummary();
+loadDeliveryPerformance();
+
+// Retry inventory accuracy after delay jika API lambat
+// Load CBM data with delay to ensure elements exist
+setTimeout(() => {
+  console.log('🔄 Calling loadCBMSummary from setTimeout...');
+  loadCBMSummary();
+  loadDeliveryPerformance();
+}, 500);
+
+// Retry inventory accuracy after delay jika API lambat
+setTimeout(() => {
+  const il=document.getElementById('invStatLokasi');
+  if (il && il.textContent === '0') {
+    fetchInventoryAccuracy(); // Retry if still 0
+  }
+}, 2000);
+
+// ══════════════════════════════════════
+//  CHARTS — DAILY ACTIVITY
+// ══════════════════════════════════════
+Chart.defaults.color='#6b7280';
+Chart.defaults.font.family='Outfit';
+
+const dataLabelPlugin={
+  id:'customDataLabels',
+  afterDatasetsDraw(chart){
+    const{ctx}=chart;
+    chart.data.datasets.forEach((dataset,i)=>{
+      const meta=chart.getDatasetMeta(i);
+      meta.data.forEach((point,j)=>{
+        const val=dataset.data[j]; if(!val||val===0) return;
+        ctx.save();
+        ctx.font='bold 11px Outfit, sans-serif';
+        ctx.fillStyle=dataset.borderColor;
+        ctx.textAlign='center';
+        ctx.textBaseline=i===0?'bottom':'top';
+        ctx.fillText(val,point.x,point.y+(i===0?-6:6));
+        ctx.restore();
+      });
+    });
+  }
+};
+
+let lineChartInstance=null;
+
+async function fetchDailyActivity(){
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getTroughput');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Gagal');
+
+    const cardTitle = document.getElementById('dailyActivityTitle');
+    if (cardTitle) cardTitle.innerHTML = `<span class="live-dot"></span>Troughput`;
+
+    const wrap = document.getElementById('dailyActivityChartWrap');
+    if (!wrap) return;
+
+    // Warna PERSIS seperti referensi foto Analyst
+    const C = {
+      inbound  : { bar: '#991b1b', label: '#7f1d1d' },
+      outbound : { bar: '#f97316', label: '#ea580c' },
+      inventory: { bar: '#334155', label: '#1e293b' },
+      occupancy: '#7c3aed',
+      capacity : 'rgba(14,165,233,.6)',
+      forecast : 'rgba(37,99,235,.75)',
+    };
+
+    const d        = data.data;
+    const labels   = data.labels;
+    const boundary = data.actualBoundaryIdx;
+    const bl = v => (!v || v === 0) ? '' : v >= 10000 ? (v/1000).toFixed(1)+'K' : Math.round(v).toLocaleString('id-ID');
+
+    wrap.innerHTML = '';
+    wrap.style.height = '320px';
+    wrap.style.position = 'relative';
+    wrap.style.padding = '8px 12px 0';
+
+    // ── Forecast float box COMPACT ──
+    if (data.accuracy) {
+      const a  = data.accuracy;
+      const fN = v => Math.round(v||0).toLocaleString('id-ID');
+      const akb = p => {
+        let v = parseFloat(p||0);
+        if (v > 0 && v <= 1) v = v * 100;
+        const bg = v>=95?'rgba(22,163,74,.18)':v>=80?'rgba(217,119,6,.18)':'rgba(220,38,38,.18)';
+        const bc = v>=95?'rgba(22,163,74,.4)':v>=80?'rgba(217,119,6,.4)':'rgba(220,38,38,.4)';
+        const fc = v>=95?'#16a34a':v>=80?'#d97706':'#dc2626';
+        return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:900;background:${bg};border:1px solid ${bc};color:${fc};">${v.toFixed(2)}%</span>`;
+      };
+      const floatBox = document.createElement('div');
+      floatBox.style.cssText = 'display:inline-block;';
+      floatBox.innerHTML = `
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+
+          <table style="border-collapse:collapse;font-size:10px;width:100%;">
+            <thead>
+              <tr>
+                <th style="padding:3px 8px;background:#1e293b;color:#fff;font-size:7.5px;font-weight:700;text-align:center;min-width:55px;"></th>
+                <th colspan="2" style="padding:3px 8px;background:#dc2626;color:#fff;font-size:7.5px;font-weight:800;text-align:center;border-left:1px solid rgba(255,255,255,.2);">Inbound</th>
+                <th colspan="2" style="padding:3px 8px;background:#dc2626;color:#fff;font-size:7.5px;font-weight:800;text-align:center;border-left:1px solid rgba(255,255,255,.2);">Demand In</th>
+                <th colspan="2" style="padding:3px 8px;background:#dc2626;color:#fff;font-size:7.5px;font-weight:800;text-align:center;border-left:1px solid rgba(255,255,255,.2);">Outbound</th>
+              </tr>
+              <tr style="background:#f8fafc;">
+                <th style="padding:2px 6px;font-size:7px;font-weight:700;color:#64748b;text-align:left;border:1px solid #e2e8f0;"></th>
+                <th style="padding:2px 6px;font-size:7px;color:#94a3b8;text-align:center;border:1px solid #e2e8f0;">Forecast</th>
+                <th style="padding:2px 6px;font-size:7px;color:#0f172a;font-weight:800;text-align:center;border:1px solid #e2e8f0;">Actual</th>
+                <th style="padding:2px 6px;font-size:7px;color:#94a3b8;text-align:center;border:1px solid #e2e8f0;">Forecast</th>
+                <th style="padding:2px 6px;font-size:7px;color:#0f172a;font-weight:800;text-align:center;border:1px solid #e2e8f0;">Actual</th>
+                <th style="padding:2px 6px;font-size:7px;color:#94a3b8;text-align:center;border:1px solid #e2e8f0;">Forecast</th>
+                <th style="padding:2px 6px;font-size:7px;color:#0f172a;font-weight:800;text-align:center;border:1px solid #e2e8f0;">Actual</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:3px 6px;font-size:8px;font-weight:800;color:#475569;border:1px solid #e2e8f0;background:#fff;">CBM</td>
+                <td style="padding:3px 6px;text-align:center;color:#334155;font-size:9px;font-weight:600;border:1px solid #e2e8f0;">${fN(a.inboundForecast)}</td>
+                <td style="padding:3px 6px;text-align:center;font-size:11px;font-weight:900;color:#0f172a;border:1px solid #e2e8f0;">${fN(a.inboundActual)}</td>
+                <td style="padding:3px 6px;text-align:center;color:#334155;font-size:9px;font-weight:600;border:1px solid #e2e8f0;">${fN(a.demandForecast)}</td>
+                <td style="padding:3px 6px;text-align:center;font-size:11px;font-weight:900;color:#0f172a;border:1px solid #e2e8f0;">${fN(a.demandActual)}</td>
+                <td style="padding:3px 6px;text-align:center;color:#334155;font-size:9px;font-weight:600;border:1px solid #e2e8f0;">${fN(a.outboundForecast)}</td>
+                <td style="padding:3px 6px;text-align:center;font-size:11px;font-weight:900;color:#0f172a;border:1px solid #e2e8f0;">${fN(a.outboundActual)}</td>
+              </tr>
+              <tr style="background:#f8fafc;">
+                <td style="padding:3px 6px;font-size:8px;font-weight:800;color:#475569;border:1px solid #e2e8f0;">% Akurasi</td>
+                <td colspan="2" style="padding:3px 5px;text-align:center;border:1px solid #e2e8f0;">${akb(a.inboundPct)}</td>
+                <td colspan="2" style="padding:3px 5px;text-align:center;border:1px solid #e2e8f0;">${akb(a.demandPct)}</td>
+                <td colspan="2" style="padding:3px 5px;text-align:center;border:1px solid #e2e8f0;">${akb(a.outboundPct)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>`;
+      floatBox.style.cssText = 'position:absolute;top:6px;left:160px;z-index:10;';
+      wrap.appendChild(floatBox);
+    }
+
+    // Canvas
+    const canvas = document.createElement('canvas');
+    canvas.id = 'troughputChart';
+    canvas.style.cssText = 'width:100%;height:100%;';
+    wrap.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const existing = Chart.getChart(ctx.canvas); if (existing) existing.destroy();
+
+    const troughputPlugin = {
+      id: 'troughputPlugin',
+      afterDatasetsDraw(chart) {
+        const { ctx: c, chartArea } = chart;
+        if (boundary >= 0 && boundary < labels.length - 1) {
+          const meta0 = chart.getDatasetMeta(0);
+          if (meta0.data[boundary] && meta0.data[boundary+1]) {
+            let maxX = meta0.data[boundary].x;
+            for (let di = 0; di < 3; di++) {
+              const m = chart.getDatasetMeta(di);
+              if (m.data[boundary]) maxX = Math.max(maxX, m.data[boundary].x);
+            }
+            const xPos = (maxX + meta0.data[boundary+1].x) / 2;
+            c.save();
+            c.beginPath();
+            c.setLineDash([6,4]);
+            c.strokeStyle = '#dc2626';
+            c.lineWidth = 2;
+            c.moveTo(xPos, chartArea.top + 8);
+            c.lineTo(xPos, chartArea.bottom);
+            c.stroke();
+            c.setLineDash([]);
+            c.font = 'bold 8px sans-serif';
+            c.fillStyle = '#dc2626';
+            c.textAlign = 'right';
+            c.fillText('◀ ACTUAL', xPos - 4, chartArea.top + 20);
+            c.fillStyle = '#64748b';
+            c.textAlign = 'left';
+            c.fillText('FORECAST ▶', xPos + 4, chartArea.top + 20);
+            c.restore();
+          }
+        }
+      },
+      afterDraw(chart) {
+        const { ctx: c } = chart;
+        chart.data.datasets.forEach((dataset, di) => {
+          if (dataset.label !== 'Occupancy (%)') return;
+          const meta = chart.getDatasetMeta(di);
+          meta.data.forEach((point, i) => {
+            const val = dataset.data[i];
+            if (!val) return;
+            c.save();
+            c.font = 'bold 11px sans-serif';
+            c.fillStyle = C.occupancy;
+            c.textAlign = 'center';
+            c.textBaseline = 'bottom';
+            c.fillText(val + '%', point.x, point.y - 4);
+            c.restore();
+          });
+        });
+      }
+    };
+
+    new Chart(ctx, {
+      data: {
+        labels,
+        datasets: [
+          { type:'bar', label:'Inbound (CBM)',   data:d.map(r=>r.inbound),   backgroundColor:C.inbound.bar,   borderRadius:4, borderSkipped:false, yAxisID:'yL', order:3, datalabels:{anchor:'end',align:'top',offset:0,color:C.inbound.label,  font:{weight:'700',size:9},formatter:bl} },
+          { type:'bar', label:'Outbound (CBM)',  data:d.map(r=>r.outbound),  backgroundColor:C.outbound.bar,  borderRadius:4, borderSkipped:false, yAxisID:'yL', order:3, datalabels:{anchor:'end',align:'top',offset:0,color:C.outbound.label, font:{weight:'700',size:9},formatter:bl} },
+          { type:'bar', label:'Inventory (CBM)', data:d.map(r=>r.inventory), backgroundColor:C.inventory.bar, borderRadius:4, borderSkipped:false, yAxisID:'yL', order:3, datalabels:{anchor:'end',align:'top',offset:0,color:C.inventory.label,font:{weight:'700',size:9},formatter:bl} },
+          { type:'line', label:'Occupancy (%)',   data:d.map(r=>r.occupancy), borderColor:C.occupancy, backgroundColor:'rgba(124,58,237,.06)', borderWidth:2.5, tension:0.3, fill:false, pointRadius:5, pointBackgroundColor:C.occupancy, pointBorderColor:'#111', pointBorderWidth:2, yAxisID:'yR', order:1, datalabels:{display:false} },
+          { type:'line', label:'Capacity',        data:d.map(r=>r.capacity),  borderColor:C.capacity, backgroundColor:'transparent', borderWidth:1.8, borderDash:[8,5], pointRadius:0, tension:0, yAxisID:'yL', order:2, datalabels:{display:false} },
+          { type:'line', label:'Forecast Outbound', data:d.map(r=>r.forecastOB), borderColor:C.forecast, backgroundColor:'transparent', borderWidth:1.8, borderDash:[6,4], pointRadius:4, pointBackgroundColor:C.forecast, pointBorderColor:'#111', pointBorderWidth:1.5, tension:0.2, yAxisID:'yL', order:2, datalabels:{display:false} }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        interaction:{ mode:'index', intersect:false },
+        animation:{ duration:800, easing:'easeOutQuart' },
+        layout:{ padding:{ top:12, right:8 } },
+        scales: {
+          x:  { grid:{color:'rgba(0,0,0,0.04)'}, ticks:{maxRotation:0,font:{size:9,weight:'600'},color:'#475569'}, border:{display:false} },
+          yL: { type:'linear', position:'left',  beginAtZero:true, grid:{color:'rgba(0,0,0,0.04)'}, ticks:{callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v,font:{size:9},color:'#475569'}, border:{display:false} },
+          // Batas atas mengikuti data: occupancy bisa lewat 100% (gudang over-capacity),
+          // dan kalau dipatok 100 garisnya terpotong di tepi atas.
+          yR: { type:'linear', position:'right', min:0, max:toolsMaxOcc(d), grid:{display:false}, ticks:{callback:v=>v+'%',stepSize:25,color:C.occupancy,font:{size:10,weight:'700'}}, border:{display:false} }
+        },
+        plugins: {
+          legend:{ display:false },
+          tooltip:{
+            backgroundColor:'rgba(10,10,10,.95)', borderColor:'rgba(212,160,23,.2)', borderWidth:1,
+            titleColor:'#e8c35a', titleFont:{weight:'700',size:12}, bodyColor:'#888', bodyFont:{size:11},
+            padding:{top:10,bottom:10,left:14,right:14}, cornerRadius:8,
+            callbacks:{ label: c2 => { const v=c2.parsed.y; if(!v&&v!==0)return''; if(c2.dataset.yAxisID==='yR')return' ● '+c2.dataset.label+': '+v.toFixed(0)+'%'; return' ● '+c2.dataset.label+': '+Math.round(v).toLocaleString('id-ID')+' CBM'; } }
+          },
+          datalabels:{ display: c2 => c2.dataset.type==='bar' }
+        }
+      },
+      plugins:[troughputPlugin]
+    });
+
+    // Legend manual
+    const legendDiv = document.createElement('div');
+    legendDiv.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;justify-content:center;padding:4px 0 0;font-size:10px;font-weight:600;color:#475569;';
+    legendDiv.innerHTML = `
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:${C.inbound.bar};border-radius:2px;display:inline-block;"></span>Inbound (CBM)</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:${C.outbound.bar};border-radius:2px;display:inline-block;"></span>Outbound (CBM)</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:${C.inventory.bar};border-radius:2px;display:inline-block;"></span>Inventory (CBM)</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;background:${C.occupancy};border-radius:50%;display:inline-block;"></span>Occupancy (%)</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:18px;height:2px;background:${C.capacity};display:inline-block;border-top:2px dashed ${C.capacity};"></span>Capacity</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:18px;height:2px;background:${C.forecast};display:inline-block;border-top:2px dashed ${C.forecast};"></span>Forecast Out</span>`;
+    wrap.appendChild(legendDiv);
+
+  } catch(e) {
+    console.error('Troughput error:', e);
+    const w = document.getElementById('dailyActivityChartWrap');
+    if (w) w.innerHTML = `<div style="padding:20px;color:#dc2626;font-size:12px;">Error: ${e.message}</div>`;
+  }
+}
+function addBeam(el, color) {
+  if (!el) return;
+  el.style.position = 'relative';
+  el.style.overflow = 'hidden';
+  const b = document.createElement('div');
+  b.style.cssText = `position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(90deg,transparent,${color},transparent);transform:skewX(-15deg);pointer-events:none;z-index:10;`;
+  el.appendChild(b);
+  el.addEventListener('mouseenter',()=>{b.style.transition='none';b.style.left='-100%';void b.offsetWidth;b.style.transition='left 1.2s ease';b.style.left='160%';});
+  el.addEventListener('mouseleave',()=>{b.style.transition='none';b.style.left='-100%';});
+}
+const pr = document.querySelectorAll('.progress-row > div');
+if(pr[0]) addBeam(pr[0],'rgba(59,130,246,0.3)');
+if(pr[1]) addBeam(pr[1],'rgba(236,72,153,0.3)');
+if(pr[2]) addBeam(pr[2],'rgba(245,158,11,0.3)');
+
+// ── NAVIGATION ──
+document.querySelectorAll('.nav-item').forEach(btn=>{btn.addEventListener('click',()=>{const p=btn.dataset.page;if(p)go(p);});});
+function go(p){
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  const nb=document.querySelector(`[data-page="${p}"]`); if(nb) nb.classList.add('active');
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.iframe-page').forEach(el=>{el.classList.remove('active');el.style.display='none';});
+  if(IFRAME_PAGES.includes(p)){const pg=document.getElementById(`page-${p}`);if(pg){pg.style.display='flex';pg.classList.add('active');}loadIframe(p);}
+  else{const pg=document.getElementById(`page-${p}`);if(pg)pg.classList.add('active');}
+  if(p==='tools'&&typeof initToolsPage==='function')initToolsPage();
+}
+function goHome(){go('dashboard');IFRAME_PAGES.forEach(k=>{const f=document.getElementById(`ifr${cap(k)}`);if(f)f.src='about:blank';});}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function loadIframe(key){
+  const url=URLS[key]; if(!url) return;
+  const f=document.getElementById(`ifr${cap(key)}`), ld=document.getElementById(`ld${cap(key)}`), er=document.getElementById(`err${cap(key)}`);
+  const tab=document.getElementById(`tab${cap(key)}`), errTab=document.getElementById(`errTab${cap(key)}`);
+  if(!f) return; if(tab) tab.href=url; if(errTab) errTab.href=url;
+  ld.classList.remove('hidden'); er.classList.remove('show'); f.style.opacity='0';
+  let realLoaded=false;
+  const t=setTimeout(()=>{ld.classList.add('hidden');er.classList.add('show');},20000);
+  f.onload=()=>{if(!realLoaded)return;clearTimeout(t);ld.classList.add('hidden');f.style.opacity='1';};
+  f.onerror=()=>{if(!realLoaded)return;clearTimeout(t);ld.classList.add('hidden');er.classList.add('show');};
+  f.src='about:blank'; setTimeout(()=>{realLoaded=true;f.src=url;},150);
+}
+function reloadIframe(frameId,key){const f=document.getElementById(frameId),url=URLS[key];if(!f||!url)return;const ld=document.getElementById(`ld${cap(key)}`),er=document.getElementById(`err${cap(key)}`);f.src='about:blank';ld.classList.remove('hidden');er.classList.remove('show');f.style.opacity='0';setTimeout(()=>{f.src=url;},100);}
+
+// ── AI SUPPORT ──
+function setupAI(inId,btnId,msgsId,typingId){
+  const inp=document.getElementById(inId),btn=document.getElementById(btnId),msgs=document.getElementById(msgsId),typing=document.getElementById(typingId);
+  if(!inp||!btn||!msgs) return;
+  function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function renderAiMarkdown(text){
+    const lines = String(text).split('\n');
+    let html = '';
+    let inList = false;
+    lines.forEach(line=>{
+      const trimmed = line.trim();
+      const isBullet = /^[-*]\s+/.test(trimmed);
+      if(isBullet){
+        if(!inList){ html += '<ul style="margin:6px 0;padding-left:20px;">'; inList = true; }
+        let item = escapeHtml(trimmed.replace(/^[-*]\s+/, ''));
+        item = item.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html += '<li style="margin:2px 0;">' + item + '</li>';
+      } else {
+        if(inList){ html += '</ul>'; inList = false; }
+        if(trimmed === ''){ html += '<br>'; }
+        else {
+          let para = escapeHtml(line);
+          para = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+          html += '<div>' + para + '</div>';
+        }
+      }
+    });
+    if(inList) html += '</ul>';
+    return html;
+  }
+  function typeOutBubble(div,text){
+    const words=text.split(' ');
+    let i=0;
+    const step=()=>{
+      i+=2; // reveal 2 kata per langkah, biar ga kelamaan buat jawaban panjang
+      const partial=words.slice(0,i).join(' ');
+      div.innerHTML=renderAiMarkdown(partial);
+      msgs.scrollTop=msgs.scrollHeight;
+      if(i<words.length){ setTimeout(step,35); }
+    };
+    step();
+  }
+  function addBubble(text,type,animate){
+    const div=document.createElement('div');div.className=`ai-bubble ${type}`;div.style.whiteSpace='pre-wrap';
+    if(typing&&msgs.contains(typing))msgs.insertBefore(div,typing);else msgs.appendChild(div);
+    if(type==='bot'){
+      if(animate===false){ div.innerHTML=renderAiMarkdown(text); msgs.scrollTop=msgs.scrollHeight; }
+      else { typeOutBubble(div,text); }
+    } else {
+      div.textContent=text; msgs.scrollTop=msgs.scrollHeight;
+    }
+  }
+  let lastAiTool = ''; // topik AI Support terakhir, dipakai biar pertanyaan lanjutan tetap nyambung
+  // ── Muat riwayat chat milik user ini sendiri (biar ga hilang pas refresh) ──
+  // FIX: kalau NIP belum ke-detect pas fungsi ini pertama jalan (kejadian
+  // di login yang baru/fresh, race condition sama proses login), COBA
+  // ULANG beberapa kali dengan jeda, jangan langsung nyerah sekali coba.
+  (async function loadMyHistory(){
+    let nip = '';
+    for(let attempt=0; attempt<8; attempt++){
+      nip = localStorage.getItem('wms_nip')||'';
+      if(nip) break;
+      await new Promise(r=>setTimeout(r,300)); // tunggu 300ms, coba lagi
+    }
+    if(!nip) return; // udah dicoba 8x (~2.4 detik), beneran ga ada NIP
+    try{
+      const res = await fetch(GAS_AI_URL+'?action=myAiHistory&nip='+encodeURIComponent(nip));
+      const data = await res.json();
+      if(data.success && data.logs && data.logs.length){
+        data.logs.forEach(l=>{ addBubble(l.pertanyaan,'user'); addBubble(l.jawaban,'bot',false); });
+      }
+    }catch(e){ /* diam saja kalau gagal, chat tetap bisa dipakai dari kosong */ }
+  })();
+  async function send(){const txt=inp.value.trim();if(!txt)return;addBubble(txt,'user');inp.value='';inp.style.height='auto';inp.disabled=true;btn.disabled=true;if(typing){typing.classList.add('show');msgs.scrollTop=msgs.scrollHeight;}try{const res=await fetch(GAS_AI_URL+'?action=aiAsk&q='+encodeURIComponent(txt)+'&nip='+encodeURIComponent(localStorage.getItem('wms_nip')||'')+'&name='+encodeURIComponent(localStorage.getItem('wms_name')||'')+'&lastTool='+encodeURIComponent(lastAiTool));const data=await res.json();if(typing)typing.classList.remove('show');addBubble(data.answer||'Maaf, tidak ada jawaban.','bot');if(data.toolUsed)lastAiTool=data.toolUsed;}catch(e){if(typing)typing.classList.remove('show');addBubble('Maaf, terjadi kesalahan koneksi.','bot');}inp.disabled=false;btn.disabled=false;inp.focus();}
+  btn.addEventListener('click',send);inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+  // Auto-grow tinggi textarea sesuai isi (maks ~5 baris), biar nyaman nulis pesan panjang
+  inp.addEventListener('input',()=>{inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,120)+'px';});
+}
+setupAI('aiIn','aiBtn','aiMsg','aiTyping');
+setupAI('aiIn2','aiBtn2','aiMsg2','aiTyping2');
+
+// ── NOTIFIKASI ──
+function getLastSeenTs(){return parseInt(localStorage.getItem('lastSeenTs_'+(me.name||'guest'))||'0');}
+function setLastSeenTs(ts){localStorage.setItem('lastSeenTs_'+(me.name||'guest'),ts);}
+function toggleNotif(){notifOpen=!notifOpen;document.getElementById('notifPanel').style.display=notifOpen?'block':'none';if(notifOpen){setLastSeenTs(Date.now());document.getElementById('notifBadge').style.display='none';document.getElementById('notifBadge').textContent='0';}}
+function clearNotifs(){notifList=[];setLastSeenTs(Date.now());document.getElementById('notifBadge').style.display='none';document.getElementById('notifList').innerHTML='<div style="text-align:center;padding:24px;color:#94a3b8;font-size:13px">Belum ada notifikasi</div>';}
+function addNotif(msg){if(!msg||!msg.name)return;if(me.name&&msg.name===me.name)return;if(!msg.timestamp||msg.timestamp<=getLastSeenTs())return;notifList.unshift(msg);if(notifList.length>20)notifList.pop();if(!notifOpen){const badge=document.getElementById('notifBadge'),count=parseInt(badge.textContent||'0')+1;badge.textContent=count>9?'9+':count;badge.style.display='flex';const btn=document.getElementById('notifBtn');btn.style.animation='none';setTimeout(()=>btn.style.animation='shakeBell 0.5s ease',10);}renderNotifList();}
+function renderNotifList(){if(!notifList.length){document.getElementById('notifList').innerHTML='<div style="text-align:center;padding:24px;color:#94a3b8;font-size:13px">Belum ada notifikasi</div>';return;}document.getElementById('notifList').innerHTML=notifList.map(m=>`<div style="padding:12px 18px;border-bottom:1px solid rgba(200,215,240,0.3);display:flex;align-items:flex-start;gap:10px;cursor:pointer" onclick="go('discussion')"><div style="width:36px;height:36px;border-radius:50%;background:${m.color||'#2563eb'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0">${(m.name||'?').slice(0,2).toUpperCase()}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;color:#0f172a">${m.name||'User'} <span style="font-weight:400;color:#94a3b8">di Discussion</span></div><div style="font-size:12px;color:#334155;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.text||''}</div><div style="font-size:10px;color:#94a3b8;margin-top:3px">${m.timestamp?new Date(m.timestamp).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}):''}</div></div><span style="font-size:10px;background:#eff6ff;color:#2563eb;padding:2px 8px;border-radius:10px;font-weight:700;flex-shrink:0">💬</span></div>`).join('');}
+document.addEventListener('click',e=>{if(notifOpen&&!document.getElementById('notifPanel').contains(e.target)&&!document.getElementById('notifBtn').contains(e.target)){notifOpen=false;document.getElementById('notifPanel').style.display='none';}});
+
+// ── DARK MODE ──
+let isDark=localStorage.getItem('wms_dark')==='1';
+function applyDark(){document.body.classList.toggle('dark',isDark);updateDarkToggle();}
+function toggleDark(){isDark=!isDark;localStorage.setItem('wms_dark',isDark?'1':'0');applyDark();}
+applyDark();
+
+// ── SETTINGS ──
+let profileColorIdx=parseInt(localStorage.getItem('wms_color')||'0');
+function updateSettingsUser(){if(!me.name)return;const ava=document.getElementById('settingsAva');if(ava){ava.textContent=me.initials;ava.style.background=me.color.bg;}const nm=document.getElementById('settingsName');if(nm)nm.textContent=me.name;const rl=document.getElementById('settingsRole');if(rl)rl.textContent=me.jabatan||'Member AHI Sidoarjo';}
+function toggleSettings(){settingsOpen=!settingsOpen;document.getElementById('settingsPanel').classList.toggle('open',settingsOpen);updateDarkToggle();}
+function updateDarkToggle(){const toggle=document.getElementById('darkToggle');if(toggle)toggle.classList.toggle('on',isDark);}
+function openProfile(){settingsOpen=false;document.getElementById('settingsPanel').classList.remove('open');document.getElementById('profileOverlay').classList.remove('hidden');document.getElementById('profileAvaBig').textContent=me.initials||'?';document.getElementById('profileAvaBig').style.background=me.color?me.color.bg:'#2563eb';document.getElementById('profileNameShow').textContent=me.name||'—';document.getElementById('profileJabatan').textContent=me.jabatan||'Staff';document.getElementById('profileNipShow').value=me.nip||'—';profileColorIdx=parseInt(localStorage.getItem('wms_color')||'0');document.querySelectorAll('#profileColorOpts .color-opt').forEach((el,i)=>{el.classList.toggle('selected',i===profileColorIdx);el.onclick=function(){document.querySelectorAll('#profileColorOpts .color-opt').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');profileColorIdx=parseInt(el.dataset.pidx||i);document.getElementById('profileAvaBig').style.background=el.style.background;};});}
+document.getElementById('profileSaveBtn').addEventListener('click',function(){me.color=AVATAR_COLORS[profileColorIdx];localStorage.setItem('wms_color',profileColorIdx);document.getElementById('headerAvatar').textContent=me.initials;document.getElementById('headerAvatar').style.background=me.color.bg;applyTheme(me.color.hex);updateSettingsUser();document.getElementById('profileOverlay').classList.add('hidden');});
+document.getElementById('profileCloseBtn').addEventListener('click',function(){document.getElementById('profileOverlay').classList.add('hidden');});
+document.getElementById('profileOverlay').addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});
+document.addEventListener('click',function(e){const panel=document.getElementById('settingsPanel'),btn=document.getElementById('settingsBtn');if(settingsOpen&&panel&&btn&&!panel.contains(e.target)&&!btn.contains(e.target)){settingsOpen=false;panel.classList.remove('open');}});
+
+// ── SEARCH BAR ──
+const SEARCH_ITEMS=[{label:'Profil DC',page:'profildc',icon:'🏭',desc:'Informasi Distribution Center AHI Sidoarjo'},{label:'Dashboard',page:'dashboard',icon:'🏠',desc:'Halaman utama'},{label:'Planner',page:'planner',icon:'📋',desc:'Rencana Operasional'},{label:'Inbound',page:'inbound',icon:'📦',desc:'Dashboard Inbound'},{label:'Storing',page:'storing',icon:'🏗️',desc:'Dashboard Storing'},{label:'Outbound',page:'outbound',icon:'🚚',desc:'Dashboard Outbound'},{label:'Inventory',page:'inventory',icon:'📊',desc:'Manajemen Stok'},{label:'GA',page:'ga',icon:'🏢',desc:'General Affairs'},{label:'HR',page:'hr',icon:'👥',desc:'Human Resources'},{label:'Tools',page:'tools',icon:'🛠️',desc:'PPT Laporan Otomatis'},{label:'Discussion',page:'discussion',icon:'💬',desc:'Discussion Room'},{label:'AI Support',page:'ai',icon:'🤖',desc:'Asisten AI Warehouse'}];
+const searchInput=document.getElementById('searchInput'), searchDropdown=document.getElementById('searchDropdown');
+function renderSearch(query){if(!query.trim()){searchDropdown.style.display='none';return;}const q=query.toLowerCase(),results=SEARCH_ITEMS.filter(item=>item.label.toLowerCase().includes(q)||item.desc.toLowerCase().includes(q));if(!results.length){searchDropdown.innerHTML='<div style="padding:12px 14px;font-size:12.5px;color:var(--text-3);text-align:center;">Tidak ditemukan</div>';searchDropdown.style.display='block';return;}searchDropdown.innerHTML=results.map(item=>`<div class="search-item" data-page="${item.page}" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;cursor:pointer;transition:all 0.15s;"><div style="width:34px;height:34px;border-radius:9px;background:var(--accent-light);display:grid;place-items:center;font-size:16px;flex-shrink:0;border:1px solid var(--accent-mid);">${item.icon}</div><div><div style="font-size:13px;font-weight:700;color:var(--text);">${item.label}</div><div style="font-size:11px;color:var(--text-3);">${item.desc}</div></div><span style="margin-left:auto;font-size:10px;color:var(--text-3);">↵</span></div>`).join('');searchDropdown.style.display='block';searchDropdown.querySelectorAll('.search-item').forEach(el=>{el.addEventListener('mouseenter',()=>{el.style.background='var(--accent-light)';});el.addEventListener('mouseleave',()=>{el.style.background='none';});el.addEventListener('click',()=>{go(el.dataset.page);searchInput.value='';searchDropdown.style.display='none';});});}
+if(searchInput){searchInput.addEventListener('input',e=>renderSearch(e.target.value));searchInput.addEventListener('keydown',e=>{if(e.key==='Enter'){const first=searchDropdown.querySelector('.search-item');if(first){go(first.dataset.page);searchInput.value='';searchDropdown.style.display='none';}}if(e.key==='Escape'){searchInput.value='';searchDropdown.style.display='none';}});}
+document.addEventListener('click',e=>{if(searchDropdown&&!searchDropdown.contains(e.target)&&e.target!==searchInput)searchDropdown.style.display='none';});
+
+// ── MOBILE SIDEBAR ──
+function toggleSidebar(){const sidebar=document.querySelector('.sidebar'),overlay=document.getElementById('sidebarOverlay'),btn=document.getElementById('hamburgerBtn');sidebar.classList.toggle('open');overlay.classList.toggle('show');btn.classList.toggle('active');}
+function closeSidebar(){const sidebar=document.querySelector('.sidebar'),overlay=document.getElementById('sidebarOverlay'),btn=document.getElementById('hamburgerBtn');sidebar.classList.remove('open');overlay.classList.remove('show');btn.classList.remove('active');}
+document.querySelectorAll('.nav-item').forEach(btn=>{btn.addEventListener('click',()=>{if(window.innerWidth<=768)closeSidebar();});});
+
+// ══════════════════════════════════════
+//  PLANNER DETAIL PANEL
+// ══════════════════════════════════════
+let plannerPanelOpen = false;
+
+function togglePlannerPanel() {
+  plannerPanelOpen = !plannerPanelOpen;
+  const panel       = document.getElementById('plannerDetailPanel');
+  const midGrid     = document.querySelector('.mid-grid');
+  const progressRow = document.querySelector('.progress-row');
+  const bottomGrid  = document.querySelector('.bottom-grid');
+  if (!panel) return;
+
+  if (inboundPanelOpen)   { inboundPanelOpen   = false; const p=document.getElementById('inboundDetailPanel');   if(p) p.style.display='none'; }
+  if (storingPanelOpen)   { storingPanelOpen   = false; const p=document.getElementById('storingDetailPanel');   if(p) p.style.display='none'; }
+  if (outboundPanelOpen)  { outboundPanelOpen  = false; const p=document.getElementById('outboundDetailPanel');  if(p) p.style.display='none'; }
+  if (inventoryPanelOpen) { inventoryPanelOpen = false; const p=document.getElementById('inventoryDetailPanel'); if(p) p.style.display='none'; }
+
+  if (plannerPanelOpen) {
+    panel.style.display = 'block';
+    if (midGrid)     midGrid.style.display     = 'none';
+    if (progressRow) progressRow.style.display = 'none';
+    if (bottomGrid)  bottomGrid.style.display  = 'none';
+    const sgPl=document.querySelector('.stats-grid'); if(sgPl) sgPl.style.display='none';
+    const lgPl=document.getElementById('lppbdoGrid'); if(lgPl) lgPl.style.display='none';
+    fetchPlannerDetail();
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  } else {
+    panel.style.display = 'none';
+    if (midGrid)     midGrid.style.display     = '';
+    if (progressRow) progressRow.style.display = '';
+    if (bottomGrid)  bottomGrid.style.display  = '';
+    const sgR=document.querySelector('.stats-grid'); if(sgR) sgR.style.display='';
+    const lgR=document.getElementById('lppbdoGrid'); if(lgR) lgR.style.display='grid';
+  }
+}
+
+fetchDailyActivity();
+
+async function fetchPlannerDetail() {
+  const subtitle = document.getElementById('plannerDetailSubtitle');
+  const footer   = document.getElementById('plannerDetailFooter');
+  if (subtitle) subtitle.textContent = 'Memuat data...';
+
+  try {
+    const res  = await fetch(GAS_DASHBOARD_URL + '?action=getPlannerDetail');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Gagal');
+
+    if (subtitle) subtitle.textContent = 'Periode: ' + data.bulan;
+    if (footer)   footer.textContent   = 'Data Planner — ' + data.bulan + ' · ' + data.summary.totalAll + ' LC total';
+
+    const s = data.summary;
+
+    // ── KPI ──
+    const kv = document.getElementById('plKpiVendor');    if(kv) { kv.textContent = s.vendorSupporting + '%'; kv.style.color = parseFloat(s.vendorSupporting) >= 95 ? '#d97706' : '#dc2626'; }
+    const kc = document.getElementById('plKpiCompleted'); if(kc) { kc.textContent = s.totalCompleted.toLocaleString('id-ID') + ' LC'; }
+    const ko = document.getElementById('plKpiOnTime');    if(ko) { ko.textContent = s.totalOnTime.toLocaleString('id-ID') + ' LC'; }
+    const kd = document.getElementById('plKpiDelayed');   if(kd) { kd.textContent = s.totalDelayed.toLocaleString('id-ID') + ' LC'; kd.style.color = s.totalDelayed > 0 ? '#dc2626' : '#16a34a'; }
+    // Footer & bar KPI cards
+    const fv = document.getElementById('footPlVendor');    if(fv) { fv.textContent = s.vendorSupporting + '%'; fv.style.color = parseFloat(s.vendorSupporting) >= 95 ? '#d97706' : '#dc2626'; }
+    const fc = document.getElementById('footPlCompleted'); if(fc) fc.textContent = s.totalCompleted.toLocaleString('id-ID') + ' LC';
+    const fo = document.getElementById('footPlOnTime');    if(fo) fo.textContent = s.totalOnTime.toLocaleString('id-ID') + ' LC';
+    const fd = document.getElementById('footPlDelayed');   if(fd) { fd.textContent = s.totalDelayed.toLocaleString('id-ID') + ' LC'; fd.style.color = s.totalDelayed > 0 ? '#dc2626' : '#16a34a'; }
+    const bv = document.getElementById('barPlVendor');  if(bv) setTimeout(()=>bv.style.width=Math.min(parseFloat(s.vendorSupporting),100)+'%',300);
+    const bo = document.getElementById('barPlOnTime');  if(bo) setTimeout(()=>bo.style.width=s.totalCompleted>0?Math.round(s.totalOnTime/s.totalCompleted*100)+'%':'0%',300);
+    const bd = document.getElementById('barPlDelayed'); if(bd) setTimeout(()=>bd.style.width=s.totalCompleted>0?Math.min(Math.round(s.totalDelayed/s.totalCompleted*100)*3,100)+'%':'0%',300);
+
+    // ── TREND CHART ──
+    const trendCtx = document.getElementById('plTrendChart');
+    if (trendCtx && data.trendData && data.trendData.length) {
+      const existing = Chart.getChart(trendCtx); if(existing) existing.destroy();
+      // Custom plugin label % di atas titik line
+      const plLabelPlugin = {
+        id: 'plLabelPlugin',
+        afterDatasetsDraw(chart) {
+          const{ctx, data} = chart;
+          chart.data.datasets.forEach((dataset, i) => {
+            if (dataset.yAxisID !== 'y2') return;
+            const meta = chart.getDatasetMeta(i);
+            meta.data.forEach((point, j) => {
+              const val = dataset.data[j];
+              if (val === undefined || val === null) return;
+              ctx.save();
+              ctx.font = 'bold 9px Outfit, sans-serif';
+              ctx.fillStyle = '#d97706';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+              ctx.fillText(val + '%', point.x, point.y - 5);
+              ctx.restore();
+            });
+          });
+        }
+      };
+
+      new Chart(trendCtx.getContext('2d'), {
+        type: 'bar',
+        plugins: [plLabelPlugin],
+        data: {
+          labels: data.trendData.map(d => d.date.slice(5)),
+          datasets: [
+            { label: 'ON TIME (LC)', data: data.trendData.map(d => d.onTime), backgroundColor: '#2563eb', order: 2 },
+            { label: 'DELAYED (LC)', data: data.trendData.map(d => d.delayed), backgroundColor: '#ef4444', order: 2 },
+            { label: 'ACHIEVEMENT %', data: data.trendData.map(d => d.pct), type: 'line',
+              borderColor: '#f59e0b', backgroundColor: 'transparent',
+              pointBackgroundColor: '#f59e0b', pointBorderColor: '#fff', pointBorderWidth: 2,
+              pointRadius: 5, borderWidth: 2.5, yAxisID: 'y2', order: 1 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          layout: { padding: { top: 20 } },
+          scales: {
+            x: { stacked: true, ticks: { color: '#475569', font: { size: 9 } }, grid: { display: false }, border: { display: false } },
+            y: { stacked: true, ticks: { color: '#475569', font: { size: 10 } }, grid: { display: false }, border: { display: false }, beginAtZero: true },
+            y2: { position: 'right', min: 0, max: 110, ticks: { color: '#d97706', font: { size: 10, weight: '700' }, callback: v => v <= 100 ? v + '%' : '' }, grid: { display: false } }
+          },
+          plugins: {
+            legend: { labels: { color: '#475569', font: { size: 10, weight: '600' }, boxWidth: 12 } },
+            tooltip: { backgroundColor: 'rgba(15,23,42,0.92)', titleColor: '#f0f4ff', bodyColor: '#cbd5e1',
+              callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.raw + (ctx.dataset.yAxisID === 'y2' ? '%' : ' LC') } }
+          }
+        }
+      });
+    }
+
+    // ── CBM BY KOTA ──
+    const kotaBody = document.getElementById('plKotaBody');
+    if (kotaBody && data.kotaData) {
+      const fmt = v => v > 0 ? v.toLocaleString('id-ID') : '-';
+      const fmtCbm = v => v > 0 ? v.toFixed(2) : '-';
+      kotaBody.innerHTML = data.kotaData.map(r =>
+        '<tr style="border-bottom:1px solid rgba(200,215,240,0.25);">' +
+        '<td style="padding:6px 10px;font-size:11px;font-weight:800;color:#1e293b;">' + r.kota + '</td>' +
+        '<td style="padding:6px 8px;text-align:right;color:#4ade80;font-size:11px;">' + fmtCbm(r.onTimeCbm) + '</td>' +
+        '<td style="padding:6px 8px;text-align:right;color:#4ade80;font-size:11px;">' + fmt(r.onTimeJml) + '</td>' +
+        '<td style="padding:6px 8px;text-align:right;color:#f87171;font-size:11px;">' + fmtCbm(r.terlambatCbm) + '</td>' +
+        '<td style="padding:6px 8px;text-align:right;color:#f87171;font-size:11px;">' + fmt(r.terlambatJml) + '</td>' +
+        '<td style="padding:6px 8px;text-align:right;color:#94a3b8;font-size:11px;">' + fmtCbm(r.belumCbm) + '</td>' +
+        '<td style="padding:6px 8px;text-align:right;color:#94a3b8;font-size:11px;">' + fmt(r.belumJml) + '</td>' +
+        '</tr>'
+      ).join('') +
+      '<tr style="background:rgba(37,99,235,0.06);border-top:2px solid rgba(37,99,235,0.2);">' +
+      '<td style="padding:7px 10px;font-size:11px;font-weight:900;color:#1e293b;">TOTAL</td>' +
+      '<td style="padding:7px 8px;text-align:right;color:#fbbf24;font-weight:800;font-size:11px;">' + data.kotaTotals.onTimeCbm.toFixed(2) + '</td>' +
+      '<td style="padding:7px 8px;text-align:right;color:#fbbf24;font-weight:800;font-size:11px;">' + data.kotaTotals.onTimeJml + '</td>' +
+      '<td style="padding:7px 8px;text-align:right;color:#fbbf24;font-weight:800;font-size:11px;">' + data.kotaTotals.terlambatCbm.toFixed(2) + '</td>' +
+      '<td style="padding:7px 8px;text-align:right;color:#fbbf24;font-weight:800;font-size:11px;">' + data.kotaTotals.terlambatJml + '</td>' +
+      '<td style="padding:7px 8px;text-align:right;color:#fbbf24;font-weight:800;font-size:11px;">' + data.kotaTotals.belumCbm.toFixed(2) + '</td>' +
+      '<td style="padding:7px 8px;text-align:right;color:#fbbf24;font-weight:800;font-size:11px;">' + data.kotaTotals.belumJml + '</td>' +
+      '</tr>';
+    }
+
+    // ── VENDOR NOT AVAILABLE ──
+    const vnaBody = document.getElementById('plVendorNotAvailBody');
+    if (vnaBody) {
+      if (!data.vendorNotAvail || !data.vendorNotAvail.length) {
+        vnaBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:#6a7a9a;">Tidak ada data</td></tr>';
+      } else {
+        vnaBody.innerHTML = data.vendorNotAvail.slice(0,20).map((r,i) =>
+          '<tr style="border-bottom:1px solid rgba(200,215,240,0.25);">' +
+          '<td style="padding:6px 8px;text-align:center;color:#6a7a9a;font-size:11px;">' + (i+1) + '</td>' +
+          '<td style="padding:6px 10px;font-weight:800;color:#2563eb;font-family:JetBrains Mono,monospace;font-size:11px;">' + r.lc + '</td>' +
+          '<td style="padding:6px 8px;color:var(--text-2);font-size:11px;">' + r.carrier + '</td>' +
+          '<td style="padding:6px 8px;color:var(--text-2);font-size:11px;">' + r.jalur + '</td>' +
+          '<td style="padding:6px 8px;color:#2563eb;font-size:11px;font-weight:600;">' + r.loadDate + '</td>' +
+          '<td style="padding:6px 8px;text-align:right;color:#94a3b8;font-size:11px;">' + r.cbm.toFixed(2) + '</td>' +
+          '<td style="padding:6px 8px;text-align:center;color:#f87171;font-weight:700;font-size:11px;">' + (r.aging > 0 ? Math.round(r.aging) + ' HARI' : '-') + '</td>' +
+          '</tr>'
+        ).join('');
+      }
+    }
+
+    // ── VENDOR DELAYED ──
+    const delBody = document.getElementById('plDelayedBody');
+    if (delBody) {
+      if (!data.vendorDelayed || !data.vendorDelayed.length) {
+        delBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:#6a7a9a;">Tidak ada data</td></tr>';
+      } else {
+        delBody.innerHTML = data.vendorDelayed.slice(0,20).map((r,i) =>
+          '<tr style="border-bottom:1px solid rgba(200,215,240,0.25);">' +
+          '<td style="padding:6px 8px;text-align:center;color:#6a7a9a;font-size:11px;">' + (i+1) + '</td>' +
+          '<td style="padding:6px 10px;font-weight:800;color:#2563eb;font-family:JetBrains Mono,monospace;font-size:11px;">' + r.lc + '</td>' +
+          '<td style="padding:6px 8px;color:var(--text-2);font-size:11px;">' + r.carrier + '</td>' +
+          '<td style="padding:6px 8px;color:var(--text-2);font-size:11px;">' + r.jalur + '</td>' +
+          '<td style="padding:6px 8px;color:#2563eb;font-size:11px;font-weight:600;">' + r.loadDate + '</td>' +
+          '<td style="padding:6px 8px;text-align:right;color:#94a3b8;font-size:11px;">' + r.cbm.toFixed(2) + '</td>' +
+          '<td style="padding:6px 8px;text-align:center;color:#f87171;font-weight:700;font-size:11px;">' + r.agingLabel + '</td>' +
+          '</tr>'
+        ).join('');
+      }
+    }
+
+    // ── AGING PER CARRIER ──
+    const agBody = document.getElementById('plAgingBody');
+    if (agBody && data.agingData) {
+      const dc = v => v > 0 ? '<span style="color:#60a5fa;font-weight:700;">'+v+'</span>' : '<span style="color:#3a4a6a;">-</span>';
+      agBody.innerHTML = data.agingData.map((r,i) =>
+        '<tr style="border-bottom:1px solid rgba(200,215,240,0.25);">' +
+        '<td style="padding:6px 8px;text-align:center;color:#6a7a9a;font-size:11px;">' + (i+1) + '</td>' +
+        '<td style="padding:6px 10px;font-weight:700;color:#fbbf24;font-size:11px;">' + r.carrier + '</td>' +
+        '<td style="padding:6px 8px;text-align:center;font-size:11px;">' + dc(r.a1) + '</td>' +
+        '<td style="padding:6px 8px;text-align:center;font-size:11px;">' + dc(r.a2) + '</td>' +
+        '<td style="padding:6px 8px;text-align:center;font-size:11px;">' + dc(r.a3) + '</td>' +
+        '<td style="padding:6px 8px;text-align:center;font-size:11px;">' + dc(r.a4) + '</td>' +
+        '<td style="padding:6px 8px;text-align:center;font-size:11px;">' + dc(r.a5) + '</td>' +
+        '<td style="padding:6px 8px;text-align:center;font-size:11px;">' + dc(r.a5up) + '</td>' +
+        '<td style="padding:6px 8px;text-align:center;font-size:11px;"><span style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:4px;font-weight:800;">' + r.total + '</span></td>' +
+        '</tr>'
+      ).join('') +
+      '<tr style="background:rgba(37,99,235,0.06);border-top:2px solid rgba(37,99,235,0.2);">' +
+      '<td colspan="2" style="padding:7px 10px;font-size:11px;font-weight:900;color:#1e293b;">TOTAL</td>' +
+      '<td style="padding:7px 8px;text-align:center;color:#1e293b;font-weight:800;">' + (data.agingTotals.a1||'-') + '</td>' +
+      '<td style="padding:7px 8px;text-align:center;color:#1e293b;font-weight:800;">' + (data.agingTotals.a2||'-') + '</td>' +
+      '<td style="padding:7px 8px;text-align:center;color:#1e293b;font-weight:800;">' + (data.agingTotals.a3||'-') + '</td>' +
+      '<td style="padding:7px 8px;text-align:center;color:#1e293b;font-weight:800;">' + (data.agingTotals.a4||'-') + '</td>' +
+      '<td style="padding:7px 8px;text-align:center;color:#1e293b;font-weight:800;">' + (data.agingTotals.a5||'-') + '</td>' +
+      '<td style="padding:7px 8px;text-align:center;color:#1e293b;font-weight:800;">' + (data.agingTotals.a5up||'-') + '</td>' +
+      '<td style="padding:7px 8px;text-align:center;"><span style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:4px;font-weight:900;">' + data.agingTotals.total + '</span></td>' +
+      '</tr>';
+    }
+
+    // ── VENDOR PERFORMANCE % ──
+    const vpBody = document.getElementById('plVendorPerfBody');
+    if (vpBody && data.vendorPerf) {
+      vpBody.innerHTML = data.vendorPerf.map((r,i) => {
+        const pct = parseFloat(r.pct);
+        const col = pct >= 100 ? '#16a34a' : pct >= 95 ? '#d97706' : '#dc2626';
+        const bg = i%2===0 ? 'background:rgba(255,255,255,0.7);' : 'background:rgba(226,232,240,0.5);';
+        return '<tr style="'+bg+'border-bottom:1px solid rgba(200,215,240,0.3);">' +
+          '<td style="padding:7px 10px;text-align:center;color:#94a3b8;font-size:11px;font-weight:600;">' + (i+1) + '</td>' +
+          '<td style="padding:7px 12px;font-weight:800;color:#0f172a;font-size:12px;">' + r.carrier + '</td>' +
+          '<td style="padding:7px 10px;text-align:center;color:#16a34a;font-weight:800;font-size:12px;">' + r.onTime + '</td>' +
+          '<td style="padding:7px 10px;text-align:center;color:#dc2626;font-weight:800;font-size:12px;">' + (r.delayed > 0 ? r.delayed : '<span style="color:#94a3b8;">-</span>') + '</td>' +
+          '<td style="padding:7px 10px;text-align:center;color:#475569;font-size:12px;font-weight:700;">' + r.total + '</td>' +
+          '<td style="padding:7px 10px;text-align:center;"><span style="color:'+col+';font-weight:900;font-size:13px;">'+r.pct+'</span></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    // ── PERCENTAGE BREAKDOWN BARS ──
+    const bbEl = document.getElementById('plBreakdownBars');
+    if (bbEl) {
+      const maxV = Math.max(data.pctDelayed, data.pctOnTime, data.pctBelum, 1);
+      const barH = (v) => Math.round((v / 100) * 100);
+      bbEl.innerHTML =
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">' +
+          '<div style="font-size:12px;font-weight:900;color:#f87171;">' + data.pctDelayed + '%</div>' +
+          '<div style="width:100%;background:#ef4444;height:' + barH(data.pctDelayed) + 'px;min-height:4px;border-radius:3px 3px 0 0;margin-top:auto;"></div>' +
+          '<div style="font-size:10px;color:var(--text-3);text-align:center;">TERLAMBAT</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:2;">' +
+          '<div style="font-size:12px;font-weight:900;color:#60a5fa;">' + data.pctOnTime + '%</div>' +
+          '<div style="width:100%;background:#3b82f6;height:' + barH(data.pctOnTime) + 'px;min-height:4px;border-radius:3px 3px 0 0;margin-top:auto;"></div>' +
+          '<div style="font-size:10px;color:var(--text-3);text-align:center;">ON TIME</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">' +
+          '<div style="font-size:12px;font-weight:900;color:#94a3b8;">' + data.pctBelum + '%</div>' +
+          '<div style="width:100%;background:#94a3b8;height:' + barH(data.pctBelum) + 'px;min-height:4px;border-radius:3px 3px 0 0;margin-top:auto;"></div>' +
+          '<div style="font-size:10px;color:var(--text-3);text-align:center;">BELUM SUPPORT</div>' +
+        '</div>';
+    }
+
+    // ── AGING BREAKDOWN ──
+    const abEl = document.getElementById('plAgingBreak');
+    if (abEl && data.agingBreak) {
+      const tot = data.agingBreakTotal || 1;
+      const items = [
+        { label:'1 Hari', val: data.agingBreak.h1 },
+        { label:'2 Hari', val: data.agingBreak.h2 },
+        { label:'3 Hari', val: data.agingBreak.h3 },
+        { label:'4 Hari', val: data.agingBreak.h4 },
+        { label:'5 Hari', val: data.agingBreak.h5 },
+        { label:'> 5 Hari', val: data.agingBreak.h5up },
+      ];
+      abEl.innerHTML = items.map(it => {
+        const pct = Math.round((it.val/tot)*100);
+        return '<div style="display:flex;align-items:center;gap:8px;">' +
+          '<div style="font-size:11px;font-weight:700;color:#0f172a;width:52px;">' + it.label + '</div>' +
+          '<div style="flex:1;height:8px;background:rgba(0,0,0,0.08);border-radius:4px;overflow:hidden;">' +
+            '<div style="width:' + pct + '%;height:100%;background:#334155;border-radius:4px;"></div>' +
+          '</div>' +
+          '<div style="font-size:11px;color:#0f172a;font-weight:900;min-width:32px;">' + pct + '%</div>' +
+          '</div>';
+      }).join('');
+    }
+
+  } catch(e) {
+    console.error('Planner detail error:', e);
+    const els = ['plKotaBody','plVendorNotAvailBody','plDelayedBody','plAgingBody','plVendorPerfBody'];
+    els.forEach(id => { const el=document.getElementById(id); if(el) el.innerHTML='<tr><td colspan="9" style="text-align:center;padding:16px;color:#f87171;">Gagal: '+e.message+'</td></tr>'; });
+    if(subtitle) subtitle.textContent = 'Error: ' + e.message;
+  }
+}
+// ── History Login ─────────────────────────────────────────────
+function openHistoryLogin() {
+  settingsOpen = false;
+  document.getElementById('settingsPanel').classList.remove('open');
+  const modal = document.getElementById('historyModal');
+  modal.style.display = 'flex';
+  const list = document.getElementById('historyLoginList');
+  list.innerHTML = '<div style="text-align:center;color:#94a3b8;font-size:13px;padding:20px;">Memuat...</div>';
+  if (!db) { list.innerHTML = '<div style="text-align:center;color:#dc2626;font-size:13px;padding:20px;">Firebase tidak tersedia</div>'; return; }
+  fetch(GAS_DASHBOARD_URL + '?action=getLoginHistory')
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok || !data.entries.length) {
+        list.innerHTML = '<div style="text-align:center;color:#94a3b8;font-size:13px;padding:20px;">Belum ada history login</div>';
+        return;
+      }
+      list.innerHTML = data.entries.map((e,i) => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:${i%2===0?'#f8fafc':'#fff'};border-radius:10px;border:1px solid #f1f5f9;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(145deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;">${(e.name||'?').slice(0,2).toUpperCase()}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:13px;font-weight:800;color:#0f172a;">${e.name||'—'}</div>
+            <div style="font-size:11px;color:#64748b;">${e.jabatan||'—'} · NIP ${e.nip||'—'}</div>
+          </div>
+          <div style="font-size:11px;color:#94a3b8;text-align:right;flex-shrink:0;">${e.time||'—'}</div>
+        </div>`).join('');
+    })
+    .catch(() => {
+      list.innerHTML = '<div style="text-align:center;color:#dc2626;font-size:13px;padding:20px;">Gagal memuat history</div>';
+    });
+}
+
+function closeHistoryModal() {
+  document.getElementById('historyModal').style.display = 'none';
+}
+
+// ── History AI Support (khusus admin) ────────────────────────────
+let aiHistoryRaw = [];
+
+function openAIHistory() {
+  settingsOpen = false;
+  document.getElementById('settingsPanel').classList.remove('open');
+  const modal = document.getElementById('aiHistoryModal');
+  modal.style.display = 'flex';
+  document.getElementById('aiHistoryTitle').textContent = '🤖 History AI Support';
+  document.getElementById('aiHistoryList').innerHTML = '<div style="text-align:center;color:#94a3b8;font-size:13px;padding:20px;">Memuat...</div>';
+  const myNip = localStorage.getItem('wms_nip') || '';
+  fetch(GAS_AI_URL + '?action=aiLogs&nip=' + encodeURIComponent(myNip))
+    .then(r => r.json())
+    .then(data => {
+      if (!data.success) {
+        document.getElementById('aiHistoryList').innerHTML = '<div style="text-align:center;color:#dc2626;font-size:13px;padding:20px;">' + (data.error || 'Gagal memuat') + '</div>';
+        return;
+      }
+      aiHistoryRaw = data.logs || [];
+      renderAIHistoryDays();
+    })
+    .catch(() => {
+      document.getElementById('aiHistoryList').innerHTML = '<div style="text-align:center;color:#dc2626;font-size:13px;padding:20px;">Gagal memuat history</div>';
+    });
+}
+
+function renderAIHistoryDays() {
+  document.getElementById('aiHistoryTitle').textContent = '🤖 History AI Support';
+  const list = document.getElementById('aiHistoryList');
+  if (!aiHistoryRaw.length) {
+    list.innerHTML = '<div style="text-align:center;color:#94a3b8;font-size:13px;padding:20px;">Belum ada history pemakaian</div>';
+    return;
+  }
+  const groups = {};
+  aiHistoryRaw.forEach(function (e) {
+    const day = (e.waktu || '').split(' ')[0] || 'Tidak diketahui';
+    if (!groups[day]) groups[day] = { entries: [], users: {} };
+    groups[day].entries.push(e);
+    groups[day].users[e.nip + '|' + e.nama] = true;
+  });
+  const days = Object.keys(groups).sort().reverse();
+  list.innerHTML = days.map(function (day, i) {
+    const names = [];
+    Object.keys(groups[day].users).forEach(function (key) {
+      const nama = key.split('|')[1];
+      if (nama && names.indexOf(nama) === -1) names.push(nama);
+    });
+    const namesText = names.length ? names.join(', ') : 'Tidak diketahui';
+    return '<div onclick="showAIHistoryDetail(\'' + day + '\')" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:12px 14px;background:' + (i % 2 === 0 ? '#f8fafc' : '#fff') + ';border-radius:10px;border:1px solid #f1f5f9;">' +
+      '<div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(145deg,#7c3aed,#6d28d9);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🤖</div>' +
+      '<div style="flex:1;min-width:0;">' +
+      '<div style="font-size:13px;font-weight:800;color:#0f172a;">' + day + '</div>' +
+      '<div style="font-size:11px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + namesText + ' · ' + groups[day].entries.length + ' pertanyaan</div>' +
+      '</div><div style="font-size:14px;color:#94a3b8;">→</div></div>';
+  }).join('');
+}
+
+function showAIHistoryDetail(day) {
+  document.getElementById('aiHistoryTitle').innerHTML = '<span style="cursor:pointer;" onclick="renderAIHistoryDays()">←</span> ' + day;
+  const entries = aiHistoryRaw.filter(function (e) { return (e.waktu || '').split(' ')[0] === day; });
+  const list = document.getElementById('aiHistoryList');
+  list.innerHTML = entries.map(function (e, i) {
+    const jam = (e.waktu || '').split(' ')[1] || '';
+    return '<div style="padding:12px 14px;background:' + (i % 2 === 0 ? '#f8fafc' : '#fff') + ';border-radius:10px;border:1px solid #f1f5f9;">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+      '<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(145deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0;">' + (e.nama || '?').slice(0, 2).toUpperCase() + '</div>' +
+      '<div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:800;color:#0f172a;">' + (e.nama || '—') + ' <span style="font-weight:500;color:#94a3b8;">· NIP ' + (e.nip || '—') + '</span></div></div>' +
+      '<div style="font-size:10px;color:#94a3b8;">' + jam + '</div></div>' +
+      '<div style="font-size:12px;color:#334155;margin-bottom:4px;"><b>Tanya:</b> ' + (e.pertanyaan || '-') + '</div>' +
+      '<div style="font-size:11px;color:#64748b;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'">Lihat jawaban ▾</div>' +
+      '<div style="display:none;font-size:11px;color:#64748b;margin-top:4px;padding-top:4px;border-top:1px dashed #e2e8f0;">' + (e.jawaban || '-') + '</div></div>';
+  }).join('');
+}
+
+function closeAIHistoryModal() {
+  document.getElementById('aiHistoryModal').style.display = 'none';
+}
+
+// ── Reset Diskusi ─────────────────────────────────────────────
+function confirmResetDiskusi() {
+  settingsOpen = false;
+  document.getElementById('settingsPanel').classList.remove('open');
+  const modal = document.getElementById('resetDiscModal');
+  modal.style.display = 'flex';
+}
+
+function closeResetDiscModal() {
+  document.getElementById('resetDiscModal').style.display = 'none';
+}
+
+function doResetDiskusi() {
+  if (!db) return;
+  if (!ADMIN_NIPS.includes(String(me.nip))) {
+    alert('Hanya admin yang bisa reset diskusi!');
+    return;
+  }
+  db.ref(CHAT_PATH).remove().then(() => {
+    closeResetDiscModal();
+    // Notif sukses
+    const notif = document.createElement('div');
+    notif.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99999;background:#16a34a;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(22,163,74,0.3);animation:slideIn 0.3s ease;';
+    notif.textContent = '✅ Diskusi berhasil direset!';
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 3000);
+  }).catch(e => alert('Gagal reset: ' + e.message));
+}
+// ============================================================
+// PATCH_script.js — Profil DC
+// Cara pakai: paste di PALING BAWAH file script.js kamu
+// Tidak mengubah/menimpa fungsi apapun yang sudah ada
+// ============================================================
+
+// ── URL GAS Profil DC kamu ──
+const GAS_PROFIL_DC_URL = 'https://script.google.com/a/macros/kawanlamacorp.com/s/AKfycbwdUoZgbkaJmfaHuNYIqxUaygZ6t64GS666eQ38fI5dVOIzIQBypvtp5oNpfFKOOnnR/exec';
+
+// ── FETCH DATA PROFIL DC ──
+async function fetchProfilDc() {
+  try {
+    const res = await fetch(GAS_PROFIL_DC_URL + '?action=getProfilData');
+    const d   = await res.json();
+    if (!d || !d.ok) return;
+
+    // Helper set value
+    const sv = (id, val) => { const el = document.getElementById(id); if (el && val != null && val !== '') el.textContent = val; };
+
+    // Helper warna akurasi/occupancy
+    const colorVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (!el || !val || val === '-') return;
+      el.textContent = val;
+      const n = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+      el.className = 'pdc-ai-v';
+      if (!isNaN(n)) {
+        if (n >= 99)      el.className = 'pdc-ai-v pdc-ok';
+        else if (n >= 98) el.className = 'pdc-ai-v pdc-warn';
+        else              el.className = 'pdc-ai-v pdc-bad';
+      }
+    };
+
+    // Helper warna total area
+    const colorTot = (id, val) => {
+      const el = document.getElementById(id);
+      if (!el || !val) return;
+      el.textContent = val;
+      const n = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+      if (!isNaN(n)) {
+        if      (n >= 99) el.style.color = '#22c55e';
+        else if (n >= 98) el.style.color = '#F59E0B';
+        else              el.style.color = '#E01E37';
+      }
+    };
+
+    // Performance
+    if (d.performance) {
+      sv('pdc-val-occ',  d.performance.occupancy);
+      sv('pdc-val-acc',  d.performance.accuracy);
+      sv('pdc-val-slac', d.performance.slaCustomer);
+      sv('pdc-val-slas', d.performance.slaStore);
+    }
+
+    // Workload
+    if (d.workload) {
+      sv('pdc-val-inb', d.workload.inbound);
+      sv('pdc-val-out', d.workload.outbound);
+    }
+
+    // Capacity
+    if (d.capacity) {
+      sv('pdc-val-cap', d.capacity.capacity);
+      sv('pdc-val-inv', d.capacity.inventory);
+    }
+
+    // Lorong 1–17
+    if (d.lorong) {
+      const px = {
+        1:'a1',2:'a1',3:'a1',4:'a1',5:'a1',
+        6:'a2',7:'a2',8:'a2',9:'a2',10:'a2',
+        11:'a3',12:'a3',13:'a3',14:'a3',15:'a3',16:'a3',
+        17:'act'
+      };
+      for (let n = 1; n <= 17; n++) {
+        const l = d.lorong['l' + n];
+        if (l) {
+          const p = px[n];
+          colorVal(`pdc-${p}-akr-${n}`, l.akurasi);
+          colorVal(`pdc-${p}-occ-${n}`, l.occupancy);
+        }
+      }
+    }
+
+    // Total per area
+    if (d.areaTotal) {
+      colorTot('pdc-tot-a1',  d.areaTotal.area1);
+      colorTot('pdc-tot-a2',  d.areaTotal.area2);
+      colorTot('pdc-tot-a3',  d.areaTotal.area3);
+      colorTot('pdc-tot-act', d.areaTotal.chatime);
+    }
+
+    // Video hero (kalau ada)
+    if (d.videoId) pdcSetVideo(d.videoId);
+
+  } catch(e) {
+    console.warn('fetchProfilDc error:', e);
+  }
+}
+
+function pdcSetVideo(id) {
+  if (!id) return;
+  const f = document.getElementById('pdcVideoFrame');
+  const v = document.getElementById('pdcHeroVideo');
+  if (!f || !v) return;
+  f.src = 'https://drive.google.com/file/d/' + id + '/preview';
+  v.style.display = 'block';
+}
+
+// ── PANGGIL fetchProfilDc saat user buka halaman Profil DC ──
+// Patch ke fungsi go() yang sudah ada: intercept navigasi ke 'profildc'
+(function patchGoForProfilDc() {
+  const _origGo = window.go;
+  if (typeof _origGo !== 'function') {
+    // Kalau go() belum ready, tunggu sebentar
+    setTimeout(patchGoForProfilDc, 300);
+    return;
+  }
+  window.go = function(p) {
+    _origGo(p);
+    if (p === 'profildc') {
+      fetchProfilDc();
+    }
+  };
+})();
+
+// ── SLIDESHOW PROFIL DC (independen, prefix pdcSs) ──
+const PDC_SS = { on: false, idx: 0, play: true, timer: null, dur: 8000 };
+const PDC_SS_SLIDES = [
+  { label: 'Performance & Workload', focus: 'metrics' },
+  { label: 'Area Occupancy',         focus: 'areas'   }
+];
+
+function pdcSsStart() {
+  PDC_SS.on = true; PDC_SS.idx = 0; PDC_SS.play = true;
+  document.getElementById('pdcSsBar').classList.add('show');
+  document.getElementById('pdcSsBtnMain').style.display = 'none';
+
+  const dots = document.getElementById('pdcSsDots');
+  dots.innerHTML = '';
+  PDC_SS_SLIDES.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'pdc-ss-dot' + (i === 0 ? ' on' : '');
+    d.title = s.label;
+    d.onclick = () => pdcSsGo(i);
+    dots.appendChild(d);
+  });
+  pdcSsGo(0);
+}
+
+function pdcSsGo(idx) {
+  PDC_SS.idx = (idx + PDC_SS_SLIDES.length) % PDC_SS_SLIDES.length;
+  const slide = PDC_SS_SLIDES[PDC_SS.idx];
+
+  const metrics  = document.querySelector('#page-profildc .pdc-metrics');
+  const areas    = document.querySelector('#page-profildc .pdc-area-grid');
+  const mainGrid = document.querySelector('#page-profildc .pdc-main-grid');
+
+  if (slide.focus === 'metrics') {
+    if (metrics)  { metrics.style.outline = '2px solid #E01E37'; metrics.style.outlineOffset = '2px'; }
+    if (areas)    { areas.style.opacity = '.35'; areas.style.outline = 'none'; }
+    if (mainGrid) { mainGrid.style.opacity = '1'; }
+  } else {
+    if (metrics)  { metrics.style.outline = 'none'; }
+    if (areas)    { areas.style.opacity = '1'; areas.style.outline = '2px solid #E01E37'; areas.style.outlineOffset = '2px'; }
+    if (mainGrid) { mainGrid.style.opacity = '.7'; }
+  }
+
+  const dotEls = document.getElementById('pdcSsDots').children;
+  for (let i = 0; i < dotEls.length; i++) dotEls[i].classList.toggle('on', i === PDC_SS.idx);
+  document.getElementById('pdcSsCnt').textContent = (PDC_SS.idx + 1) + '/' + PDC_SS_SLIDES.length;
+  pdcSsResetTimer();
+}
+
+function pdcSsNext() { pdcSsGo(PDC_SS.idx + 1); }
+function pdcSsPrev() { pdcSsGo(PDC_SS.idx - 1); }
+
+function pdcSsToggle() {
+  PDC_SS.play = !PDC_SS.play;
+  const ic = document.getElementById('pdcSsPlayIc');
+  ic.innerHTML = PDC_SS.play
+    ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>'
+    : '<path d="M8 5v14l11-7z"/>';
+  if (PDC_SS.play) pdcSsResetTimer(); else pdcSsClearTimer();
+}
+
+function pdcSsResetTimer() {
+  pdcSsClearTimer();
+  if (!PDC_SS.play) return;
+  const prog = document.getElementById('pdcSsProg');
+  if (prog) { prog.style.transition = 'none'; prog.style.width = '0%'; }
+  setTimeout(() => {
+    if (prog) { prog.style.transition = 'width ' + PDC_SS.dur + 'ms linear'; prog.style.width = '100%'; }
+  }, 30);
+  PDC_SS.timer = setTimeout(() => pdcSsNext(), PDC_SS.dur);
+}
+
+function pdcSsClearTimer() {
+  clearTimeout(PDC_SS.timer);
+  const p = document.getElementById('pdcSsProg');
+  if (p) { p.style.transition = 'none'; p.style.width = '0%'; }
+}
+
+function pdcSsStop() {
+  PDC_SS.on = false;
+  pdcSsClearTimer();
+  document.getElementById('pdcSsBar').classList.remove('show');
+  document.getElementById('pdcSsBtnMain').style.display = '';
+
+  const metrics  = document.querySelector('#page-profildc .pdc-metrics');
+  const areas    = document.querySelector('#page-profildc .pdc-area-grid');
+  const mainGrid = document.querySelector('#page-profildc .pdc-main-grid');
+  if (metrics)  { metrics.style.outline = 'none'; }
+  if (areas)    { areas.style.opacity = '1'; areas.style.outline = 'none'; }
+  if (mainGrid) { mainGrid.style.opacity = '1'; }
+}
+
+// Keyboard shortcut hanya aktif saat di halaman profildc
+document.addEventListener('keydown', (e) => {
+  const pg = document.getElementById('page-profildc');
+  if (!pg || !pg.classList.contains('active') || !PDC_SS.on) return;
+  if      (e.key === 'ArrowRight') pdcSsNext();
+  else if (e.key === 'ArrowLeft')  pdcSsPrev();
+  else if (e.key === ' ')          { e.preventDefault(); pdcSsToggle(); }
+  else if (e.key === 'Escape')     pdcSsStop();
+});
+
+// ═════════════════════════════════════════════════════════════════
+//  TOOLS — PPT LAPORAN OTOMATIS
+//  Halaman "Tools" di sidebar. Alurnya:
+//    1. ambil data dari Code.gs  (?action=getPptData)
+//    2. susun slide di browser pakai pptxgenjs (dimuat saat dibutuhkan)
+//    3. unduh .pptx  + catat di riwayat (disimpan di browser ini)
+//  Grafik/kartu/donut = objek PowerPoint asli (bisa diedit), bukan screenshot.
+// ═════════════════════════════════════════════════════════════════
+const TOOLS_PPTX_CDN = 'https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js';
+const TOOLS_JSZIP_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+const TOOLS_PARTS = [['profil', 'Profil DC'], ['inbound', 'Inbound'], ['storing', 'Storing'], ['outbound', 'Outbound'], ['inventory', 'Inventory'], ['planner', 'Planner SLA'], ['plannerMaster', 'Planner CBM'], ['outstanding', 'Outstanding Backlog'], ['vendorTrend', 'Vendor Trend'], ['stockTransfer', 'Stock Transfer'], ['inboundPlanning', 'Inbound Planning']];
+let toolsData = null;
+let toolsHistory = null;
+let toolsRiwayatTampil = null;   // baris riwayat yang sedang tampil (sudah disaring)
+let toolsBusy = false;
+
+function toolsEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function toolsEl(id) { return document.getElementById(id); }
+
+function toolsLoadScript(url) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector('script[data-tools-src="' + url + '"]')) return resolve();
+    const sc = document.createElement('script');
+    sc.src = url; sc.dataset.toolsSrc = url;
+    sc.onload = () => resolve();
+    sc.onerror = () => { sc.remove(); reject(new Error('Gagal memuat pustaka (' + url.split('/').pop() + '). Cek koneksi internet.')); };
+    document.head.appendChild(sc);
+  });
+}
+
+function toolsMsg(type, text) {
+  const el = toolsEl('tlMsg'); if (!el) return;
+  el.className = 'tl-msg' + (text ? ' tl-msg-' + type : '');
+  el.textContent = text || '';
+}
+
+function toolsSetPill(kind, text) {
+  const el = toolsEl('tlStatusPill'); if (!el) return;
+  el.className = 'tl-pill tl-pill-' + kind; el.textContent = text;
+}
+
+function initToolsPage() {
+  const el = toolsEl('tlDate');
+  if (el) el.textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  if (!toolsData) toolsRefreshData();
+  toolsLoadHistory();
+  // mulai ambil gambar Profil DC di belakang layar biar generate nanti cepat
+  setTimeout(function () { try { toolsPrewarmCapture(); } catch (e) { } }, 1500);
+}
+
+function toolsAllOk(api) {
+  return !!api && TOOLS_PARTS.every(p => api[p[0]] && api[p[0]].ok !== false);
+}
+
+async function toolsFetchData() {
+  const res = await fetch(GAS_DASHBOARD_URL + '?action=getPptData&_=' + Date.now());
+  const json = await res.json();
+  if (!json || json.ok === false) throw new Error((json && json.error) || 'Respons dari server tidak valid');
+  return json;
+}
+
+async function toolsRefreshData() {
+  if (toolsBusy) return;
+  const gen = toolsEl('tlGenBtn'), ref = toolsEl('tlRefreshBtn');
+  if (gen) gen.disabled = true; if (ref) ref.disabled = true;
+  toolsSetPill('wait', 'Mengambil data…'); toolsMsg('', '');
+  try {
+    // kalau ada bagian yang gagal (mis. Google lagi ramai), ambil ulang otomatis 2x
+    toolsData = await toolsFetchData();
+    for (let coba = 0; coba < 2 && !toolsAllOk(toolsData); coba++) {
+      toolsSetPill('wait', 'Sebagian data gagal, mengambil ulang… (' + (coba + 1) + '/2)');
+      await new Promise(function (r) { setTimeout(r, 3000); });
+      try { toolsData = await toolsFetchData(); } catch (e2) { console.warn('Ambil ulang gagal:', e2); break; }
+    }
+    toolsRenderData();
+  } catch (e) {
+    toolsData = null;
+    toolsRenderData();
+    toolsSetPill('err', 'Data gagal diambil');
+    toolsMsg('err', 'Data tidak bisa diambil: ' + e.message);
+  } finally {
+    if (ref) ref.disabled = false;
+  }
+}
+
+function toolsFmt(v) { return typeof v === 'number' ? v.toLocaleString('id-ID') : String(v == null || v === '' ? '-' : v); }
+function toolsPct1(v) { return (parseFloat(v) || 0).toFixed(1) + '%'; }
+
+function toolsRenderData() {
+  const src = toolsEl('tlSources'), kpi = toolsEl('tlKpis'), gen = toolsEl('tlGenBtn'), stamp = toolsEl('tlStamp');
+  if (!src || !kpi) return;
+  if (!toolsData) {
+    src.innerHTML = TOOLS_PARTS.map(p => '<span class="tl-src tl-src-off">– ' + p[1] + '</span>').join('');
+    kpi.innerHTML = '<div class="tl-empty">Belum ada data. Klik “Muat ulang data”.</div>';
+    if (stamp) stamp.textContent = '';
+    if (gen) gen.disabled = true;
+    return;
+  }
+  const d = toolsData;
+  src.innerHTML = TOOLS_PARTS.map(p => {
+    const part = d[p[0]]; const ok = part && part.ok !== false;
+    return '<span class="tl-src ' + (ok ? 'tl-src-ok' : 'tl-src-err') + '" title="' + toolsEsc(ok ? '' : (part && part.error) || 'tidak ada data') + '">' + (ok ? '✓ ' : '✕ ') + p[1] + '</span>';
+  }).join('');
+  const all = toolsAllOk(d);
+  if (all) {
+    const k = [
+      ['Inbound', toolsPct1(d.inbound.pct), d.inbound.totalToday + ' LC'],
+      ['Storing', toolsPct1(d.storing.pct), d.storing.totalLC + ' LC'],
+      ['Outbound', toolsPct1(d.outbound.pct), d.outbound.totalLC + ' LC'],
+      ['Rata-rata progres', d.rata != null ? d.rata.toFixed(1) + '%' : '-', 'Inbound+Storing+Outbound'],
+      ['Occupancy', toolsFmt(d.profil.performance && d.profil.performance.occupancy), 'Profil DC'],
+      ['Akurasi inventory', toolsFmt(d.inventory.akurasi), 'Cycle Count']
+    ];
+    kpi.innerHTML = k.map(x => '<div class="tl-kpi"><span>' + toolsEsc(x[0]) + '</span><b>' + toolsEsc(x[1]) + '</b><small>' + toolsEsc(x[2]) + '</small></div>').join('');
+    toolsSetPill('ok', 'Siap dibuat');
+  } else {
+    const badP = TOOLS_PARTS.filter(p => !(d[p[0]] && d[p[0]].ok !== false)); const bad = badP.map(p => p[1] + ((d[p[0]] && d[p[0]].error) ? ' (' + d[p[0]].error + ')' : ' (tidak ada data dari server — deploy Code.gs terbaru?)'));
+    kpi.innerHTML = '<div class="tl-empty">Data belum lengkap. Bagian bermasalah: <b>' + toolsEsc(bad.join(', ')) + '</b>. PPT tidak dibuat supaya tidak ada angka kosong yang ikut terkirim.</div>';
+    toolsSetPill('err', 'Data belum lengkap');
+  }
+  if (stamp) stamp.textContent = 'Data diambil pukul ' + toolsEsc(d.jam || '-') + ' WIB';
+  if (gen) gen.disabled = !all;
+}
+
+// ── riwayat (dibaca dari sheet "PPT_Log" di server: otomatis + manual) ──
+function toolsFmtWaktu(w) {
+  const m = String(w || '').match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+  if (!m) return String(w || '-');
+  const bln = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  return parseInt(m[3], 10) + ' ' + bln[parseInt(m[2], 10) - 1] + ' ' + m[1] + ', ' + m[4] + ':' + m[5];
+}
+
+async function toolsLoadHistory() {
+  const box = toolsEl('tlHistory');
+  if (box && !toolsHistory) box.innerHTML = '<div class="tl-empty">Memuat riwayat…</div>';
+  try {
+    const res = await fetch(GAS_DASHBOARD_URL + '?action=getPptHistory&limit=30&_=' + Date.now());
+    const json = await res.json();
+    if (!json || json.ok === false) throw new Error((json && json.error) || 'Respons dari server tidak valid');
+    toolsHistory = json.rows || [];
+    toolsRenderHistory();
+  } catch (e) {
+    toolsHistory = null;
+    if (box) box.innerHTML = '<div class="tl-empty tl-empty-err">Riwayat tidak bisa dimuat: ' + toolsEsc(e.message) + '</div>';
+    toolsRenderSchedule();
+  }
+}
+
+/**
+ * Ambil ID file dari link Drive. Bentuk linknya beda-beda tergantung jenis file:
+ *   drive.google.com/file/d/<id>/view          (file biasa)
+ *   docs.google.com/presentation/d/<id>/edit   (.pptx, dibuka pakai editor Slides)
+ *   docs.google.com/document|spreadsheets/d/<id>/edit
+ *   drive.google.com/open?id=<id>
+ * Dulu hanya bentuk pertama yang dikenali, makanya tombol Preview untuk PPT
+ * tidak pernah muncul padahal filenya ada.
+ */
+function toolsDriveFileId(url) {
+  const s = String(url || '');
+  let m = s.match(/\/(?:file|presentation|document|spreadsheets)\/d\/([A-Za-z0-9_-]{15,})/);
+  if (m) return m[1];
+  m = s.match(/[?&]id=([A-Za-z0-9_-]{15,})/);
+  if (m) return m[1];
+  m = s.match(/\/d\/([A-Za-z0-9_-]{15,})/);
+  return m ? m[1] : null;
+}
+
+function toolsRenderHistory() {
+  const box = toolsEl('tlHistory'); if (!box) return;
+  // PPT Pimpinan ditulis ke sheet riwayat yang sama, tapi punya kartunya sendiri
+  // di tab Pimpinan — jadi di tabel ini disaring keluar supaya tidak dobel.
+  const rows = (toolsHistory || []).filter(r => String(r.catatan || '').indexOf('PPT Pimpinan') !== 0);
+  // Simpan baris yang BENAR-BENAR tampil. Tombol Preview mengirim nomor urut
+  // dari daftar ini, jadi pencariannya harus di daftar ini juga — kalau dicari
+  // di toolsHistory (yang belum disaring) nomornya geser dan preview-nya
+  // membuka file lain.
+  toolsRiwayatTampil = rows;
+  toolsRenderSchedule();
+  if (!rows.length) { box.innerHTML = '<div class="tl-empty">Belum ada PPT yang tercatat. PPT yang dibuat otomatis (jadwal) maupun lewat tombol akan muncul di sini.</div>'; return; }
+  box.innerHTML = '<div class="tl-table-wrap"><table class="tl-table"><thead><tr><th>Waktu</th><th>Jenis</th><th>Status</th><th>Keterangan</th><th>Preview</th><th>Aksi</th></tr></thead><tbody>' +
+    rows.map((r, i) => {
+      const auto = r.jenis === 'otomatis', ok = r.status === 'sukses';
+      const fid = toolsDriveFileId(r.link);
+      const link = /^https:\/\//i.test(r.link || '') ? '<a class="tl-link" href="' + toolsEsc(r.link) + '" target="_blank" rel="noopener">Buka ↗</a>' : '<span class="tl-dash">–</span>';
+      const preview = fid ? '<button class="tl-btn tl-btn-sm" onclick="toolsOpenPreview(' + i + ')">▶ Preview</button>' : '<span class="tl-dash" title="Belum ada salinan yang bisa di-preview">–</span>';
+      const ket = [r.file ? '<b>' + toolsEsc(r.file) + '</b>' : '', r.slide ? toolsEsc(r.slide) : '', r.catatan ? toolsEsc(r.catatan) : '', r.oleh ? 'oleh ' + toolsEsc(r.oleh) : ''].filter(Boolean).join(' · ');
+      return '<tr><td class="tl-nowrap">' + toolsEsc(toolsFmtWaktu(r.waktu)) + '</td>' +
+        '<td><span class="tl-pill ' + (auto ? 'tl-pill-auto' : 'tl-pill-manual') + '">' + (auto ? 'Otomatis' : 'Manual') + '</span></td>' +
+        '<td><span class="tl-pill ' + (ok ? 'tl-pill-ok' : 'tl-pill-err') + '">' + (ok ? '✓ Sukses' : '✕ Gagal') + '</span></td>' +
+        '<td class="tl-ket">' + (ket || '<span class="tl-dash">–</span>') + '</td><td class="tl-nowrap">' + preview + '</td><td class="tl-nowrap">' + link + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+/** Buka modal preview Drive (iframe) untuk baris riwayat ke-i. Tidak perlu download. */
+function toolsOpenPreview(i) {
+  const r = (toolsRiwayatTampil || toolsHistory || [])[i]; if (!r) return;
+  const fid = toolsDriveFileId(r.link); if (!fid) return;
+  let modal = toolsEl('tlPreviewModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'tlPreviewModal';
+    modal.className = 'tl-modal-backdrop';
+    modal.innerHTML = '<div class="tl-modal"><div class="tl-modal-bar"><b id="tlPreviewTitle"></b><button class="tl-btn tl-btn-sm" onclick="toolsClosePreview()">✕ Tutup</button></div><iframe id="tlPreviewFrame" allow="fullscreen"></iframe></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) toolsClosePreview(); });
+  }
+  toolsEl('tlPreviewTitle').textContent = r.file || 'Preview PPT';
+  toolsEl('tlPreviewFrame').src = 'https://drive.google.com/file/d/' + fid + '/preview';
+  modal.style.display = 'flex';
+}
+function toolsClosePreview() {
+  const modal = toolsEl('tlPreviewModal'); if (!modal) return;
+  modal.style.display = 'none';
+  const fr = toolsEl('tlPreviewFrame'); if (fr) fr.src = 'about:blank';
+}
+
+// kartu jadwal otomatis: status diambil dari riwayat (run otomatis terakhir), bukan tebakan
+function toolsRenderSchedule() {
+  const pill = toolsEl('tlSchedPill'), body = toolsEl('tlSchedBody'); if (!pill || !body) return;
+  const auto = (toolsHistory || []).filter(r => r.jenis === 'otomatis');
+  if (toolsHistory === null) { pill.className = 'tl-pill tl-pill-off'; pill.textContent = 'Tidak diketahui'; body.innerHTML = '<p class="tl-desc">Riwayat belum bisa dimuat, jadi status jadwal belum bisa dicek.</p>'; return; }
+  if (!auto.length) {
+    pill.className = 'tl-pill tl-pill-off'; pill.textContent = 'Belum aktif';
+    body.innerHTML = '<p class="tl-desc">Belum ada PPT otomatis yang tercatat. Begitu jadwal (mis. jam 06:00) berjalan, hasilnya muncul di riwayat ini.</p>';
+    return;
+  }
+  const last = auto[0], ok = last.status === 'sukses';
+  const cutoff = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+  const wk = auto.filter(r => (r.tanggal || '') >= cutoff);
+  const okN = wk.filter(r => r.status === 'sukses').length;
+  pill.className = 'tl-pill ' + (ok ? 'tl-pill-ok' : 'tl-pill-err'); pill.textContent = ok ? 'Aktif' : 'Perlu dicek';
+  body.innerHTML = '<p class="tl-desc"><b>Terakhir berjalan:</b> ' + toolsEsc(toolsFmtWaktu(last.waktu)) + ' — ' + (ok ? 'berhasil' : 'GAGAL' + (last.catatan ? ' (' + toolsEsc(last.catatan) + ')' : '')) + '</p>' +
+    '<p class="tl-desc"><b>7 hari terakhir:</b> ' + okN + ' sukses, ' + (wk.length - okN) + ' gagal dari ' + wk.length + ' run.</p>';
+}
+
+// catat pembuatan PPT manual GAGAL ke server (dipakai kalau upload Drive tidak sempat/gagal dijalankan)
+async function toolsLogRun(status, file, slide, catatan) {
+  try {
+    const q = '?action=logPpt&status=' + encodeURIComponent(status) + '&file=' + encodeURIComponent(file || '') + '&slide=' + encodeURIComponent(slide || '') +
+      '&catatan=' + encodeURIComponent(catatan || '') + '&oleh=' + encodeURIComponent(localStorage.getItem('wms_name') || '');
+    await fetch(GAS_DASHBOARD_URL + q);
+  } catch (e) { console.warn('Gagal mencatat riwayat PPT:', e); }
+  toolsLoadHistory();
+}
+
+/** Ubah Blob jadi base64 (dipakai buat upload PPT lewat POST). */
+function toolsBlobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(',')[1] || '');
+    r.onerror = () => reject(new Error('Gagal membaca file PPT untuk diunggah.'));
+    r.readAsDataURL(blob);
+  });
+}
+
+/**
+ * Unggah PPT (blob) ke Drive lewat POST, biar bisa di-PREVIEW dari Riwayat
+ * tanpa download. Server yang catat ke Riwayat (link-nya dijamin valid,
+ * bukan dari sini) — jadi di sini kita cuma kirim & baca hasilnya.
+ * Kalau upload gagal (mis. jaringan kantor blokir), PPT TETAP sudah terunduh
+ * duluan (dipanggil setelah toolsDownloadBlob), jadi tidak menghalangi kerja.
+ */
+/** POST lewat XMLHttpRequest (bukan fetch) — fetch() sering gagal "Failed to fetch"
+ * untuk POST lintas domain ke Apps Script (redirect internal Google tidak selalu
+ * cocok dengan pemeriksaan CORS versi fetch). XHR lebih tahan terhadap kasus ini. */
+function toolsXhrPost(url, bodyObj, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.timeout = timeoutMs || 60000;
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try { resolve(JSON.parse(xhr.responseText)); } catch (e) { reject(new Error('Balasan server tidak valid (bukan JSON): ' + xhr.responseText.slice(0, 150))); }
+      } else { reject(new Error('HTTP ' + xhr.status + (xhr.statusText ? ' ' + xhr.statusText : ''))); }
+    };
+    xhr.onerror = () => reject(new Error('Gagal terhubung ke server (jaringan/CORS).'));
+    xhr.ontimeout = () => reject(new Error('Waktu unggah habis (lebih dari ' + Math.round((timeoutMs || 60000) / 1000) + ' detik).'));
+    xhr.send(JSON.stringify(bodyObj));
+  });
+}
+
+async function toolsUploadAndLog(blob, fileName, slide, catatan) {
+  try {
+    toolsUploadErr = '';
+    const base64 = await toolsBlobToBase64(blob);
+    const json = await toolsXhrPost(GAS_DASHBOARD_URL, { action: 'uploadPpt', base64: base64, fileName: fileName, slide: slide || '', catatan: catatan || '', oleh: localStorage.getItem('wms_name') || '' }, 90000);
+    if (!json || json.ok === false) throw new Error((json && json.error) || 'Upload ke Drive gagal');
+    toolsLoadHistory();
+    return json;
+  } catch (e) {
+    console.warn('Upload PPT ke Drive gagal, dicatat sebagai riwayat tanpa preview. Detail:', e);
+    toolsUploadErr = String((e && e.message) || e);
+    // pesan panjang (URL dokumentasi Google, dll) cukup di console, JANGAN di kolom Keterangan
+    const singkat = String(e.message || '').split('.')[0].split(/\s*\(https?:/)[0].trim().slice(0, 120);
+    await toolsLogRun('sukses', fileName, slide, (catatan || '') + ' \u2014 preview belum tersedia (' + (singkat || 'gagal diunggah ke Drive') + ')');
+    return null;
+  }
+}
+
+// ── pemetaan data server -> data slide ─────────────────────────────
+function toolsMapData(api) {
+  const withPct = v => {
+    const s = String(v == null ? '' : v).trim();
+    if (!s) return '-';
+    if (s.indexOf('%') >= 0) return s;
+    const n = parseFloat(s.replace(',', '.'));
+    if (!isNaN(n) && n >= 0 && n <= 1) return (n * 100).toFixed(2) + '%'; // pecahan (0.9767) -> 97.67%
+    return s + '%';
+  };
+  const pf = v => { const n = parseFloat(String(v).replace('%', '').replace(/\s/g, '').replace(',', '.')); return isNaN(n) ? 0 : n; };
+  const P = api.profil, perf = P.performance || {}, wl = P.workload || {}, cap = P.capacity || {}, at = P.areaTotal || {};
+  const inb = api.inbound, sto = api.storing, out = api.outbound, inv = api.inventory, pln = api.planner;
+  const pInb = parseFloat(inb.pct) || 0, pSto = parseFloat(sto.pct) || 0, pOut = parseFloat(out.pct) || 0;
+  return {
+    kapasitas: toolsFmt(cap.capacity), inventory: toolsFmt(cap.inventory), occupancy: withPct(perf.occupancy), accuracy: withPct(perf.accuracy),
+    slaStore: withPct(perf.slaStore), slaCust: withPct(perf.slaCustomer), workIn: toolsFmt(wl.inbound), workOut: toolsFmt(wl.outbound),
+    areas: [['Area 1', at.area1], ['Area 2', at.area2], ['Area 3', at.area3], ['Chatime', at.chatime]].map(a => [a[0], pf(withPct(a[1])), withPct(a[1])]),
+    slaGrw: withPct(pln.slaGrw), slaCustPlanner: withPct(pln.slaCust),
+    inb: { total: toolsFmt(inb.totalToday), fin: toolsFmt(inb.finish), pro: toolsFmt(inb.proses), blm: toolsFmt(inb.belum), pct: pInb },
+    sto: { total: toolsFmt(sto.totalLC), rel: toolsFmt(sto.release), pick: toolsFmt(sto.picked), stg: toolsFmt(sto.staged), sisa: toolsFmt(sto.sisa), pct: pSto },
+    out: { total: toolsFmt(out.totalLC), antri: toolsFmt(out.antri), blm: toolsFmt(out.belum), sel: toolsFmt(out.selesai), pct: pOut },
+    inv: { lok: toolsFmt(inv.lokasi), hit: toolsFmt(inv.hit), miss: toolsFmt(inv.miss), akurasi: withPct(inv.akurasi), cc: withPct(inv.pctCC) },
+    rata: api.rata != null ? api.rata : Math.round(((pInb + pSto + pOut) / 3) * 10) / 10,
+    jam: api.jam || ''
+  };
+}
+
+function toolsMapPlannerMaster(api) {
+  const pm = api.plannerMaster || {};
+  const agg = x => x || { cbmPlan: 0, cbmShipped: 0, pct: 0, lc: 0, caseIdPlan: 0, caseIdShipped: 0, caseIdPct: 0, cbmPlanShift1: 0, cbmPlanShift2: 0, batch: { B1: { cbm: 0, caseId: 0 }, B2: { cbm: 0, caseId: 0 }, B3: { cbm: 0, caseId: 0 }, B4: { cbm: 0, caseId: 0 } } };
+  return { yesterday: agg(pm.yesterday), today: agg(pm.today) };
+}
+function toolsMapOutstanding(api) { return api.outstanding || {}; }
+function toolsMapVendorTrend(api) { return api.vendorTrend || {}; }
+function toolsMapStockTransfer(api) { return api.stockTransfer || {}; }
+function toolsMapInboundPlanning(api) { return api.inboundPlanning || {}; }
+
+// latar gradien biru -> kuning -> oranye (seperti slide contoh)
+/* Latar gradasi slide.
+   Dulu: PNG 1920x1080 = 2,1 MB, dan pptxgenjs menyalinnya SEKALI PER SLIDE,
+   jadi 11 slide = ~23 MB — itu biang kerok ukuran PPT, bukan screenshot-nya.
+   Sekarang: JPEG 1280x720 (gradasi halus, tidak butuh transparansi) = ~23 KB.
+   Selisih warnanya rata-rata 0,6 dari 255 alias tidak kelihatan mata.
+   Hasilnya dihitung sekali lalu dipakai ulang. */
+var toolsBgCache = null;
+function toolsGradientBg() {
+  if (toolsBgCache) return toolsBgCache;
+  const W = 1280, H = 720, S = W / 1920;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'); const grd = g.createLinearGradient(0, 0, 2060 * S, 596 * S);
+  grd.addColorStop(0, 'rgb(112,152,218)'); grd.addColorStop(0.5, 'rgb(250,206,104)'); grd.addColorStop(1, 'rgb(240,92,72)');
+  g.fillStyle = grd; g.fillRect(0, 0, W, H);
+  toolsBgCache = c.toDataURL('image/jpeg', 0.82).replace(/^data:/, '');
+  return toolsBgCache;
+}
+
+// ── SLOT SCREENSHOT slide 2 (Profil DC & Daily Proses) ─────────────
+// Gambar ditempel/dipilih manual dari panel Profil DC; hanya disimpan di memori halaman ini (tidak dipakai lagi setelah refresh)
+var TOOLS_SHOTS = { a: null, b: null, c: null, d: null };
+var toolsCapPromise = null, toolsCapAt = 0, toolsCapSudah = false;
+var toolsUploadErr = '';
+var TOOLS_SHOT_KEYS = ['a', 'b', 'c', 'd']; // a,b = slide 2 (Profil DC); c,d = slide 5 (Trend Daily Vendor)
+var toolsShotSel = null;
+
+function toolsShotsPaneVisible() {
+  const pg = toolsEl('page-tools'), pane = toolsEl('tlPanePagi');
+  return !!(pg && pg.classList.contains('active') && pane && pane.style.display !== 'none');
+}
+function toolsShotsReady() { return (TOOLS_SHOTS.a && TOOLS_SHOTS.b) ? TOOLS_SHOTS : null; }
+function toolsVendorShotsReady() { return (TOOLS_SHOTS.c && TOOLS_SHOTS.d) ? { a: TOOLS_SHOTS.c, b: TOOLS_SHOTS.d } : null; }
+
+function toolsShotRender(note) {
+  TOOLS_SHOT_KEYS.forEach(function (k) {
+    const el = toolsEl('tlShot' + k.toUpperCase());
+    if (!el) return;
+    const s = TOOLS_SHOTS[k], img = el.querySelector('img'), at = el.querySelector('.tl-shot-at');
+    el.classList.toggle('has', !!s);
+    el.classList.toggle('sel', toolsShotSel === k);
+    if (img) { if (s) img.src = s.url; else img.removeAttribute('src'); }
+    if (at) at.textContent = s ? ((s.auto ? 'Otomatis ' : 'Ditempel ') + s.at + ' · ' + s.w + '×' + s.h + ' px') : '';
+  });
+  const st = toolsEl('tlShotState');
+  if (st) st.textContent = note || ('Slide 2: ' + (toolsShotsReady() ? '✅ persis PPT asli' : 'kartu otomatis') + '  ·  Slide 5: ' + (toolsVendorShotsReady() ? '✅ persis PPT asli' : 'tampilan otomatis') + '  (isi kedua gambar tiap slide supaya persis PPT asli)');
+}
+
+// baca file gambar -> kecilkan (maks 1800 px lebar) -> JPEG
+function toolsShotLoad(file, key) {
+  if (!file || !/^image\//.test(file.type || '')) { toolsShotRender('File harus berupa gambar (PNG/JPG).'); return; }
+  const fr = new FileReader();
+  fr.onerror = function () { toolsShotRender('Gambar gagal dibaca, coba lagi.'); };
+  fr.onload = function () {
+    const im = new Image();
+    im.onerror = function () { toolsShotRender('Gambar gagal dibuka, coba file lain.'); };
+    im.onload = function () {
+      const sc = Math.min(1, 1800 / im.naturalWidth), w = Math.max(1, Math.round(im.naturalWidth * sc)), h = Math.max(1, Math.round(im.naturalHeight * sc));
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.drawImage(im, 0, 0, w, h);
+      const url = c.toDataURL('image/jpeg', 0.92), d = new Date();
+      TOOLS_SHOTS[key] = { url: url, data: url.replace(/^data:/, ''), w: w, h: h, at: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') };
+      toolsShotSel = null;
+      toolsShotRender();
+    };
+    im.src = fr.result;
+  };
+  fr.readAsDataURL(file);
+}
+
+(function () {
+  const keyOf = function (t) { const s = t && t.closest ? t.closest('#tlShots .tl-shot') : null; return s ? s.getAttribute('data-shot') : null; };
+  document.addEventListener('click', function (e) {
+    const t = e.target, key = keyOf(t);
+    if (!key) return;
+    if (t.closest('.tl-shot-clear')) { TOOLS_SHOTS[key] = null; toolsShotSel = null; toolsShotRender(); e.stopPropagation(); return; }
+    if (t.closest('.tl-shot-pick')) { const f = toolsEl('tlShotFile' + key.toUpperCase()); if (f) { f.value = ''; f.click(); } return; }
+    toolsShotSel = key; toolsShotRender('Kotak dipilih — tekan Ctrl+V untuk menempel screenshot ke sini.');
+  });
+  document.addEventListener('change', function (e) {
+    const t = e.target;
+    if (t && t.matches && t.matches('#tlShots input[type=file]')) { const key = keyOf(t); if (key && t.files && t.files[0]) toolsShotLoad(t.files[0], key); }
+  });
+  document.addEventListener('paste', function (e) {
+    if (!toolsShotsPaneVisible()) return;
+    const tag = (e.target && e.target.tagName) || '';
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable)) return;
+    const items = (e.clipboardData && e.clipboardData.items) || [];
+    let file = null;
+    for (let i = 0; i < items.length; i++) { if (items[i].kind === 'file' && /^image\//.test(items[i].type)) { file = items[i].getAsFile(); break; } }
+    if (!file) return;
+    e.preventDefault();
+    const key = toolsShotSel || TOOLS_SHOT_KEYS.filter(function (k) { return !TOOLS_SHOTS[k]; })[0];
+    if (!key) { toolsShotRender('Semua kotak sudah terisi. Klik kotak yang mau diganti, lalu Ctrl+V lagi.'); return; }
+    toolsShotLoad(file, key);
+  });
+  document.addEventListener('dragover', function (e) { const s = e.target && e.target.closest ? e.target.closest('#tlShots .tl-shot') : null; if (s) { e.preventDefault(); s.classList.add('drag'); } });
+  document.addEventListener('dragleave', function (e) { const s = e.target && e.target.closest ? e.target.closest('#tlShots .tl-shot') : null; if (s) s.classList.remove('drag'); });
+  document.addEventListener('drop', function (e) {
+    const s = e.target && e.target.closest ? e.target.closest('#tlShots .tl-shot') : null;
+    if (!s) return;
+    e.preventDefault(); s.classList.remove('drag');
+    const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) toolsShotLoad(f, s.getAttribute('data-shot'));
+  });
+})();
+
+// ── SLIDE 2 versi gambar: tata letak persis PPT asli (peta + grafik hasil screenshot) ──
+function toolsBuildProfilShotsSlide(pres, D, bgData, shots) {
+  const FONT = 'Arial', RED = '9B0A0A', BLUE = '1A1AFF', LS = 12.6;
+  const s = pres.addSlide();
+  s.background = { data: bgData };
+  s.addShape(pres.ShapeType.rect, { x: 0.30, y: 0.26, w: 12.76, h: 6.95, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  const T = (text, o) => s.addText(text, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, o));
+
+  T('PROFIL DC AHI SIDOARJO', { x: 0.5, y: 0.27, w: 10, h: 0.55, fontSize: 26.5, bold: true, color: '000000' });
+  T('Overview of DC Profile & Operations Daily Reports', { x: 0.5, y: 0.70, w: 10, h: 0.4, fontSize: 17.3, italic: true, color: '1A1A1A' });
+  T('Profil Dc Sidoarjo', { x: 0.367, y: 1.1, w: 6.249, h: 0.3, fontSize: 14, bold: true, italic: true, color: '8B0A14', align: 'center', valign: 'middle' });
+  T('Daily Proses today', { x: 6.734, y: 1.1, w: 6.25, h: 0.3, fontSize: 14, bold: true, italic: true, color: '1F4E9E', align: 'center', valign: 'middle' });
+  s.addShape(pres.ShapeType.line, { x: 4.85, y: 1.254, w: 3.5, h: 0, line: { color: '1A1AE6', width: 1.25, dashType: 'sysDot', endArrowType: 'triangle' } });
+
+  // gambar: dimuat utuh (tanpa gepeng) di dalam kotak, dengan bayangan tipis
+  const SHADOW = { type: 'outer', color: '000000', opacity: 0.4, blur: 5, offset: 2, angle: 90 };
+  const place = (shot, bx, by, bw, bh) => {
+    s.addShape(pres.ShapeType.rect, { x: bx, y: by, w: bw, h: bh, fill: { color: '0D0D0D' }, line: { color: '0D0D0D', width: 0 }, shadow: SHADOW });
+    const k = Math.min(bw / shot.w, bh / shot.h), w = shot.w * k, h = shot.h * k;
+    s.addImage({ data: shot.data, x: bx + (bw - w) / 2, y: by + (bh - h) / 2, w: w, h: h });
+  };
+  place(shots.a, 0.367, 1.38, 6.249, 3.30);
+  place(shots.b, 6.734, 1.38, 6.25, 3.29);
+
+  // teks laporan (bullet ❖, ukuran & posisi seperti PPT asli)
+  const lab = t => ({ text: t, options: { bold: true, italic: true, color: RED } });
+  const B = t => ({ text: t, options: { bold: true, italic: true } });
+  const N = t => ({ text: t });
+  const fin = (runs, extra) => runs.map((r, i) => {
+    const o = Object.assign({ lineSpacing: LS }, r.options || {});
+    if (i === runs.length - 1) o.breakLine = true;
+    if (extra && i === 0) Object.assign(o, extra);
+    return { text: r.text, options: o };
+  });
+  const bul = runs => fin(runs, { bullet: { indent: 24, code: '2756' }, indentLevel: 1 });
+  const plain = runs => fin(runs);
+  const head = t => fin([{ text: t, options: { bold: true, italic: true, fontSize: 11.5, paraSpaceAfter: 13.8 } }]);
+
+  const left = [].concat(
+    head('Laporan Ringkasan Umum Profil DC AHI Sidoarjo:'),
+    bul([lab('Kapasitas & Okupansi:'), N(' Occupancy sebesar '), B(D.occupancy + ','), N(' dari total '), B('kapasitas ' + D.kapasitas + ' dengan inventory terisi ' + D.inventory), N('.')]),
+    bul([lab('Akurasi & SLA'), N(': Accuracy mencapai '), B(D.accuracy + ', SLA Store ' + D.slaStore + ', dan SLA Customer ' + D.slaCust + '.')]),
+    bul([lab('Beban Kerja (Workload): Inbound ' + D.workIn + ' dan Outbound ' + D.workOut + '.')]),
+    plain([N('Pencapaian Per Area:')]),
+    D.areas.map(a => plain([N(a[0] + ': ' + a[2])])).reduce((x, y) => x.concat(y), []),
+    plain([{ text: 'SLA Planner Kemarin: SLA GRW ' + D.slaGrw + ' dan SLA Customer ' + D.slaCustPlanner + '.', options: { bold: true, italic: true, color: BLUE } }])
+  );
+  T(left, { x: 0.49, y: 4.79, w: 5.7, h: 2.35, fontSize: 10.5, color: '000000' });
+
+  const right = [].concat(
+    head('Laporan ringkasan progres operasional harian DC AHI Sidoarjo:'),
+    bul([lab('Inbound Hari Ini:'), N(' Total ' + D.inb.total + ' LC (Selesai ' + D.inb.fin + ', Proses ' + D.inb.pro + ', Belum ' + D.inb.blm + '), pencapaian ' + D.inb.pct.toFixed(1) + '%.')]),
+    bul([lab('Storing:'), N(' Total ' + D.sto.total + ' LC, Release Case ' + D.sto.rel + ', Picked Case ' + D.sto.pick + ', Staged Case ' + D.sto.stg + ', Sisa ' + D.sto.sisa + ' Case, pencapaian ' + D.sto.pct.toFixed(1) + '%.')]),
+    bul([lab('Outbound Hari Ini:'), N(' Total ' + D.out.total + ' LC (Antri ' + D.out.antri + ', Belum Datang ' + D.out.blm + ', Selesai ' + D.out.sel + '), pencapaian ' + D.out.pct.toFixed(1) + '%.')]),
+    bul([lab('Cycle Count & Akurasi Inventory:'), N(' Total ' + D.inv.lok + ' lokasi (CC ' + D.inv.cc + '), Hit ' + D.inv.hit + ', Miss ' + D.inv.miss + ', Akurasi ' + D.inv.akurasi + '.')]),
+    (function () { const r = bul([lab('SLA Planner:'), N(' SLA GRW ' + D.slaGrw + ' dan SLA Customer ' + D.slaCustPlanner + '.')]); r[0].options.paraSpaceAfter = 13; return r; })(),
+    plain([{ text: 'Untuk progres daily operasional di lapangan saat ini pukul ' + D.jam + ' WIB sebesar ' + D.rata.toFixed(1) + '%.', options: { bold: true, italic: true, color: BLUE } }])
+  );
+  T(right, { x: 6.86, y: 4.79, w: 6.05, h: 2.35, fontSize: 10.5, color: '000000' });
+
+  s.addShape(pres.ShapeType.line, { x: 6.70, y: 4.84, w: 0, h: 2.35, line: { color: 'F04438', width: 1.25, dashType: 'sysDot' } });
+  s.addNotes('Dibuat otomatis dari data dashboard WMS AHI Sidoarjo pukul ' + D.jam + ' WIB. Gambar peta/grafik berasal dari screenshot panel Profil DC & Daily Proses.');
+}
+
+// ── SLIDE 1: Profil DC + Daily Proses ──────────────────────────────
+function toolsBuildProfilDailySlide(pres, D, bgData, shots) {
+  if (shots && shots.a && shots.b) return toolsBuildProfilShotsSlide(pres, D, bgData, shots);
+  const FONT = 'Arial', RED_LABEL = 'B4121F', BLUE_TXT = '1F3FBF', NAVY = '1F3A8A';
+  const s = pres.addSlide();
+  s.background = { data: bgData };
+  s.addShape(pres.ShapeType.roundRect, { x: 0.25, y: 0.25, w: 12.83, h: 7.0, rectRadius: 0.1, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  const T = (text, o) => s.addText(text, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, o));
+
+  T('PROFIL DC AHI SIDOARJO', { x: 0.6, y: 0.42, w: 10, h: 0.55, fontSize: 30, bold: true, color: '111111' });
+  T('Overview of DC Profile & Operations Daily Reports', { x: 0.6, y: 0.98, w: 10, h: 0.4, fontSize: 18, italic: true, color: '222222' });
+  T('Profil Dc Sidoarjo', { x: 0.6, y: 1.5, w: 6.0, h: 0.35, fontSize: 16, bold: true, italic: true, color: 'A50F1E', align: 'center' });
+  T('Daily Proses today', { x: 6.85, y: 1.5, w: 6.0, h: 0.35, fontSize: 16, bold: true, italic: true, color: NAVY, align: 'center' });
+  s.addShape(pres.ShapeType.line, { x: 4.75, y: 1.68, w: 3.5, h: 0, line: { color: NAVY, width: 1.25, dashType: 'sysDot', endArrowType: 'triangle' } });
+
+  // panel gelap kiri: Profil DC
+  const LX = 0.6, PY = 2.0, PW = 6.0, PH = 2.75;
+  s.addShape(pres.ShapeType.roundRect, { x: LX, y: PY, w: PW, h: PH, rectRadius: 0.08, fill: { color: '0B0709' }, line: { color: '7A1420', width: 1 } });
+  T('DC PROFILE  ·  RINGKASAN UMUM', { x: LX + 0.17, y: PY + 0.1, w: 4, h: 0.2, fontSize: 8, bold: true, color: 'FF4D5E', charSpacing: 1 });
+  function card(x, y, w, h, o) {
+    s.addShape(pres.ShapeType.roundRect, { x: x, y: y, w: w, h: h, rectRadius: 0.05, fill: { color: o.bg }, line: { color: o.accent, width: 0.9 } });
+    T(o.label, { x: x + 0.08, y: y + 0.07, w: w - 0.16, h: 0.17, fontSize: 7, bold: true, color: 'B8B8C8' });
+    T(o.value, { x: x + 0.08, y: y + 0.24, w: w - 0.16, h: 0.4, fontSize: o.valueSize || 20, bold: true, color: o.valueColor || 'FFFFFF', fit: 'shrink' });
+    if (o.sub) T(o.sub, { x: x + 0.08, y: y + 0.66, w: w - 0.16, h: 0.3, fontSize: 7, color: 'C9C9D6' });
+    if (o.pct) T(o.pct, { x: x + 0.08, y: y + h - 0.24, w: w - 0.16, h: 0.18, fontSize: 10, bold: true, color: o.accent });
+  }
+  const kx = LX + 0.15, kw = 1.34, kg = 0.113, ky = PY + 0.38, kh = 0.86;
+  [['STORAGE CAPACITY', D.kapasitas, 'CBM'], ['INVENTORY', D.inventory, 'CBM'], ['OCCUPANCY', D.occupancy, 'terisi'], ['ACCURACY', D.accuracy, 'inventory']]
+    .forEach((c, i) => card(kx + i * (kw + kg), ky, kw, kh, { label: c[0], value: c[1], sub: c[2], accent: 'C81E32', bg: '160A0E', valueColor: 'FF5A6A' }));
+  const wy = ky + kh + 0.12;
+  card(kx, wy, 1.75, 0.6, { label: 'WORKLOAD INBOUND', value: D.workIn, accent: 'C81E32', bg: '160A0E', valueSize: 16 });
+  card(kx, wy + 0.68, 1.75, 0.6, { label: 'WORKLOAD OUTBOUND', value: D.workOut, accent: 'C81E32', bg: '160A0E', valueSize: 16 });
+  s.addShape(pres.ShapeType.roundRect, { x: kx + 1.88, y: wy, w: 3.82, h: 1.28, rectRadius: 0.05, fill: { color: '160A0E' }, line: { color: 'C81E32', width: 0.9 } });
+  T('PENCAPAIAN PER AREA (%)', { x: kx + 1.98, y: wy + 0.06, w: 3.6, h: 0.17, fontSize: 7, bold: true, color: 'B8B8C8' });
+  const areaVals = D.areas.map(a => a[1]);
+  const aMin = Math.max(0, Math.floor(Math.min.apply(null, areaVals) - 1)), aMax = Math.max.apply(null, areaVals) + 0.5;
+  s.addChart(pres.charts.BAR, [{ name: 'Pencapaian', labels: D.areas.map(a => a[0]), values: areaVals }], {
+    x: kx + 1.93, y: wy + 0.2, w: 3.72, h: 1.05, barDir: 'col', barGapWidthPct: 60, chartColors: ['FF3B4E'], showLegend: false, showTitle: false,
+    showValue: true, dataLabelPosition: 'outEnd', dataLabelFontSize: 8, dataLabelColor: 'FFFFFF', dataLabelFontFace: FONT, dataLabelFormatCode: '0.00',
+    catAxisLabelColor: 'D5D5E0', catAxisLabelFontSize: 8, catAxisLabelFontFace: FONT, valAxisHidden: true, valAxisMinVal: aMin, valAxisMaxVal: aMax,
+    valGridLine: { style: 'none' }, catGridLine: { style: 'none' }, catAxisLineShow: false,
+    plotArea: { fill: { color: '160A0E' } }, chartArea: { fill: { color: '160A0E' } }
+  });
+
+  // panel gelap kanan: Daily Proses
+  const RX = 6.85, NB = '0C1220';
+  s.addShape(pres.ShapeType.roundRect, { x: RX, y: PY, w: PW, h: PH, rectRadius: 0.08, fill: { color: '070A12' }, line: { color: '24356B', width: 1 } });
+  T('THROUGHPUT DASHBOARD  ·  RINGKASAN OPERASIONAL HARI INI', { x: RX + 0.17, y: PY + 0.1, w: 5.6, h: 0.2, fontSize: 8, bold: true, color: '7FA2FF', charSpacing: 1 });
+  const cw = 1.06, cg = 0.1, cx0 = RX + 0.15, cy0 = PY + 0.38, ch = 1.17;
+  [
+    { label: 'INBOUND', value: D.inb.total, sub: 'Selesai ' + D.inb.fin + ' · Proses ' + D.inb.pro + ' · Belum ' + D.inb.blm, pct: D.inb.pct.toFixed(1) + '%', accent: '3B82F6' },
+    { label: 'STORING', value: D.sto.total, sub: 'Picked ' + D.sto.pick + ' dari ' + D.sto.rel, pct: D.sto.pct.toFixed(1) + '%', accent: 'EF4444' },
+    { label: 'OUTBOUND', value: D.out.total, sub: 'Antri ' + D.out.antri + ' · Belum ' + D.out.blm + ' · Selesai ' + D.out.sel, pct: D.out.pct.toFixed(1) + '%', accent: 'F59E0B' },
+    { label: 'INDEX PLANNER', value: D.slaCustPlanner, sub: 'GRW ' + D.slaGrw + '\nCUST ' + D.slaCustPlanner, pct: 'SLA', accent: '8B5CF6', valueSize: 14 },
+    { label: 'INVENTORY', value: D.inv.akurasi, sub: 'Hit ' + D.inv.hit + ' · Miss ' + D.inv.miss, pct: 'CC ' + D.inv.cc.replace('.00', ''), accent: '10B981', valueSize: 17 }
+  ].forEach((c, i) => card(cx0 + i * (cw + cg), cy0, cw, ch, { label: c.label, value: c.value, sub: c.sub, pct: c.pct, accent: c.accent, bg: NB, valueColor: c.accent, valueSize: c.valueSize || 22 }));
+  const dy = cy0 + ch + 0.1;
+  s.addShape(pres.ShapeType.roundRect, { x: cx0, y: dy, w: 5.7, h: 1.02, rectRadius: 0.05, fill: { color: NB }, line: { color: '24356B', width: 0.9 } });
+  s.addChart(pres.charts.DOUGHNUT, [{ name: 'Progres', labels: ['Inbound', 'Storing', 'Outbound'], values: [D.inb.pct, D.sto.pct, Math.max(D.out.pct, 0.0001)] }], {
+    x: cx0 + 0.04, y: dy + 0.04, w: 0.94, h: 0.94, holeSize: 68, chartColors: ['3B82F6', 'EF4444', 'F59E0B'],
+    showLegend: false, showTitle: false, showLabel: false, showValue: false, showPercent: false,
+    dataBorder: { pt: 1, color: NB }, plotArea: { fill: { color: NB } }, chartArea: { fill: { color: NB } }
+  });
+  [['Inbound', D.inb.pct, '3B82F6'], ['Storing', D.sto.pct, 'EF4444'], ['Outbound', D.out.pct, 'F59E0B']].forEach((r, i) => {
+    const ry = dy + 0.17 + i * 0.235;
+    s.addShape(pres.ShapeType.rect, { x: cx0 + 1.15, y: ry + 0.045, w: 0.09, h: 0.09, fill: { color: r[2] }, line: { color: r[2], width: 0 } });
+    T(r[0], { x: cx0 + 1.32, y: ry, w: 1.0, h: 0.18, fontSize: 9, color: 'E5E7EB' });
+    T(r[1].toFixed(1) + '%', { x: cx0 + 2.2, y: ry, w: 0.6, h: 0.18, fontSize: 9, bold: true, color: 'FFFFFF', align: 'right' });
+  });
+  T(D.rata.toFixed(1) + '%', { x: cx0 + 3.25, y: dy + 0.1, w: 2.4, h: 0.42, fontSize: 24, bold: true, color: 'FFFFFF' });
+  T('Rata-rata progres daily (Inbound, Storing, Outbound)', { x: cx0 + 3.25, y: dy + 0.54, w: 2.4, h: 0.2, fontSize: 6.5, color: 'B8C0D8' });
+  T([{ text: 'Target shift: ', options: { color: 'B8C0D8' } }, { text: 'Shift 1 70%', options: { color: '9DB8FF', bold: true } }, { text: '  ·  ', options: { color: 'B8C0D8' } }, { text: 'Shift 2 30%', options: { color: 'FFC266', bold: true } }],
+    { x: cx0 + 3.25, y: dy + 0.76, w: 2.4, h: 0.18, fontSize: 7.5 });
+
+  // teks highlight (disusun dari angka yang sama dengan kartu di atas)
+  const BY = 4.92, BH = 2.25, FS = 10.5;
+  const label = t => ({ text: t, options: { bold: true, italic: true, color: RED_LABEL } });
+  const val = t => ({ text: t, options: { bold: true } });
+  const para = (runs, bullet) => {
+    const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) }));
+    if (bullet) out.unshift({ text: '◆ ', options: { color: RED_LABEL, fontSize: 8 } });
+    out[out.length - 1].options.breakLine = true;
+    return out;
+  };
+  const A = D.areas.map(a => a[0] + ': ' + a[2]);
+  const left = [].concat(
+    para([{ text: 'Laporan Ringkasan Umum Profil DC AHI Sidoarjo:', options: { bold: true, italic: true, fontSize: 12, paraSpaceAfter: 4 } }]),
+    para([label('Kapasitas & Okupansi: '), { text: 'Occupancy sebesar ' }, val(D.occupancy), { text: ', dari total kapasitas ' }, val(D.kapasitas), { text: ' dengan inventory terisi ' }, val(D.inventory), { text: '.' }], true),
+    para([label('Akurasi & SLA: '), { text: 'Accuracy mencapai ' }, val(D.accuracy), { text: ', SLA Store ' }, val(D.slaStore), { text: ', dan SLA Customer ' }, val(D.slaCust), { text: '.' }], true),
+    para([label('Beban Kerja (Workload): '), { text: 'Inbound ' }, val(D.workIn), { text: ' dan Outbound ' }, val(D.workOut), { text: '.' }], true),
+    para([{ text: 'Pencapaian Per Area:', options: { bold: true } }]),
+    para([{ text: A[0] + '    |    ' + A[1] }]),
+    para([{ text: A[2] + '    |    ' + A[3] }]),
+    para([{ text: 'SLA Planner Kemarin: SLA GRW ' + D.slaGrw + ' dan SLA Customer ' + D.slaCustPlanner + '.', options: { bold: true, italic: true, color: BLUE_TXT } }])
+  );
+  T(left, { x: LX, y: BY, w: PW, h: BH, fontSize: FS, color: '111111', paraSpaceAfter: 3 });
+  const right = [].concat(
+    para([{ text: 'Laporan ringkasan progres operasional harian DC AHI Sidoarjo:', options: { bold: true, italic: true, fontSize: 12, paraSpaceAfter: 4 } }]),
+    para([label('Inbound Hari Ini: '), { text: 'Total ' + D.inb.total + ' LC (Selesai ' + D.inb.fin + ', Proses ' + D.inb.pro + ', Belum ' + D.inb.blm + '), pencapaian ' + D.inb.pct.toFixed(1) + '%.' }], true),
+    para([label('Storing: '), { text: 'Total ' + D.sto.total + ' LC, Release Case ' + D.sto.rel + ', Picked Case ' + D.sto.pick + ', Staged Case ' + D.sto.stg + ', Sisa ' + D.sto.sisa + ' Case, pencapaian ' + D.sto.pct.toFixed(1) + '%.' }], true),
+    para([label('Outbound Hari Ini: '), { text: 'Total ' + D.out.total + ' LC (Antri ' + D.out.antri + ', Belum Datang ' + D.out.blm + ', Selesai ' + D.out.sel + '), pencapaian ' + D.out.pct.toFixed(1) + '%.' }], true),
+    para([label('Cycle Count & Akurasi Inventory: '), { text: 'Total ' + D.inv.lok + ' lokasi (CC ' + D.inv.cc + '), Hit ' + D.inv.hit + ', Miss ' + D.inv.miss + ', Akurasi ' + D.inv.akurasi + '.' }], true),
+    para([label('SLA Planner: '), { text: 'SLA GRW ' + D.slaGrw + ' dan SLA Customer ' + D.slaCustPlanner + '.' }], true),
+    para([{ text: 'Untuk progres daily operasional di lapangan saat ini pukul ' + D.jam + ' WIB sebesar ' + D.rata.toFixed(1) + '%.', options: { bold: true, italic: true, color: BLUE_TXT } }])
+  );
+  T(right, { x: RX, y: BY, w: PW, h: BH, fontSize: FS, color: '111111', paraSpaceAfter: 3 });
+  s.addNotes('Dibuat otomatis dari data dashboard WMS AHI Sidoarjo pukul ' + D.jam + ' WIB. Kartu, grafik dan donut adalah objek PowerPoint asli (bisa diedit).');
+}
+
+
+// ── slide builders (di-generate & diuji terpisah sebelum dipasang) ──
+// ══════════ SLIDE BARU (versi Morning Report): kerangka + OD Gantung, ATK, Skema Reduce ══════════
+function toolsFrameSlide(pres, bgData, title, subtitle) {
+  const s = pres.addSlide();
+  s.background = { data: bgData };
+  s.addShape(pres.ShapeType.rect, { x: 0.30, y: 0.26, w: 12.76, h: 6.95, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  s.addText(title, { x: 0.5, y: 0.27, w: 11, h: 0.55, fontFace: 'Arial', margin: 0, isTextBox: true, valign: 'top', fontSize: 26.5, bold: true, color: '000000' });
+  s.addText(subtitle, { x: 0.5, y: 0.70, w: 11, h: 0.4, fontFace: 'Arial', margin: 0, isTextBox: true, valign: 'top', fontSize: 17.3, italic: true, color: '1A1A1A' });
+  return s;
+}
+function toolsNf(n) { return Number(n || 0).toLocaleString('id-ID'); }
+
+function buildOdGantungSlide(pres, od, bgData) {
+  const s = toolsFrameSlide(pres, bgData, 'OD Gantung In Receive AHI', 'Monitoring Outstanding OD & Receiving Progress');
+  const T = (t, o) => s.addText(t, Object.assign({ fontFace: 'Arial', margin: 0, isTextBox: true, valign: 'top' }, o));
+  const box = (x, y, w, h, line) => s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.06, fill: { color: 'FFFFFF' }, line: { color: line || 'E5E7EB', width: 0.75 }, shadow: { type: 'outer', color: '000000', opacity: 0.12, blur: 4, offset: 1, angle: 90 } });
+  const cards = [['TOTAL OD GANTUNG', toolsNf(od.uniqueOd), 'Unik Order'], ['TOTAL BARIS / ARTIKEL', toolsNf(od.rows), 'Item Tertahan'], ['OD MEMILIKI LPPB DO', toolsNf(od.odLppbDo), 'Dilaporkan – kolom AP'], ['STATUS PELAPORAN LPPB', od.lppbPct + '%', 'LPPB DO dari OD']];
+  const cw = 2.1, gap = 0.133;
+  cards.forEach((c, i) => {
+    const x = 0.5 + i * (cw + gap);
+    box(x, 1.2, cw, 1.0);
+    T(c[0], { x: x + 0.14, y: 1.3, w: cw - 0.28, h: 0.2, fontSize: 7, bold: true, color: '6B7280' });
+    T(c[1], { x: x + 0.14, y: 1.55, w: cw - 0.28, h: 0.4, fontSize: 22, bold: true, color: '111111' });
+    T(c[2], { x: x + 0.14, y: 1.95, w: cw - 0.28, h: 0.18, fontSize: 6.5, color: '9CA3AF' });
+  });
+  // Summary Bongkar
+  box(0.5, 2.35, 8.8, 1.85);
+  T('Summary Bongkar – Datang / Belum', { x: 0.7, y: 2.45, w: 6, h: 0.3, fontSize: 12, bold: true, color: '111111' });
+  T('OD Sudah Bongkar: ' + toolsNf(od.sudahBongkarOd), { x: 6.5, y: 2.47, w: 2.6, h: 0.25, fontSize: 8, bold: true, color: '6B7280', align: 'right' });
+  const lppbTop = Object.keys(od.lppb || {}).sort((a, b) => od.lppb[b] - od.lppb[a]).slice(0, 3).map(k => k + ' ' + toolsNf(od.lppb[k])).join(' | ');
+  const mini = [['SUDAH BONGKAR (OD)', toolsNf(od.sudahBongkarOd), '10B981'], ['BELUM BONGKAR (OD)', toolsNf(od.belumBongkarOd), 'F59E0B'], ['OD ADA SELISIH QTY', toolsNf(od.odSelisih), 'EF4444'], ['STATUS LPPB', lppbTop || '-', '3B82F6']];
+  mini.forEach((m, i) => {
+    const x = 0.7 + i * 2.1;
+    s.addShape(pres.ShapeType.roundRect, { x, y: 2.85, w: 1.95, h: 1.15, rectRadius: 0.05, fill: { color: 'F9FAFB' }, line: { color: 'E5E7EB', width: 0.5 } });
+    T(m[0], { x: x + 0.1, y: 2.93, w: 1.75, h: 0.2, fontSize: 6.5, bold: true, color: '6B7280' });
+    T(m[1], { x: x + 0.1, y: 3.2, w: 1.75, h: 0.7, fontSize: i === 3 ? 8.5 : 20, bold: true, color: m[2], fit: 'shrink' });
+  });
+  // Aging
+  box(0.5, 4.35, 8.8, 2.65);
+  T('Summary Aging Outstanding DO', { x: 0.7, y: 4.45, w: 6, h: 0.3, fontSize: 12, bold: true, color: '111111' });
+  const colors = ['F59E0B', '10B981', '3B82F6', '8B5CF6', 'EC4899', 'EF4444'];
+  const total = (od.buckets || []).reduce((a, b) => a + b.od, 0) || 1;
+  let bx = 0.7; const bw = 8.4;
+  (od.buckets || []).forEach((b, i) => {
+    const w = Math.max(0.02, bw * b.od / total);
+    if (b.od > 0) { s.addShape(pres.ShapeType.rect, { x: bx, y: 4.95, w, h: 0.16, fill: { color: colors[i] }, line: { width: 0 } }); bx += w; }
+  });
+  const cw2 = (bw - 0.1 * 5) / 6;
+  (od.buckets || []).forEach((b, i) => {
+    const x = 0.7 + i * (cw2 + 0.1);
+    s.addShape(pres.ShapeType.roundRect, { x, y: 5.3, w: cw2, h: 1.5, rectRadius: 0.05, fill: { color: 'FFFFFF' }, line: { color: 'E5E7EB', width: 0.75 } });
+    s.addShape(pres.ShapeType.ellipse, { x: x + 0.12, y: 5.43, w: 0.1, h: 0.1, fill: { color: colors[i] }, line: { width: 0 } });
+    T(b.label, { x: x + 0.28, y: 5.39, w: cw2 - 0.35, h: 0.2, fontSize: 8, bold: true, color: '111111' });
+    T(toolsNf(b.od), { x: x + 0.12, y: 5.85, w: cw2 - 0.2, h: 0.4, fontSize: 18, bold: true, color: '111111' });
+    T('OD  ·  ' + Math.round(b.od / total * 100) + '%', { x: x + 0.12, y: 6.3, w: cw2 - 0.2, h: 0.2, fontSize: 7, color: '6B7280' });
+  });
+  // teks kanan
+  const L = t => ({ text: t, options: { bold: true, italic: true, color: 'B4121F' } });
+  const lppbTxt = Object.keys(od.lppb || {}).sort((a, b) => od.lppb[b] - od.lppb[a]).map(k => k + ' ' + toolsNf(od.lppb[k])).join(' | ');
+  const b0 = od.buckets || [];
+  const runs = [
+    { text: 'Laporan OD Gantung In Receive AHI (' + od.tanggal + ')', options: { bold: true, italic: true, breakLine: true } },
+    { text: '• ', options: {} }, L('Total OD Gantung: '), { text: toolsNf(od.uniqueOd) + ' OD (' + toolsNf(od.rows) + ' baris item)', options: { breakLine: true } },
+    { text: '• ', options: {} }, L('Receiving Progress: '), { text: 'Sudah Bongkar ' + toolsNf(od.sudahBongkarOd) + ' | Belum Bongkar ' + toolsNf(od.belumBongkarOd), options: { breakLine: true } },
+    { text: '• ', options: {} }, L('Status LPPB: '), { text: lppbTxt, options: { breakLine: true } },
+    { text: '• ', options: {} }, L('OD ada selisih qty (discrepancy): '), { text: toolsNf(od.odSelisih) + ' OD', options: { breakLine: true } },
+    { text: '• ', options: {} }, L('Aging OD: '), { text: b0.map(b => b.label + ' ' + toolsNf(b.od)).join(' | '), options: { breakLine: true } },
+    { text: '• ', options: {} }, L('5 OD aging tertinggi:'), { text: '', options: { breakLine: true } }
+  ];
+  (od.top || []).forEach((t, i) => { runs.push({ text: (i + 1) + '. ' + t.od + ' — ' + t.toko + ' — ' + t.aging + ' hari (' + t.bongkar + ')', options: { breakLine: i < od.top.length - 1 } }); });
+  T(runs, { x: 9.55, y: 1.2, w: 3.4, h: 5.8, fontSize: 8.5, color: '111111', paraSpaceAfter: 3 });
+  return s;
+}
+
+function buildAtkSlide(pres, a, bgData) {
+  const s = toolsFrameSlide(pres, bgData, 'General Affairs - Request ATK per Day', 'Monitoring Daily ATK Requests & Fulfillment');
+  const T = (t, o) => s.addText(t, Object.assign({ fontFace: 'Arial', margin: 0, isTextBox: true, valign: 'top' }, o));
+  const box = (x, y, w, h, line) => s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.05, fill: { color: 'FFFFFF' }, line: { color: line || 'E5E7EB', width: 0.75 }, shadow: { type: 'outer', color: '000000', opacity: 0.12, blur: 4, offset: 1, angle: 90 } });
+  const cards = [['REQUEST WEEKLY', toolsNf(a.week), 'F59E0B', '7 hari terakhir'], ['TOTAL REQUEST', toolsNf(a.dayFul), '10B981', 'Qty fulfillment ' + a.tanggal], ['HUTANG HCI', toolsNf(a.hci), 'EF4444', 'Kode stock X']];
+  const cw = 2.85;
+  cards.forEach((c, i) => {
+    const x = 0.5 + i * (cw + 0.125);
+    box(x, 1.2, cw, 0.95);
+    s.addShape(pres.ShapeType.rect, { x: x + 0.02, y: 2.11, w: cw - 0.04, h: 0.04, fill: { color: c[2] }, line: { width: 0 } });
+    T(c[0], { x: x + 0.14, y: 1.28, w: cw - 0.28, h: 0.2, fontSize: 7, bold: true, color: '6B7280' });
+    T(c[1], { x: x + 0.14, y: 1.5, w: cw - 0.28, h: 0.4, fontSize: 22, bold: true, color: c[2] });
+    T(c[3], { x: x + 0.14, y: 1.9, w: cw - 0.28, h: 0.18, fontSize: 6.5, color: '9CA3AF' });
+  });
+  // donut per departemen
+  box(0.5, 2.3, 4.3, 2.15);
+  T('Request by Departemen (bulan ini)', { x: 0.65, y: 2.36, w: 4, h: 0.22, fontSize: 8.5, bold: true, color: '111111' });
+  const dept = (a.dept || []).slice(0, 6);
+  if (dept.length) {
+    s.addChart(pres.charts.DOUGHNUT, [{ name: 'Dept', labels: dept.map(d => d.label), values: dept.map(d => d.value) }], { x: 0.55, y: 2.6, w: 4.2, h: 1.8, holeSize: 55, showLegend: true, legendPos: 'r', legendFontSize: 7, legendFontFace: 'Arial', showPercent: false, showValue: false, showLabel: false, chartColors: ['EF4444', 'F59E0B', '3B82F6', '10B981', '8B5CF6', '64748B'], dataBorder: { pt: 1, color: 'FFFFFF' } });
+  }
+  // trend harian
+  box(4.95, 2.3, 4.35, 2.15);
+  T('Trend Request Harian', { x: 5.1, y: 2.36, w: 4, h: 0.22, fontSize: 8.5, bold: true, color: '111111' });
+  if ((a.trend || []).length) {
+    s.addChart(pres.charts.BAR, [{ name: 'Qty', labels: a.trend.map(t => t.label), values: a.trend.map(t => t.value) }], { x: 5.0, y: 2.6, w: 4.25, h: 1.8, barDir: 'col', chartColors: ['EF4444'], catAxisLabelFontSize: 6, valAxisLabelFontSize: 6, catAxisLabelFontFace: 'Arial', valAxisLabelFontFace: 'Arial', showLegend: false, valGridLine: { color: 'E5E7EB', size: 0.5 }, catGridLine: { style: 'none' }, showValue: false });
+  }
+  // tabel per shift
+  const tbl = (x, title, color, total, rows) => {
+    s.addShape(pres.ShapeType.rect, { x, y: 4.6, w: 4.3, h: 0.28, fill: { color }, line: { width: 0 } });
+    T('' + title, { x: x + 0.1, y: 4.64, w: 2, h: 0.2, fontSize: 8, bold: true, color: 'FFFFFF' });
+    T(String(toolsNf(total)), { x: x + 3.2, y: 4.62, w: 1.0, h: 0.22, fontSize: 10, bold: true, color: 'FFFFFF', align: 'right' });
+    const body = [[{ text: 'STOCK CODE', options: { bold: true } }, { text: 'DESKRIPSI', options: { bold: true } }, { text: 'QTY', options: { bold: true } }, { text: 'REMARK', options: { bold: true } }]];
+    (rows || []).slice(0, 8).forEach(r => body.push([r.code, r.desc, String(r.qty), r.remark || '']));
+    if (!(rows || []).length) body.push([{ text: 'Tidak ada data', options: { italic: true, colspan: 4, align: 'center', color: '9CA3AF' } }]);
+    s.addTable(body.map((r, i) => r.map(c => typeof c === 'string' ? { text: c, options: { fontSize: 6, color: '111111' } } : { text: c.text, options: Object.assign({ fontSize: 6, color: i === 0 ? '6B7280' : '111111' }, c.options) })), { x, y: 4.9, w: 4.3, colW: [0.7, 1.9, 0.4, 1.3], rowH: 0.2, border: { type: 'solid', color: 'E5E7EB', pt: 0.5 }, autoPage: false, margin: [0, 0.04, 0, 0.04] });
+  };
+  tbl(0.5, 'SHIFT 1', '1E3A5F', a.shift1, a.shift1Rows);
+  tbl(5.0, 'SHIFT 2', 'DC2626', a.shift2, a.shift2Rows);
+  // teks kanan
+  const deptTxt = (a.dayDept || []).slice(0, 6).map(d => d.label + ' ' + toolsNf(d.value)).join(' | ') || '-';
+  const items = (a.topItems || []).map(t => t.label + ' (' + toolsNf(t.value) + ')').join('; ') || '-';
+  const L = t => ({ text: t, options: { bold: true, italic: true, color: '1D3FBF' } });
+  const runs = [
+    { text: 'Laporan General Affairs — Request ATK per Day AHI Sidoarjo (' + a.tanggal + ')', options: { bold: true, italic: true, breakLine: true } },
+    { text: '• ', options: {} }, L('Total Request: '), { text: toolsNf(a.dayItems) + ' item | Fulfillment (qty): ' + toolsNf(a.dayFul), options: { breakLine: true } },
+    { text: '• Qty Request: ' + toolsNf(a.dayReq), options: { breakLine: true } },
+    { text: '• Per Shift (qty): Shift 1 ' + toolsNf(a.shift1) + ' | Shift 2 ' + toolsNf(a.shift2), options: { breakLine: true } },
+    { text: '• Per Departemen (qty): ' + deptTxt, options: { breakLine: true } },
+    { text: '• Item terbanyak: ' + items, options: { breakLine: true } },
+    { text: '• Hutang HCI (kode X): ' + toolsNf(a.hci), options: { breakLine: true } },
+    { text: '• 7 hari terakhir: ' + toolsNf(a.week) + ' | Bulan ini (MTD): ' + toolsNf(a.month), options: {} }
+  ];
+  T(runs, { x: 9.55, y: 1.2, w: 3.4, h: 5.8, fontSize: 8.5, color: '111111', paraSpaceAfter: 3 });
+  return s;
+}
+
+function buildReduceSlide(pres, r, bgData) {
+  const s = toolsFrameSlide(pres, bgData, 'General Affairs - SKEMA REDUCE 40%', 'Overview of 40% Reduction Plan & Progress');
+  const T = (t, o) => s.addText(t, Object.assign({ fontFace: 'Arial', margin: 0, isTextBox: true, valign: 'top' }, o));
+  s.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.2, w: 12.3, h: 0.5, fill: { color: '065F46' }, line: { width: 0 } });
+  T('40%', { x: 0.62, y: 1.3, w: 0.5, h: 0.3, fontSize: 10, bold: true, color: 'FFFFFF' });
+  T('SKEMA REDUCE 40%', { x: 1.2, y: 1.24, w: 6, h: 0.25, fontSize: 11, bold: true, color: 'FFFFFF' });
+  T('Target Pengurangan Pemakaian ATK — AHI Sidoarjo', { x: 1.2, y: 1.48, w: 6, h: 0.2, fontSize: 7, color: 'D1FAE5' });
+  T('BULAN: ' + (r.bulan || ''), { x: 9.8, y: 1.34, w: 2.9, h: 0.25, fontSize: 9, bold: true, color: 'FFFFFF', align: 'right' });
+  const green = '059669', red = 'DC2626', amber = 'F59E0B';
+  const big = (x, name, g) => {
+    s.addShape(pres.ShapeType.roundRect, { x, y: 1.85, w: 6.05, h: 2.0, rectRadius: 0.06, fill: { color: 'ECFDF5' }, line: { color: 'D1FAE5', width: 0.75 } });
+    T(name.toUpperCase(), { x: x + 0.2, y: 1.97, w: 4, h: 0.22, fontSize: 8, bold: true, color: '6B7280' });
+    T(g.pct + '%', { x: x + 0.2, y: 2.2, w: 3, h: 0.7, fontSize: 40, bold: true, color: g.pct > 100 ? red : green });
+    T('MTD Pemakaian dari Target Bulan', { x: x + 0.2, y: 2.9, w: 4, h: 0.2, fontSize: 7, color: '6B7280' });
+    s.addShape(pres.ShapeType.roundRect, { x: x + 0.2, y: 3.15, w: 5.65, h: 0.1, rectRadius: 0.05, fill: { color: 'E5E7EB' }, line: { width: 0 } });
+    s.addShape(pres.ShapeType.roundRect, { x: x + 0.2, y: 3.15, w: Math.max(0.1, 5.65 * Math.min(g.pct, 100) / 100), h: 0.1, rectRadius: 0.05, fill: { color: g.pct > 100 ? red : amber }, line: { width: 0 } });
+    [['TOTAL AKTUAL', g.aktual], ['TARGET BULAN', g.target]].forEach((b, i) => {
+      const bx = x + 0.2 + i * 2.85;
+      s.addShape(pres.ShapeType.roundRect, { x: bx, y: 3.35, w: 2.8, h: 0.4, rectRadius: 0.04, fill: { color: 'FFFFFF' }, line: { color: 'E5E7EB', width: 0.5 } });
+      T(b[0], { x: bx + 0.1, y: 3.4, w: 1.4, h: 0.3, fontSize: 6.5, bold: true, color: '6B7280', valign: 'middle' });
+      T(toolsNf(b[1]), { x: bx + 1.4, y: 3.4, w: 1.3, h: 0.3, fontSize: 14, bold: true, color: '111111', align: 'right', valign: 'middle' });
+    });
+  };
+  big(0.5, r.lakban.name, r.lakban);
+  big(6.75, r.plastic.name, r.plastic);
+  T('DETAIL PER DEPARTEMEN', { x: 0.5, y: 3.98, w: 4, h: 0.2, fontSize: 7, bold: true, color: '6B7280' });
+  const small = [];
+  r.lakban.dept.forEach(d => small.push({ g: r.lakban.name, d }));
+  r.plastic.dept.forEach(d => small.push({ g: r.plastic.name, d }));
+  small.forEach((it, i) => {
+    const col = i % 3, row = Math.floor(i / 3);
+    const x = 0.5 + col * 4.15, y = 4.25 + row * 1.4, w = 4.0, h = 1.3;
+    const over = it.d.pct > 100, c = over ? red : green;
+    s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.05, fill: { color: 'FFFFFF' }, line: { color: over ? 'FCA5A5' : 'D1D5DB', width: 0.75 } });
+    T(it.g.toUpperCase(), { x: x + 0.15, y: y + 0.08, w: 3, h: 0.16, fontSize: 6, bold: true, color: '9CA3AF' });
+    T(it.d.dept.toUpperCase(), { x: x + 0.15, y: y + 0.26, w: 1.2, h: 0.18, fontSize: 6.5, bold: true, color: '6D28D9' });
+    s.addChart(pres.charts.DOUGHNUT, [{ name: 'p', labels: ['Aktual', 'Sisa'], values: [Math.max(0.001, Math.min(it.d.aktual, it.d.target || it.d.aktual)), Math.max(0.001, (it.d.target || 0) - it.d.aktual)] }], { x: x + 0.1, y: y + 0.42, w: 0.85, h: 0.85, holeSize: 68, showLegend: false, showPercent: false, showValue: false, showLabel: false, chartColors: [c, 'E5E7EB'], dataBorder: { pt: 0, color: 'FFFFFF' } });
+    T(it.d.pct + '%', { x: x + 0.1, y: y + 0.68, w: 0.85, h: 0.3, fontSize: 9, bold: true, color: c, align: 'center' });
+    T('Aktual / Target', { x: x + 1.1, y: y + 0.45, w: 2.5, h: 0.16, fontSize: 6.5, color: '6B7280' });
+    T(toolsNf(it.d.aktual) + ' / ' + toolsNf(it.d.target), { x: x + 1.1, y: y + 0.62, w: 2.7, h: 0.3, fontSize: 14, bold: true, color: '111111' });
+    s.addShape(pres.ShapeType.roundRect, { x: x + 1.1, y: y + 0.98, w: 2.7, h: 0.07, rectRadius: 0.03, fill: { color: 'E5E7EB' }, line: { width: 0 } });
+    s.addShape(pres.ShapeType.roundRect, { x: x + 1.1, y: y + 0.98, w: Math.max(0.06, 2.7 * Math.min(it.d.pct, 100) / 100), h: 0.07, rectRadius: 0.03, fill: { color: c }, line: { width: 0 } });
+    T('AVG: ' + (it.d.avg != null ? it.d.avg : '-') + '/hari  →  Target: ' + (it.d.t60 != null ? it.d.t60 : '-') + '/hari', { x: x + 1.1, y: y + 1.08, w: 2.8, h: 0.16, fontSize: 5.5, color: '6B7280' });
+  });
+  return s;
+}
+
+function buildCoverSlide(pres, d) {
+  const FONT = 'Arial';
+  const s = pres.addSlide();
+  s.background = { color: 'FFFFFF' };
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+  s.addShape(pres.ShapeType.rect, { x: 8.6, y: 0, w: 4.733, h: 7.5, fill: { color: 'C81E32' }, line: { width: 0 } });
+  T('Kawan Lama Group', { x: 0.5, y: 0.35, w: 5, h: 0.4, fontSize: 15, bold: true, color: '111111' });
+  T('BRINGING MORE GOOD THINGS TO LIFE', { x: 0.5, y: 0.68, w: 5, h: 0.2, fontSize: 6.5, color: '6B7280', charSpacing: 1 });
+  T('DAILY OPERATIONAL', { x: 0.5, y: 1.5, w: 7, h: 0.4, fontSize: 18, bold: true, color: '111111', charSpacing: 2 });
+  T('REPORT', { x: 0.45, y: 1.85, w: 7, h: 0.9, fontSize: 52, bold: true, color: 'C81E32' });
+  T('DC AHI SIDOARJO', { x: 0.45, y: 2.65, w: 7, h: 0.55, fontSize: 34, bold: true, color: '111111' });
+  s.addShape(pres.ShapeType.line, { x: 0.5, y: 3.35, w: 1.3, h: 0, line: { color: 'C81E32', width: 3 } });
+  T('PERFORMA HARI INI, UNTUK OPERASIONAL YANG LEBIH BAIK', { x: 0.5, y: 3.5, w: 7, h: 0.25, fontSize: 9.5, bold: true, color: '374151', charSpacing: 1 });
+  const topics = ['Profil DC', 'Planner Reporting', 'Inbound Reporting', 'Storing Reporting', 'Outbound Reporting', 'Inventory Reporting', 'GA Reporting', 'HC Reporting', 'MTC Reporting'];
+  T('\u2758 PRESENTATION TOPICS', { x: 0.5, y: 4.0, w: 5, h: 0.25, fontSize: 10, bold: true, color: '111111' });
+  const col = Math.ceil(topics.length / 3);
+  topics.forEach((t, i) => {
+    const c = Math.floor(i / 3), r = i % 3;
+    T((i + 1 < 10 ? '0' : '') + (i + 1) + '.  ' + t, { x: 0.5 + c * 2.0, y: 4.4 + r * 0.35, w: 2.0, h: 0.3, fontSize: 8.5, color: '111111' });
+  });
+  T(String(d.tanggal || '').toUpperCase() + '   |   DC AHI SIDOARJO', { x: 0.5, y: 6.9, w: 6, h: 0.25, fontSize: 8, bold: true, color: '6B7280' });
+}
+
+function buildThankYouSlide(pres, bgData) {
+  const s = pres.addSlide();
+  if (bgData) { s.background = { data: bgData }; s.addShape(pres.ShapeType.rect, { x: 0.30, y: 0.26, w: 12.76, h: 6.95, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } }); } else { s.background = { color: 'FFFFFF' }; }
+  s.addText('Kawan Lama Group', { x: 9.6, y: 0.35, w: 3.3, h: 0.35, fontSize: 12, bold: true, color: '111111', fontFace: 'Arial', isTextBox: true });
+  s.addText('TERIMA KASIH', { x: 0.3, y: 3.0, w: 12.76, h: 1.0, fontSize: 40, bold: true, color: '0B2A66', fontFace: 'Arial', isTextBox: true, align: 'center', valign: 'middle' });
+}
+
+function buildPlannerSlideV2(pres, planner, master, bgData, shots) {
+  const FONT = 'Arial', RED_LABEL = 'B4121F', BLUE_TXT = '1F3FBF', NAVY = '1F3A8A';
+  const s = pres.addSlide();
+  s.background = { data: bgData };
+  s.addShape(pres.ShapeType.roundRect, { x: 0.25, y: 0.25, w: 12.83, h: 7.0, rectRadius: 0.1, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+  T('REPORTING PLANNER', { x: 0.55, y: 0.4, w: 8, h: 0.45, fontSize: 24, bold: true, color: '111111' });
+  T('Monitoring Planning & Operational Achievement \u2013 Yesterday & Today', { x: 0.55, y: 0.82, w: 8, h: 0.28, fontSize: 11.5, italic: true, color: '333333' });
+  T('Daily Proses Yesterday', { x: 0.55, y: 1.22, w: 6.0, h: 0.28, fontSize: 12.5, bold: true, italic: true, color: 'A50F1E', align: 'center' });
+  T('Daily Proses today', { x: 6.9, y: 1.22, w: 6.0, h: 0.28, fontSize: 12.5, bold: true, italic: true, color: NAVY, align: 'center' });
+
+  function panel(x, y, w, h, d) {
+    s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.05, fill: { color: '0D0D0F' }, line: { color: 'C81E32', width: 1 } });
+    T('MAIN DASHBOARD', { x: x + 0.13, y: y + 0.08, w: w - 0.26, h: 0.16, fontSize: 7, bold: true, color: 'FF4D5E' });
+    const rowY0 = y + 0.28, rh = 0.52, gap = 0.045, cw3 = (w - 0.26 - gap * 2) / 3, cw4 = (w - 0.26 - gap * 3) / 4;
+    function cell3(rowY, i, val, lbl, bg, fg) { const cx = x + 0.13 + i * (cw3 + gap); s.addShape(pres.ShapeType.roundRect, { x: cx, y: rowY, w: cw3, h: rh, rectRadius: 0.03, fill: { color: bg } }); T(val, { x: cx + 0.05, y: rowY + 0.05, w: cw3 - 0.1, h: 0.28, fontSize: 12, bold: true, color: fg, fit: 'shrink' }); T(lbl, { x: cx + 0.05, y: rowY + 0.33, w: cw3 - 0.1, h: 0.18, fontSize: 5, bold: true, color: fg }); }
+    cell3(rowY0, 0, fmt2i(d.caseIdShipped), 'CASE ID SHIPPED', 'FCD34D', '3F2D00');
+    cell3(rowY0, 1, d.caseIdPct.toFixed(1) + '%', 'CASE ID FULFILLMENT (%)', 'FCD34D', '3F2D00');
+    cell3(rowY0, 2, fmt2i(d.caseIdPlan), 'CASE ID PLAN', 'FCD34D', '3F2D00');
+    const row2Y = rowY0 + rh + gap;
+    cell3(row2Y, 0, fmt2(d.cbmShipped), 'CBM SHIPPED', 'F87171', '3F0808');
+    cell3(row2Y, 1, d.pct.toFixed(1) + '%', 'CBM FULFILLMENT (%)', 'F87171', '3F0808');
+    cell3(row2Y, 2, fmt2(d.cbmPlan), 'CBM PLAN', 'F87171', '3F0808');
+    function cell4(rowY, i, val, lbl, bg, fg) { const cx = x + 0.13 + i * (cw4 + gap); s.addShape(pres.ShapeType.roundRect, { x: cx, y: rowY, w: cw4, h: rh, rectRadius: 0.03, fill: { color: bg } }); T(val, { x: cx + 0.05, y: rowY + 0.05, w: cw4 - 0.1, h: 0.28, fontSize: 11, bold: true, color: fg, fit: 'shrink' }); T(lbl, { x: cx + 0.05, y: rowY + 0.33, w: cw4 - 0.1, h: 0.18, fontSize: 4.8, bold: true, color: fg }); }
+    const row3Y = row2Y + rh + gap;
+    cell4(row3Y, 0, fmt2(d.cbmPlanShift1), 'CBM PLAN SHIFT 1', '6EE7B7', '013320');
+    cell4(row3Y, 1, fmt2(d.cbmPlanShift2), 'CBM PLAN SHIFT 2', '6EE7B7', '013320');
+    cell4(row3Y, 2, planner.slaCust || '-', 'SLA CUSTOMER', '6EE7B7', '013320');
+    cell4(row3Y, 3, planner.slaGrw || '-', 'SLA GRW', '6EE7B7', '013320');
+    const row4Y = row3Y + rh + gap;
+    ['B1', 'B2', 'B3', 'B4'].forEach((b, i) => cell4(row4Y, i, fmt2i(d.batch[b].caseId), 'CASE ID PLAN ' + b, '93C5FD', '0B2545'));
+    const row5Y = row4Y + rh + gap;
+    ['B1', 'B2', 'B3', 'B4'].forEach((b, i) => cell4(row5Y, i, fmt2(d.batch[b].cbm), 'CBM PLAN ' + b, 'D1D5DB', '1F2937'));
+    return row5Y + rh;
+  }
+  const PW = 6.0, PH = 3.55, PY = 1.5;
+  if (shots && shots.e && shots.f) {
+    // pakai screenshot asli panel MAIN DASHBOARD dari app Planner
+    const SH = { type: 'outer', color: '000000', opacity: 0.4, blur: 5, offset: 2, angle: 90 };
+    const place = (shot, bx, byy, bw, bh) => {
+      s.addShape(pres.ShapeType.rect, { x: bx, y: byy, w: bw, h: bh, fill: { color: '0D0D0D' }, line: { color: '0D0D0D', width: 0 }, shadow: SH });
+      const k = Math.min(bw / shot.w, bh / shot.h), iw = shot.w * k, ih = shot.h * k;
+      s.addImage({ data: shot.data, x: bx + (bw - iw) / 2, y: byy + (bh - ih) / 2, w: iw, h: ih });
+    };
+    place(shots.e, 0.55, PY, PW, PH);
+    place(shots.f, 6.9, PY, PW, PH);
+  } else {
+    panel(0.55, PY, PW, PH, master.yesterday);
+    panel(6.9, PY, PW, PH, master.today);
+  }
+
+  const by = PY + PH + 0.15;
+  const label = t => ({ text: t, options: { bold: true, italic: true, color: RED_LABEL } });
+  const val = t => ({ text: t, options: { bold: true } });
+  const para = (runs, bullet) => { const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) })); if (bullet) out.unshift({ text: '\u25C6 ', options: { color: RED_LABEL, fontSize: 7.5 } }); out[out.length - 1].options.breakLine = true; return out; };
+  T([].concat(
+    para([{ text: 'Laporan Ringkasan Pekerjaan Kemarin:', options: { bold: true, italic: true, fontSize: 10.5, paraSpaceAfter: 4 } }]),
+    para([label('CBM Plan: '), val(fmt2(master.yesterday.cbmPlan) + ' CBM'), { text: ' | ' }, label('CBM Shipped: '), val(fmt2(master.yesterday.cbmShipped) + ' CBM'), { text: ' (' + master.yesterday.pct.toFixed(1) + '%)' }], true),
+    para([label('Case ID Plan: '), val(fmt2i(master.yesterday.caseIdPlan)), { text: ' | ' }, label('Case ID Shipped: '), val(fmt2i(master.yesterday.caseIdShipped)), { text: ' (' + master.yesterday.caseIdPct.toFixed(1) + '%)' }], true),
+    para([label('Plan Outbound per Shift (CBM): '), val('Shift 1 ' + fmt2(master.yesterday.cbmPlanShift1)), { text: ' | ' }, val('Shift 2 ' + fmt2(master.yesterday.cbmPlanShift2))], true),
+    para([label('Plan Storing per Shift (Case ID): '), val('Shift 1 (B2+B3) ' + fmt2i(planStoring(master.yesterday).s1)), { text: ' | ' }, val('Shift 2 (B4+B1) ' + fmt2i(planStoring(master.yesterday).s2))], true),
+    para([label('SLA Planner: '), val('SLA GRW ' + (planner.slaGrw || '-') + ', SLA Customer ' + (planner.slaCust || '-'))], true)
+  ), { x: 0.55, y: by, w: PW, h: 7.5 - by - 0.25, fontSize: 9, color: '111111', paraSpaceAfter: 2.5 });
+  T([].concat(
+    para([{ text: 'Laporan Ringkasan Plan Loading Today AHI Sidoarjo:', options: { bold: true, italic: true, fontSize: 10.5, paraSpaceAfter: 4 } }]),
+    para([label('CBM Plan: '), val(fmt2(master.today.cbmPlan) + ' CBM'), { text: ' | ' }, label('Case ID Plan: '), val(fmt2i(master.today.caseIdPlan))], true),
+    para([label('Plan Outbound per Shift (CBM): '), val('Shift 1 ' + fmt2(master.today.cbmPlanShift1)), { text: ' | ' }, val('Shift 2 ' + fmt2(master.today.cbmPlanShift2))], true),
+    para([label('Plan Storing per Shift (Case ID): '), val('Shift 1 (B2+B3) ' + fmt2i(planStoring(master.today).s1)), { text: ' | ' }, val('Shift 2 (B4+B1) ' + fmt2i(planStoring(master.today).s2))], true),
+    para([label('Plan Outbound per Batch (CBM): '), val('B1 ' + fmt2(master.today.batch.B1.cbm) + ' | B2 ' + fmt2(master.today.batch.B2.cbm) + ' | B3 ' + fmt2(master.today.batch.B3.cbm) + ' | B4 ' + fmt2(master.today.batch.B4.cbm) + ' CBM')], true),
+    para([label('Total LC: '), val(String(master.today.lc || 0) + ' LC')], true)
+  ), { x: 6.9, y: by, w: PW, h: 7.5 - by - 0.25, fontSize: 9, color: '111111', paraSpaceAfter: 2.5 });
+}
+// Storing: B2+B3 = Shift 1, B4+B1 = Shift 2 (dihitung dari Case ID plan per batch, bukan CBM)
+function planStoring(d) { const b = (d && d.batch) || {}; const c = k => (b[k] && b[k].caseId) || 0; return { s1: c('B2') + c('B3'), s2: c('B4') + c('B1') }; }
+function fmt2i(n) { return Math.round(n || 0).toLocaleString('id-ID'); }
+function fmt2(n) { return (Math.round((n || 0) * 100) / 100).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+
+// ── SLIDE: MONITORING OUTSTANDING (tampilan mengikuti PPT asli: latar gradien + panel gelap) ──
+// PNG gradien/rounded (untuk header bar & kartu) digambar lewat canvas, lalu dipasang sebagai gambar di slide.
+function osGradPng(wPx, hPx, c1, c2, opt) {
+  opt = opt || {};
+  const c = document.createElement('canvas'); c.width = wPx; c.height = hPx;
+  const g = c.getContext('2d'), r = opt.r || 0;
+  g.beginPath();
+  g.moveTo(r, 0); g.lineTo(wPx - r, 0); g.arcTo(wPx, 0, wPx, r, r); g.lineTo(wPx, hPx - r); g.arcTo(wPx, hPx, wPx - r, hPx, r);
+  g.lineTo(r, hPx); g.arcTo(0, hPx, 0, hPx - r, r); g.lineTo(0, r); g.arcTo(0, 0, r, 0, r); g.closePath(); g.clip();
+  const gr = g.createLinearGradient(0, 0, wPx, hPx * (opt.tilt || 0));
+  const hx = v => (String(v).charAt(0) === '#' ? v : '#' + v);
+  gr.addColorStop(0, hx(c1)); gr.addColorStop(1, hx(c2));
+  g.fillStyle = gr; g.fillRect(0, 0, wPx, hPx);
+  if (opt.edge) { g.fillStyle = (String(opt.edge).charAt(0) === '#' ? opt.edge : '#' + opt.edge); g.fillRect(0, hPx - (opt.edgeH || 5), wPx, opt.edgeH || 5); }
+  return 'image/png;base64,' + c.toDataURL('image/png').split(',')[1];
+}
+
+function buildOutstandingSlideV3(pres, o, bgData) {
+  const FONT = 'Arial', W = 13.333;
+  const s = pres.addSlide();
+  s.background = bgData ? { data: bgData } : { color: 'FFFFFF' };
+  s.addShape(pres.ShapeType.roundRect, { x: 0.25, y: 0.25, w: 12.83, h: 7.0, rectRadius: 0.1, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+  const R = (x, y, w, h, color, extra) => s.addShape(pres.ShapeType.rect, Object.assign({ x: x, y: y, w: w, h: h, fill: { color: color }, line: { color: color, width: 0 } }, extra || {}));
+  const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+  const fD = v => num(v).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  const fDash = v => (num(v) === 0 ? '-' : fD(v));
+  const fEn = v => num(v).toFixed(2);
+
+  T('MONITORING OUTSTANDING', { x: 0.47, y: 0.28, w: 10, h: 0.55, fontSize: 27, bold: true, color: '111111' });
+  T('Monitoring Outstanding Progress & Completion Status', { x: 0.47, y: 0.75, w: 10, h: 0.4, fontSize: 17.5, italic: true, color: '222222' });
+
+  // ── panel gelap atas: kartu + tabel Planning Priority ──
+  const LX = 0.395, PWD = 9.83, SHADOW = { type: 'outer', color: '000000', opacity: 0.45, blur: 6, offset: 2, angle: 90 };
+  R(0.376, 1.167, 9.865, 4.015, '0D0D0D', { shadow: SHADOW });
+  s.addImage({ data: osGradPng(1966, 74, 'A51C1C', '161010'), x: LX, y: 1.195, w: PWD, h: 0.37 });
+  R(LX, 1.195, 0.05, 0.37, 'FACC15');
+  s.addShape(pres.ShapeType.flowChartCollate, { x: 0.53, y: 1.305, w: 0.12, h: 0.15, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  T('MONITORING OUTSTANDING', { x: 0.74, y: 1.28, w: 6, h: 0.22, fontSize: 12, bold: true, color: 'FFFFFF', charSpacing: 0.5 });
+
+  const cards = [
+    ['BACKLOG OUTSTANDING', o.backlogTotal, 'CBM TOTAL', '6D28D9', 'A855F7', '4C1D95', 'FFFFFF'],
+    ['BACKLOG SUDAH PLAN', o.sudahPlan, 'CBM', '14998E', '2DD4BF', '0B6E66', 'FFFFFF'],
+    ['BACKLOG BELUM PLAN', o.belumPlan, 'CBM', 'FFD60A', 'FFE55C', 'C9A800', '111111'],
+    ['BACKLOG AGING 7 UP', o.aging7up, 'CBM', 'FF5A5A', 'FF7B7B', 'B91C1C', 'FFFFFF'],
+    ['ALLOCATION UNSUCCESSFUL', o.allocUnsuccessful, 'CBM', '036AA0', '0EA5E9', '024F78', 'FFFFFF']
+  ];
+  const cw = 1.9, cpitch = 1.977, cy = 1.735, ch = 0.725;
+  cards.forEach((c, i) => {
+    const x = LX + i * cpitch;
+    s.addImage({ data: osGradPng(380, 145, c[3], c[4], { r: 8, edge: c[5], edgeH: 6, tilt: 0.3 }), x: x, y: cy, w: cw, h: ch });
+    T(c[0], { x: x, y: cy + 0.07, w: cw, h: 0.14, fontSize: 6.5, bold: true, color: c[6], align: 'center' });
+    T(fD(c[1]), { x: x, y: cy + 0.2, w: cw, h: 0.32, fontSize: 16, bold: true, color: c[6], align: 'center', fit: 'shrink' });
+    T(c[2], { x: x, y: cy + 0.54, w: cw, h: 0.12, fontSize: 5, color: c[6], align: 'center' });
+  });
+
+  // header bar Planning Priority
+  const hy = 2.613;
+  s.addImage({ data: osGradPng(1966, 53, 'B83232', '1C1414'), x: LX, y: hy, w: PWD, h: 0.265 });
+  R(LX, hy, 0.05, 0.265, 'FACC15');
+  s.addShape(pres.ShapeType.ellipse, { x: 0.52, y: hy + 0.083, w: 0.1, h: 0.1, fill: { color: 'F59E0B' }, line: { color: 'FDE68A', width: 0.75 } });
+  T('PLANNING PRIORITY (AGING 4-7 & 7 UP)', { x: 0.74, y: hy + 0.05, w: 6, h: 0.17, fontSize: 7.5, bold: true, color: 'FFFFFF' });
+  T('ACTION REQUIRED: SEGERA PLANNING', { x: 6.9, y: hy + 0.075, w: 3.2, h: 0.12, fontSize: 5.5, bold: true, color: 'D1D5DB', align: 'right' });
+
+  // tabel 1 (top 10 total unplanned terbesar)
+  const mg = [0.02, 0.06, 0.02, 0.06];
+  const th = (t, fill, color, align) => ({ text: t, options: { bold: true, fontSize: 6, color: color, fill: { color: fill }, align: align || 'left', valign: 'middle', margin: mg } });
+  const t1rows = [[th('STOREBOOKING', '111111', 'FACC15', 'center'), th('SHIP TO', '111111', 'FACC15'), th('AGING 4-7', '4A1313', 'F87171', 'center'), th('AGING 7 UP', '3A0F0F', 'F87171', 'center'), th('TOTAL\nUNPLANNED', 'B91C1C', 'FFFFFF', 'center')]];
+  const storeList = (o.storeTable || []).slice().sort((a, b) => b.totalUnplanned - a.totalUnplanned).slice(0, 10);
+  const td = (t, fill, color, align, bold) => ({ text: t, options: { fontSize: 6, color: color, fill: { color: fill }, align: align, valign: 'middle', bold: !!bold, margin: mg } });
+  storeList.forEach((r, i) => {
+    const alt = i % 2;
+    t1rows.push([td(String(r.code || ''), '222222', 'D1D5DB', 'center'), td(String(r.name || ''), alt ? '1F1F1F' : '1A1A1A', 'E5E7EB', 'left'),
+      td(fDash(r.aging4to7), alt ? '351313' : '2E1010', 'F87171', 'right'), td(fDash(r.aging7up), alt ? '2B0F0F' : '260D0D', 'F87171', 'right'), td(fDash(r.totalUnplanned), 'A81818', 'FFFFFF', 'right', true)]);
+  });
+  const colW1 = [0.73, 6.98, 0.64, 0.63, 0.83];
+  s.addTable(t1rows, { x: LX, y: 2.882, w: PWD, colW: colW1, border: { type: 'solid', color: '2B2B2B', pt: 0.5 }, autoPage: false, rowH: [0.325].concat(new Array(storeList.length).fill(0.1856)) });
+
+  // ── panel gelap bawah: Order Aging by Area Storing ──
+  const P2Y = 5.288, P2B = 7.19;
+  R(0.376, P2Y, 9.865, P2B - P2Y, '0D0D0D', { shadow: SHADOW });
+  R(LX, 5.317, PWD, 0.265, '1B1B1B');
+  R(LX, 5.317, 0.05, 0.265, 'FACC15');
+  s.addShape(pres.ShapeType.roundRect, { x: 0.52, y: 5.402, w: 0.12, h: 0.095, rectRadius: 0.02, fill: { color: 'FACC15' }, line: { color: 'FACC15', width: 0 } });
+  T('MONITORING ORDER AGING BY AREA STORING', { x: 0.74, y: 5.367, w: 6, h: 0.17, fontSize: 7.5, bold: true, color: 'FACC15' });
+  T('DATA AGGREGATED BY AREA', { x: 6.9, y: 5.392, w: 3.2, h: 0.12, fontSize: 5.5, bold: true, color: 'D1D5DB', align: 'right' });
+
+  const bl = (o.bucketLabel || ['0 hari', '1-3 hari', '4-7 hari', '7 UP']).map(b => String(b).replace(/\s*hari/i, ''));
+  const areas = o.areaTable || [];
+  const sumArr = (arr, k) => arr.reduce((t, a) => t + num(a[k]), 0);
+  const gt = o.areaGrandTotal || { total: areas.reduce((t, a) => t + num(a.total), 0), sudah: [0, 1, 2, 3].map(i => areas.reduce((t, a) => t + num((a.sudah || [])[i]), 0)), belum: [0, 1, 2, 3].map(i => areas.reduce((t, a) => t + num((a.belum || [])[i]), 0)) };
+  const tot4 = arr => (arr || []).slice(0, 4).reduce((t, v) => t + num(v), 0);
+  const sdhGT = tot4(gt.sudah), blmGT = tot4(gt.belum);
+  const pctTxt = (v, base) => (base > 0 ? (num(v) / base * 100).toFixed(1) : '0.0') + '%';
+
+  const BLUE = '2B4764', GREEN = '22A55A';
+  const hc = (t, fill, o2) => ({ text: t, options: Object.assign({ bold: true, fontSize: 6, color: 'FACC15', fill: { color: fill }, align: 'center', valign: 'middle', margin: mg }, o2 || {}) });
+  const pc = (v, base, sub, fill, color) => ({ text: [{ text: pctTxt(v, base), options: { bold: true, fontSize: 6.5, color: color, breakLine: true } }, { text: sub, options: { fontSize: 4.5, color: 'D1D5DB' } }], options: { fill: { color: fill }, align: 'center', valign: 'middle', margin: [0, 0.02, 0, 0.02] } });
+  const pcT = (sub, fill) => ({ text: [{ text: '100%', options: { bold: true, fontSize: 6.5, color: 'FFFFFF', breakLine: true } }, { text: sub, options: { fontSize: 4.5, color: 'FFFFFF' } }], options: { fill: { color: fill }, align: 'center', valign: 'middle', margin: [0, 0.02, 0, 0.02] } });
+  const pCol = i => (i < 2 ? 'FACC15' : 'F87171');
+  const grp = (t, fill) => ({ text: t, options: { bold: true, fontSize: 6, color: 'FFFFFF', fill: { color: fill }, align: 'center', valign: 'middle', colspan: 5, margin: mg } });
+
+  const rowsT2 = [
+    [hc('AREA STORING', '1C1C1C', { rowspan: 2 }), hc('TOTAL', '1C1C1C', { rowspan: 2 }), grp('AGING SUDAH PLAN (CBM)', BLUE), grp('AGING BELUM PLAN (CBM)', GREEN)],
+    [].concat(bl.map((b, i) => pc(gt.sudah[i], sdhGT, b, '141414', pCol(i)))).concat([pcT('TOTAL', BLUE)])
+      .concat(bl.map((b, i) => pc(gt.belum[i], blmGT, b, '141414', pCol(i)))).concat([pcT('TOTAL', GREEN)])
+  ];
+  const sCol = ['141414', '1E7B34', 'B31B1B', 'C42222'], bCol = ['1F6E36', '3E9E4F', 'B31B1B', 'C42222'];
+  const dc = (v, fill, align, bold) => ({ text: (typeof v === 'number' ? fDash(v) : v), options: { fontSize: 6.3, color: (typeof v === 'number' && num(v) === 0 && fill !== BLUE && fill !== '2E9E4F') ? '6B7280' : 'FFFFFF', fill: { color: fill }, align: align || 'right', valign: 'middle', bold: !!bold, margin: mg } });
+  areas.forEach(a => {
+    const sd = (a.sudah || []).slice(0, 4), bk = (a.belum || []).slice(0, 4);
+    const sdT = tot4(sd), bkT = tot4(bk);
+    rowsT2.push([dc(String(a.area || ''), '1C1C1C', 'left', true), dc(num(a.total), '1C1C1C', 'right', true)]
+      .concat(sd.map((v, i) => dc(num(v), num(v) === 0 ? '141414' : sCol[i], 'right'))).concat([dc(sdT, BLUE, 'right', true)])
+      .concat(bk.map((v, i) => dc(num(v), num(v) === 0 ? '141414' : bCol[i], 'right'))).concat([dc(bkT, '2E9E4F', 'right', true)]));
+  });
+  const gb = [{ type: 'solid', pt: 1.5, color: 'C62828' }, { type: 'solid', pt: 0.5, color: '2B2B2B' }, { type: 'solid', pt: 0.5, color: '2B2B2B' }, { type: 'solid', pt: 0.5, color: '2B2B2B' }];
+  const gy = (v, fill) => ({ text: fD(v), options: { fontSize: 6.3, color: 'FACC15', fill: { color: fill }, align: 'right', valign: 'middle', bold: true, margin: mg, border: gb } });
+  rowsT2.push([{ text: 'GRAND TOTAL', options: { fontSize: 6.3, color: 'FACC15', fill: { color: BLUE }, align: 'right', valign: 'middle', bold: true, margin: mg, border: gb } }, gy(gt.total, '3D2F00')]
+    .concat((gt.sudah || []).slice(0, 4).map(v => gy(v, '2B3F55'))).concat([gy(sdhGT, '1B2533')])
+    .concat((gt.belum || []).slice(0, 4).map(v => gy(v, '2B3F55'))).concat([gy(blmGT, '1F7A3A')]));
+  const t2y = 5.6, hdrH = 0.235, pctH = 0.28, gtH = 0.22;
+  const rh = areas.length ? Math.min(0.212, (P2B - 0.04 - (t2y + hdrH + pctH) - gtH) / areas.length) : 0.2;
+  const colW2raw = [1.978, 0.99].concat([0.651, 0.646, 0.651, 0.651, 0.844, 0.651, 0.646, 0.651, 0.651, 0.844]);
+  const k = PWD / colW2raw.reduce((a, b) => a + b, 0);
+  s.addTable(rowsT2, { x: LX, y: t2y, w: PWD, colW: colW2raw.map(v => +(v * k).toFixed(4)), border: { type: 'solid', color: '2B2B2B', pt: 0.5 }, autoPage: false, rowH: [hdrH, pctH].concat(new Array(areas.length).fill(rh)).concat([gtH]) });
+
+  // ── teks laporan kanan (bullet bulat, ukuran & posisi seperti PPT asli) ──
+  const RXT = 10.46, RWT = 2.4;
+  const B = t => ({ text: t, options: { bold: true } });
+  const N = t => ({ text: t });
+  const line = runs => { const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) })); out[out.length - 1].options.breakLine = true; return out; };
+  const bul = runs => { const out = line(runs); out[0].options.bullet = { indent: 24, code: '25CF' }; out[0].options.indentLevel = 1; out[0].options.paraSpaceAfter = 1.5; return out; };
+  const gap = () => [{ text: ' ', options: { breakLine: true } }];
+  const right = [].concat(
+    line([N('Laporan Ringkasan Monitoring Outstanding Backlog & Order Aging by Area Storing WMS AHI Sidoarjo:')]),
+    gap(),
+    line([B('Ringkasan Outstanding Backlog')]),
+    bul([B('Total Backlog'), N(': '), B(fEn(o.backlogTotal) + ' CBM'), N(' (' + num(o.rowCount).toLocaleString('id-ID') + ' baris data)')]),
+    bul([B('Sudah Plan'), N(': '), B(fEn(o.sudahPlan) + ' CBM')]),
+    bul([B('Belum Plan'), N(': '), B(fEn(o.belumPlan) + ' CBM')]),
+    bul([B('Backlog Aging 7 UP'), N(': '), B(fEn(o.aging7up) + ' CBM')]),
+    bul([B('Allocation Unsuccessful'), N(': '), B(fEn(o.allocUnsuccessful) + ' CBM')])
+  );
+  if (o.topStoreBelumPlan) right.push(...bul([B('Prioritas Store Belum Plan Terbanyak'), N(': '), B(o.topStoreBelumPlan.code + ' (' + o.topStoreBelumPlan.name + ')'), N(' sebesar '), B(fEn(o.topStoreBelumPlan.cbm) + ' CBM'), N(' (' + num(o.topStoreBelumPlan.pct).toFixed(1) + '% dari total Belum Plan)')]));
+  right.push(...gap(), ...gap(), ...line([B('Ringkasan Order Aging by Area Storing')]));
+  const cap = w => String(w || '').charAt(0).toUpperCase() + String(w || '').slice(1).toLowerCase();
+  if (o.topAgingArea) right.push(...bul([B('Area Order >7 Hari Terbesar'), N(': '), B(String(o.topAgingArea.area)), N(' sebesar '), B(fEn(o.topAgingArea.cbm) + ' CBM'), N(' (' + num(o.topAgingArea.pctOfArea).toFixed(1) + '% dari total volume area ' + cap(o.topAgingArea.area) + ')')]));
+  if (o.topBelumAgingArea) right.push(...bul([B('Area Belum Plan >7 Hari Terbesar'), N(': '), B(String(o.topBelumAgingArea.area)), N(' sebesar '), B(fEn(o.topBelumAgingArea.cbm) + ' CBM'), N(o.topBelumAgingArea.isAllUnplanned ? ' (seluruh volume belum diplan)' : '')]));
+  T(right, { x: RXT, y: 0.4, w: RWT, h: 6.7, fontSize: 10, color: '000000', lineSpacingMultiple: 1.12 });
+}
+function cell1(text, bg, align, bold) { return { text: text, options: { fontSize: 6.3, color: bold ? '111111' : '374151', fill: { color: bg || 'FFFFFF' }, align: align || 'left', valign: 'middle', bold: !!bold } }; }
+// ── Dashboard Trend Daily Vendor dibuat dari data (tanpa screenshot): panel atas + Percentage Breakdown ──
+function toolsVendorNativeTop(s, pres, T, v) {
+  const IN = 0.00969, DB = '131316';
+  const SHADOW = { type: 'outer', color: '000000', opacity: 0.4, blur: 5, offset: 2, angle: 90 };
+  s.addShape(pres.ShapeType.rect, { x: 0.349, y: 1.105, w: 12.66, h: 4.157, fill: { color: DB }, line: { color: DB, width: 0 }, shadow: SHADOW });
+  s.addImage({ data: osGradPng(1280, 54, '1B2238', '12151F'), x: 0.504, y: 1.279, w: 12.37, h: 0.27 });
+  T('↗', { x: 0.62, y: 1.345, w: 0.15, h: 0.14, fontSize: 7, bold: true, color: 'FACC15' });
+  T('TREND DAILY VENDOR PERFORMANCE (ON TIME ACHIEVEMENT)', { x: 0.833, y: 1.35, w: 7, h: 0.14, fontSize: 7.5, bold: true, color: 'FACC15' });
+  T('*Menampilkan seluruh tanggal pada kolom LOAD DATE (AU) bulan aktif (Abaikan filter Stuffing Date)', { x: 6.0, y: 1.358, w: 6.75, h: 0.12, fontSize: 6.3, italic: true, color: '9CA3AF', align: 'right' });
+
+  const tot = v.total || { total: 0, onTime: 0, terlambat: 0, belumSupport: 0 };
+  const cards = [
+    ['VENDOR SUPPORTING', num0(v.achievementPeriode).toFixed(1) + '%', 'Monthly On-Time Avg', 'FACC15', '3A3208'],
+    ['TOTAL COMPLETED LC', tot.total + ' LC', 'Total Load Containers', '3B82F6', '14264A'],
+    ['TOTAL ON-TIME LC', tot.onTime + ' LC', 'Delivered Within Schedule', '34D399', '0F3A2A'],
+    ['TERLAMBAT LC', tot.terlambat + ' LC', 'Requires Dispatch Followup', 'EF4444', '3F1518'],
+    ['DELAYED SUPPORT LC', tot.belumSupport + ' LC', 'Delayed Admin Support', 'F59E0B', '3F2A0E']
+  ];
+  const cxs = [0.504, 2.985, 5.475, 7.965, 10.456], cw = 2.384, cy = 1.667, ch = 0.70;
+  cards.forEach((c, i) => {
+    const x = cxs[i];
+    s.addShape(pres.ShapeType.roundRect, { x: x, y: cy, w: cw, h: ch, rectRadius: 0.05, fill: { color: '1A1A1D' }, line: { color: '2E2E33', width: 0.75 } });
+    T(c[0], { x: x + 0.12, y: cy + 0.11, w: cw - 0.6, h: 0.12, fontSize: 6, bold: true, color: 'A3A3A3' });
+    T(c[1], { x: x + 0.12, y: cy + 0.2, w: cw - 0.6, h: 0.3, fontSize: 16, bold: true, color: c[3] });
+    T(c[2], { x: x + 0.12, y: cy + 0.55, w: cw - 0.6, h: 0.1, fontSize: 5.8, color: '6B7280' });
+    s.addShape(pres.ShapeType.ellipse, { x: x + cw - 0.43, y: cy + 0.2, w: 0.29, h: 0.29, fill: { color: c[4] }, line: { color: c[3], width: 0.75 } });
+    s.addShape(pres.ShapeType.ellipse, { x: x + cw - 0.43 + 0.095, y: cy + 0.2 + 0.095, w: 0.1, h: 0.1, fill: { color: c[3] }, line: { color: c[3], width: 0 } });
+  });
+
+  const days = v.days || [];
+  const labs = days.map(d => d.tanggal);
+  const mx = Math.max.apply(null, [5].concat(days.map(d => d.onTime + d.terlambat + d.belumSupport)));
+  const top = Math.ceil(mx / 5) * 5;
+  s.addChart([
+    { type: pres.charts.BAR, data: [
+      { name: 'ON TIME (LC)', labels: labs, values: days.map(d => d.onTime) },
+      { name: 'TERLAMBAT (LC)', labels: labs, values: days.map(d => d.terlambat) },
+      { name: 'DELAYED SUPPORT (LC)', labels: labs, values: days.map(d => d.belumSupport) }
+    ], options: { chartColors: ['3B82F6', 'EF4444', 'F59E0B'], barGrouping: 'stacked', barGapWidthPct: 25 } },
+    { type: pres.charts.LINE, data: [{ name: 'ACHIEVEMENT %', labels: labs, values: days.map(d => Math.round(d.ach * 10) / 10) }],
+      options: { chartColors: ['FACC15'], secondaryValAxis: true, secondaryCatAxis: true, lineSize: 1.25, lineDataSymbol: 'circle', lineDataSymbolSize: 4,
+        showValue: true, dataLabelPosition: 't', dataLabelColor: 'FACC15', dataLabelFontSize: 6, dataLabelFormatCode: 'General"%"' } }
+  ], { x: 0.58, y: 2.76, w: 12.2, h: 2.3, showLegend: true, legendPos: 't', legendColor: 'E5E7EB', legendFontSize: 6.5, legendFontFace: 'Arial',
+    catAxisLabelColor: '9CA3AF', catAxisLabelFontSize: 6, catAxisLabelRotate: -30, catAxisLabelFontFace: 'Arial',
+    valAxisLabelColor: '9CA3AF', valAxisLabelFontSize: 6, valAxisMinVal: 0, valAxisMaxVal: top, valAxisMajorUnit: 5,
+    valGridLine: { color: '2A2A2E', style: 'solid', size: 0.5 }, catGridLine: { style: 'none' },
+    plotArea: { fill: { color: DB } }, chartArea: { fill: { color: DB } },
+    valAxes: [
+      { showValAxisTitle: true, valAxisTitle: 'Jumlah LC', valAxisTitleColor: '9CA3AF', valAxisTitleFontSize: 6, valAxisMinVal: 0, valAxisMaxVal: top, valAxisMajorUnit: 5, valAxisLabelColor: '9CA3AF', valAxisLabelFontSize: 6, valGridLine: { color: '2A2A2E', style: 'solid', size: 0.5 } },
+      { showValAxisTitle: true, valAxisTitle: 'Achievement %', valAxisTitleColor: 'FACC15', valAxisTitleFontSize: 6, valAxisMinVal: 0, valAxisMaxVal: 100, valAxisMajorUnit: 20, valAxisLabelColor: 'FACC15', valAxisLabelFontSize: 6, valAxisLabelFormatCode: '0"%"', valGridLine: { style: 'none' } }
+    ],
+    catAxes: [{ catAxisLabelColor: '9CA3AF', catAxisLabelFontSize: 6, catAxisLabelRotate: -30 }, { catAxisHidden: true }],
+    serAxisHidden: true });
+}
+
+function toolsVendorNativeBreakdown(s, pres, T, v) {
+  const X = 0.359, Y = 5.349, W = 4.467, H = 1.87, DB = '131316';
+  const SHADOW = { type: 'outer', color: '000000', opacity: 0.4, blur: 5, offset: 2, angle: 90 };
+  s.addShape(pres.ShapeType.rect, { x: X, y: Y, w: W, h: H, fill: { color: DB }, line: { color: DB, width: 0 }, shadow: SHADOW });
+  s.addImage({ data: osGradPng(450, 50, '1B2238', '12151F'), x: X, y: Y, w: W, h: 0.25 });
+  T('%', { x: 0.47, y: Y + 0.075, w: 0.15, h: 0.12, fontSize: 6, bold: true, color: 'FACC15' });
+  T('PERCENTAGE BREAKDOWN', { x: 1.9, y: Y + 0.075, w: 2.84, h: 0.12, fontSize: 7, bold: true, color: 'FACC15', align: 'right' });
+
+  const ls = v.lateStats || { avgH: 0, maxH: 0 };
+  const hm = h => { const m = Math.round((h || 0) * 60); return Math.floor(m / 60) + ' Jam ' + (m % 60) + ' Menit'; };
+  const box = (x, w, accent, label, value, vcol) => {
+    s.addShape(pres.ShapeType.rect, { x: x, y: 5.669, w: w, h: 0.31, fill: { color: '0E0E10' }, line: { color: '26262A', width: 0.5 } });
+    s.addShape(pres.ShapeType.rect, { x: x, y: 5.669, w: 0.03, h: 0.31, fill: { color: accent }, line: { color: accent, width: 0 } });
+    T(label, { x: x, y: 5.69, w: w, h: 0.08, fontSize: 4.6, bold: true, color: '9CA3AF', align: 'center' });
+    T(value, { x: x, y: 5.775, w: w, h: 0.16, fontSize: 9.5, bold: true, color: vcol, align: 'center' });
+  };
+  box(0.388, 2.18, 'F59E0B', 'RERATA TERLAMBAT', hm(ls.avgH), 'FB923C');
+  box(2.616, 2.2, 'EF4444', 'TERLAMBAT TERLAMA', hm(ls.maxH), 'EF4444');
+
+  const tot = v.total || { total: 0, onTime: 0, terlambat: 0, belumSupport: 0 };
+  const sum = Math.max(1, tot.onTime + tot.terlambat + tot.belumSupport);
+  const pc = x => Math.round(x / sum * 100);
+  s.addChart(pres.charts.DOUGHNUT, [{ name: 'Status', labels: ['On Time', 'Terlambat', 'Delay Support'], values: [Math.max(tot.onTime, 0.0001), Math.max(tot.terlambat, 0.0001), Math.max(tot.belumSupport, 0.0001)] }], {
+    x: 0.84, y: 6.04, w: 1.14, h: 1.14, holeSize: 66, chartColors: ['10B981', 'EF4444', 'F59E0B'], firstSliceAng: 0,
+    showLegend: false, showTitle: false, showLabel: false, showValue: false, showPercent: false,
+    dataBorder: { pt: 0.5, color: DB }, plotArea: { fill: { color: DB } }, chartArea: { fill: { color: DB } } });
+  T(pc(tot.onTime) + '%', { x: 0.84, y: 6.46, w: 1.14, h: 0.2, fontSize: 9.5, bold: true, color: '10B981', align: 'center' });
+  T('ON TIME', { x: 0.84, y: 6.64, w: 1.14, h: 0.08, fontSize: 3.5, color: '9CA3AF', align: 'center' });
+
+  const hd = (t, al) => ({ text: t, options: { fontSize: 4.2, bold: true, color: 'FACC15', align: al, valign: 'middle', fill: { color: '1A1A1D' }, margin: [0, 0.04, 0, 0.04] } });
+  const cell = (t, al, col, bold, fill) => ({ text: t, options: { fontSize: 5.4, bold: !!bold, color: col, align: al, valign: 'middle', fill: { color: fill || DB }, margin: [0, 0.04, 0, 0.04] } });
+  const row = (dot, name, n, p) => [
+    { text: [{ text: '● ', options: { color: dot, fontSize: 4 } }, { text: name, options: { color: 'E5E7EB', fontSize: 5.4, bold: true } }], options: { valign: 'middle', align: 'left', fill: { color: DB }, margin: [0, 0.04, 0, 0.04] } },
+    cell(String(n), 'right', dot, true), cell(p + '%', 'right', 'FFFFFF', true)];
+  s.addTable([
+    [hd('REKAP PROGRESS', 'left'), hd('TOTAL DETAIL', 'right'), hd('PERSENTASE', 'right')],
+    row('10B981', 'On Time', tot.onTime, pc(tot.onTime)),
+    row('EF4444', 'Terlambat', tot.terlambat, pc(tot.terlambat)),
+    row('F59E0B', 'Delay Support', tot.belumSupport, pc(tot.belumSupport)),
+    [cell('TOTAL LC', 'left', 'FACC15', true, '221C08'), cell(String(sum), 'right', 'FACC15', true, '221C08'), cell('100%', 'right', 'FACC15', true, '221C08')]
+  ], { x: 2.413, y: 6.2, w: 2.335, colW: [1.0, 0.75, 0.585], rowH: [0.16, 0.2, 0.2, 0.2, 0.2], border: { type: 'solid', color: '26262A', pt: 0.5 }, autoPage: false });
+}
+function num0(x) { const n = parseFloat(x); return isNaN(n) ? 0 : n; }
+
+// ── SLIDE 5 versi gambar: Trend Daily Vendor Performance persis PPT asli (dashboard + breakdown hasil screenshot) ──
+function toolsBuildVendorShotsSlide(pres, v, bgData, shots) {
+  const FONT = 'Arial', LS = 10.1;
+  const s = pres.addSlide();
+  s.background = { data: bgData };
+  s.addShape(pres.ShapeType.rect, { x: 0.29, y: 0.32, w: 12.81, h: 7.01, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  const T = (text, o) => s.addText(text, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, o));
+  T('TREND DAILY VENDOR PERFORMANCE', { x: 0.485, y: 0.35, w: 10, h: 0.5, fontSize: 25.6, bold: true, color: '000000' });
+  T('Monitoring Vendor Performance & Achievement Trend', { x: 0.485, y: 0.77, w: 10, h: 0.35, fontSize: 17.5, italic: true, color: '1A1A1A' });
+
+  const SHADOW = { type: 'outer', color: '000000', opacity: 0.4, blur: 5, offset: 2, angle: 90 };
+  const place = (shot, bx, by, bw, bh) => {
+    s.addShape(pres.ShapeType.rect, { x: bx, y: by, w: bw, h: bh, fill: { color: '0D0D0D' }, line: { color: '0D0D0D', width: 0 }, shadow: SHADOW });
+    const k = Math.min(bw / shot.w, bh / shot.h), w = shot.w * k, h = shot.h * k;
+    s.addImage({ data: shot.data, x: bx + (bw - w) / 2, y: by + (bh - h) / 2, w: w, h: h });
+  };
+  if (shots && shots.a && shots.b) {
+    place(shots.a, 0.349, 1.105, 12.66, 4.157);
+    place(shots.b, 0.359, 5.349, 4.467, 1.87);
+  } else {
+    toolsVendorNativeTop(s, pres, T, v);
+    toolsVendorNativeBreakdown(s, pres, T, v);
+  }
+
+  const B = t => ({ text: t, options: { bold: true } });
+  const N = t => ({ text: t });
+  const fin = (runs, extra) => runs.map((r, i) => {
+    const o = Object.assign({ lineSpacing: LS }, r.options || {});
+    if (i === runs.length - 1) o.breakLine = true;
+    if (extra && i === 0) Object.assign(o, extra);
+    return { text: r.text, options: o };
+  });
+  const bul = (runs, after) => fin(runs, Object.assign({ bullet: { indent: 24, code: '2022' }, indentLevel: 1 }, after ? { paraSpaceAfter: after } : {}));
+  const head = (t, after) => fin([{ text: t, options: { bold: true, fontSize: 7.4, paraSpaceAfter: after } }]);
+  const num = x => (typeof x === 'number' && !isNaN(x) ? x : parseFloat(x) || 0);
+
+  const dl = v.days[v.days.length - 1];
+  const left = [].concat(
+    head('Ringkasan Trend Daily Vendor Performance (1–' + (dl ? dl.tanggal.slice(8) : '') + ' ' + monthName(v.monthKey) + ')', 9.8),
+    bul([N('Total Pengiriman: '), B(v.total.total + ' LC'), N(' ('), B(String(v.total.onTime)), N(' On Time, '), B(String(v.total.terlambat)), N(' Terlambat, '), B(String(v.total.belumSupport)), N(' Belum Support)')]),
+    bul([N('Achievement Periode: '), B(num(v.achievementPeriode).toFixed(1) + '%')]),
+    bul([N('Performa Terbaik: '), B(fmtTgl(v.bestDay.tanggal)), N(' ('), B(num(v.bestDay.ach).toFixed(1) + '%'), N(' dari '), B(v.bestDay.total + ' LC'), N(')')]),
+    bul([N('Performa Terburuk: '), B(fmtTgl(v.worstDay.tanggal)), N(' ('), B(num(v.worstDay.ach).toFixed(1) + '%'), N(' dari '), B(v.worstDay.total + ' LC'), N(')')], v.trendDelta ? 0 : 9.8)
+  );
+  if (v.trendDelta) {
+    const d = v.trendDelta.now - v.trendDelta.before;
+    left.push(...bul([N('Arah Tren: ' + (d >= 0 ? 'Membaik / Naik ' : 'Menurun ')), B((d >= 0 ? '+' : '-') + Math.abs(d).toFixed(1) + ' poin'), N(' (7 hari terakhir '), B(v.trendDelta.now.toFixed(1) + '%'), N(' vs 7 hari sebelumnya '), B(v.trendDelta.before.toFixed(1) + '%'), N(')')], 9.8));
+  }
+  left.push(...head('Vendor Terbaik dan Terjelek', 9.8));
+  if (v.vendorBest) left.push(...bul([N('Vendor Terbaik (Volume Besar): '), B(v.vendorBest.carrier), N(' dengan achievement '), B(num(v.vendorBest.ach).toFixed(1) + '%'), N(' dari '), B(v.vendorBest.total + ' LC')]));
+  if (v.vendorWorst) left.push(...bul([N('Vendor Terjelek (Volume Besar): '), B(v.vendorWorst.carrier), N(' dengan achievement '), B(num(v.vendorWorst.ach).toFixed(1) + '%'), N(' dari '), B(v.vendorWorst.total + ' LC'), N(' (terdapat '), B(v.vendorWorst.terlambat + ' LC'), N(' terlambat)')]));
+  if (v.vendorLowestOverall) left.push(...bul([N('Performa Terendah Keseluruhan (Min. 3 LC): '), B(v.vendorLowestOverall.carrier), N(' dengan achievement '), B(num(v.vendorLowestOverall.ach).toFixed(1) + '%'), N(' dari '), B(v.vendorLowestOverall.total + ' LC')]));
+  T(left, { x: 4.92, y: 5.28, w: 5.2, h: 1.95, fontSize: 7.4, color: '000000' });
+
+  const y = v.yesterday || { detail: [], ach: null };
+  const right = [].concat(head('Detail Miss Pengiriman Kemarin (' + fmtTgl(y.tanggal) + ')', 12.6));
+  if (y.ach !== null && y.ach !== undefined) right.push(...bul([N('Total Miss: '), B(y.miss + ' LC'), N(' dari total '), B(y.total + ' LC'), N(' (Achievement harian '), B(num(y.ach).toFixed(1) + '%'), N(')')]));
+  if (y.detail && y.detail.length) {
+    right.push(...bul([N('Rincian Vendor & LC Miss:')]));
+    const byV = {};
+    y.detail.forEach(m => { (byV[m.carrier] = byV[m.carrier] || []).push(m); });
+    Object.keys(byV).forEach(carrier => {
+      const items = byV[carrier];
+      const parts = items.map(m => 'LC ' + m.lc + ' ke ' + (m.kota || '-') + ' (' + (m.status === 'terlambat' ? 'Terlambat ' + m.delayJam + ' jam ' + m.delayMenit + ' menit' : 'Belum Support') + ')');
+      right.push(...bul([B(carrier + ' (' + items.length + ' LC):'), N(' ' + parts.join(' dan '))]));
+    });
+  } else if (y.ach !== null && y.ach !== undefined) {
+    right.push(...bul([N('Tidak ada MISS. Semua LC On Time.')]));
+  } else {
+    right.push(...bul([N('(Tidak ada data LC pada tanggal ini.)')]));
+  }
+  T(right, { x: 9.88, y: 5.28, w: 3.05, h: 1.95, fontSize: 7.4, color: '000000' });
+  s.addNotes('Dibuat otomatis dari data dashboard WMS AHI Sidoarjo. Gambar dashboard dan Percentage Breakdown berasal dari screenshot.');
+}
+
+function buildVendorTrendSlide(pres, v, bgData, shots) {
+  if (bgData) return toolsBuildVendorShotsSlide(pres, v, bgData, shots);
+  const FONT = 'Arial', W = 13.333, RED_LABEL = 'B4121F', BLUE_TXT = '1F3FBF';
+  const s = pres.addSlide();
+  s.background = { color: 'FFFFFF' };
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+  T('TREND DAILY VENDOR PERFORMANCE', { x: 0.4, y: 0.28, w: 10, h: 0.5, fontSize: 24, bold: true, color: '111111' });
+  T('Monitoring Planning & Operational Achievement \u2013 Yesterday & Today', { x: 0.4, y: 0.7, w: 10, h: 0.3, fontSize: 12, italic: true, color: '333333' });
+
+  const LX = 0.4, PY = 1.1, PW = 12.53, DB = '0D0D0F';
+  const topH = 2.85;
+  s.addShape(pres.ShapeType.roundRect, { x: LX, y: PY, w: PW, h: topH, rectRadius: 0.06, fill: { color: DB }, line: { color: 'C81E32', width: 1 } });
+  T('\u2713 TREND DAILY VENDOR PERFORMANCE (ON TIME ACHIEVEMENT)', { x: LX + 0.2, y: PY + 0.12, w: PW - 0.4, h: 0.2, fontSize: 9.5, bold: true, color: 'FF4D5E' });
+
+  const cards = [
+    ['VENDOR SUPPORTING', v.achievementPeriode.toFixed(1) + '%', 'Monthly On-Time Avg', 'FFFFFF'],
+    ['TOTAL COMPLETED LC', String(v.total.total), 'Total Load Containers', '60A5FA'],
+    ['TOTAL ON TIME LC', String(v.total.onTime), 'Delivered Within Schedule', '34D399'],
+    ['TERLAMBAT LC', String(v.total.terlambat), 'Require Dispatch Followup', 'F87171'],
+    ['BELUM SUPPORT LC', String(v.total.belumSupport), 'Delayed Admin Support', 'FBBF24']
+  ];
+  const cw = 2.28, cg = 0.14, cx0 = LX + 0.2, cy0 = PY + 0.4;
+  cards.forEach((c, i) => {
+    T(c[1], { x: cx0 + i * (cw + cg), y: cy0, w: cw, h: 0.55, fontSize: 26, bold: true, color: c[3] });
+    T(c[0], { x: cx0 + i * (cw + cg), y: cy0 + 0.56, w: cw, h: 0.2, fontSize: 8, bold: true, color: 'D1D5DB' });
+    T(c[2], { x: cx0 + i * (cw + cg), y: cy0 + 0.75, w: cw, h: 0.25, fontSize: 7, color: '8B92A0' });
+  });
+
+  // grafik: batang (on time/terlambat) + garis achievement
+  const chartY = cy0 + 1.15, chartH = topH - (chartY - PY) - 0.15;
+  s.addChart([
+    { type: pres.charts.BAR, data: [{ name: 'On Time', labels: v.days.map(d => d.tanggal.slice(8)), values: v.days.map(d => d.onTime) }, { name: 'Terlambat', labels: v.days.map(d => d.tanggal.slice(8)), values: v.days.map(d => d.terlambat) }], options: { chartColors: ['60A5FA', 'F87171'], barGrouping: 'stacked' } },
+    { type: pres.charts.LINE, data: [{ name: 'Achievement %', labels: v.days.map(d => d.tanggal.slice(8)), values: v.days.map(d => Math.round(d.ach)) }], options: { chartColors: ['FBBF24'], secondaryValAxis: true, secondaryCatAxis: true, lineSize: 2, lineDataSymbol: 'circle', lineDataSymbolSize: 4 } }
+  ], { x: LX + 0.2, y: chartY, w: PW - 0.4, h: chartH, showLegend: true, legendPos: 't', legendColor: 'D1D5DB', legendFontSize: 7,
+    catAxisLabelColor: '9CA3AF', catAxisLabelFontSize: 6, valAxisLabelColor: '9CA3AF', valAxisLabelFontSize: 7, valAxisHidden: false,
+    valGridLine: { color: '2A2A30', style: 'solid', size: 0.5 }, catGridLine: { style: 'none' }, plotArea: { fill: { color: DB } }, chartArea: { fill: { color: DB } },
+    valAxes: [
+      { valAxisTitle: 'LC', valAxisLabelColor: '9CA3AF', valAxisLabelFontSize: 7, valGridLine: { color: '2A2A30', style: 'solid', size: 0.5 } },
+      { valAxisTitle: 'Achievement %', valAxisMinVal: 0, valAxisMaxVal: 100, valAxisLabelColor: 'FBBF24', valAxisLabelFontSize: 7, valGridLine: { style: 'none' } }
+    ],
+    catAxes: [
+      { catAxisLabelColor: '9CA3AF', catAxisLabelFontSize: 6 },
+      { catAxisHidden: true }
+    ],
+    serAxisHidden: true });
+
+  // baris bawah: ringkasan trend (kiri) + detail miss kemarin (kanan)
+  const by = PY + topH + 0.18, bh = 7.5 - by - 0.25, bw = (PW - 0.3) / 2;
+  const label = t => ({ text: t, options: { bold: true, italic: true, color: RED_LABEL } });
+  const val = t => ({ text: t, options: { bold: true } });
+  const para = (runs, bullet) => { const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) })); if (bullet) out.unshift({ text: '\u25C6 ', options: { color: RED_LABEL, fontSize: 7.5 } }); out[out.length - 1].options.breakLine = true; return out; };
+
+  const left = [].concat(
+    para([{ text: 'Ringkasan Trend Daily Vendor Performance (1\u2013' + v.days[v.days.length - 1].tanggal.slice(8) + ' ' + monthName(v.monthKey) + ')', options: { bold: true, fontSize: 10.5, paraSpaceAfter: 4 } }]),
+    para([label('Total Pengiriman: '), val(v.total.total + ' LC'), { text: ' (' + v.total.onTime + ' On Time, ' + v.total.terlambat + ' Terlambat, ' + v.total.belumSupport + ' Belum Support)' }], true),
+    para([label('Achievement Periode: '), val(v.achievementPeriode.toFixed(1) + '%')], true),
+    para([label('Performa Terbaik: '), val(fmtTgl(v.bestDay.tanggal)), { text: ' (' + v.bestDay.ach.toFixed(1) + '% dari ' + v.bestDay.total + ' LC)' }], true),
+    para([label('Performa Terburuk: '), val(fmtTgl(v.worstDay.tanggal)), { text: ' (' + v.worstDay.ach.toFixed(1) + '% dari ' + v.worstDay.total + ' LC)' }], true)
+  );
+  if (v.trendDelta) {
+    const dl = v.trendDelta.now - v.trendDelta.before;
+    left.push(...para([label('Arah Tren: '), val((dl >= 0 ? 'Membaik / Naik +' : 'Menurun ') + Math.abs(dl).toFixed(1) + ' poin'), { text: ' (7 hari terakhir ' + v.trendDelta.now.toFixed(1) + '% vs 7 hari sebelumnya ' + v.trendDelta.before.toFixed(1) + '%)' }], true));
+  }
+  left.push(...para([{ text: 'Vendor Terbaik dan Terjelek', options: { bold: true, fontSize: 10.5, paraSpaceAfter: 4 } }]));
+  if (v.vendorBest) left.push(...para([label('Vendor Terbaik (Volume Besar): '), val(v.vendorBest.carrier), { text: ' dengan achievement ' + v.vendorBest.ach.toFixed(1) + '% dari ' + v.vendorBest.total + ' LC' }], true));
+  if (v.vendorWorst) left.push(...para([label('Vendor Terjelek (Volume Besar): '), val(v.vendorWorst.carrier), { text: ' dengan achievement ' + v.vendorWorst.ach.toFixed(1) + '% dari ' + v.vendorWorst.total + ' LC (terdapat ' + v.vendorWorst.terlambat + ' LC terlambat)' }], true));
+  if (v.vendorLowestOverall) left.push(...para([label('Performa Terendah Keseluruhan (Min. 3 LC): '), val(v.vendorLowestOverall.carrier), { text: ' dengan achievement ' + v.vendorLowestOverall.ach.toFixed(1) + '% dari ' + v.vendorLowestOverall.total + ' LC' }], true));
+  T(left, { x: LX, y: by, w: bw, h: bh, fontSize: 8.7, color: '111111', paraSpaceAfter: 2.5 });
+
+  const y = v.yesterday;
+  const right = [].concat(para([{ text: 'Detail Miss Pengiriman Kemarin (' + fmtTgl(y.tanggal) + ')', options: { bold: true, fontSize: 10.5, paraSpaceAfter: 4 } }]));
+  if (y.ach !== null) right.push(...para([label('Total Miss: '), val(y.miss + ' LC'), { text: ' dari total ' + y.total + ' LC (Achievement harian ' + y.ach.toFixed(1) + '%)' }], true));
+  if (y.detail.length) {
+    right.push(...para([{ text: 'Rincian Vendor & LC Miss:', options: { bold: true } }]));
+    const byV = {};
+    y.detail.forEach(m => { (byV[m.carrier] = byV[m.carrier] || []).push(m); });
+    Object.keys(byV).forEach(carrier => {
+      const items = byV[carrier];
+      const parts = items.map(m => 'LC ' + m.lc + ' ke ' + (m.kota || '-') + ' (' + (m.status === 'terlambat' ? 'Terlambat ' + m.delayJam + ' jam ' + m.delayMenit + ' menit' : 'Belum Support') + ')');
+      right.push(...para([label(carrier + ' (' + items.length + ' LC): '), { text: parts.join(' dan ') }], true));
+    });
+  } else if (y.ach !== null) {
+    right.push(...para([{ text: 'Tidak ada MISS. Semua LC On Time.' }], true));
+  } else {
+    right.push(...para([{ text: '(Tidak ada data LC pada tanggal ini.)' }], true));
+  }
+  T(right, { x: LX + bw + 0.3, y: by, w: bw, h: bh, fontSize: 8.7, color: '111111', paraSpaceAfter: 2.5 });
+}
+function fmtTgl(iso) { const p = iso.split('-'); const bln = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']; return parseInt(p[2], 10) + ' ' + bln[parseInt(p[1], 10) - 1] + ' ' + p[0]; }
+function monthName(ym) { const p = ym.split('-'); const bln = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']; return bln[parseInt(p[1], 10) - 1] + ' ' + p[0]; }
+
+// ── SLIDE 6 versi screenshot asli (app Inbound: Outstanding Armada Stock Transfer) ──
+function buildStockTransferShotsSlide(pres, st, bgData, shots) {
+  const FONT = 'Arial', RED_LABEL = 'B4121F';
+  const s = pres.addSlide();
+  if (bgData) { s.background = { data: bgData }; }
+  s.addShape(pres.ShapeType.rect, { x: 0.30, y: 0.26, w: 12.76, h: 6.95, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+
+  T('Stock Transfer Monitoring', { x: 0.5, y: 0.30, w: 9, h: 0.5, fontSize: 25, bold: true, color: '000000' });
+  T('Overview of Stock Transfer Progress & Status', { x: 0.5, y: 0.72, w: 9, h: 0.35, fontSize: 15, italic: true, color: '1A1A1A' });
+  T('Aging Armada & Outstanding CBM', { x: 0.45, y: 1.22, w: 6.2, h: 0.3, fontSize: 13, bold: true, italic: true, color: 'A50F1E', align: 'center' });
+
+  const SH = { type: 'outer', color: '000000', opacity: 0.35, blur: 5, offset: 2, angle: 90 };
+  const place = (shot, bx, by, bw, bh, bg) => {
+    s.addShape(pres.ShapeType.rect, { x: bx, y: by, w: bw, h: bh, fill: { color: bg || 'FFFFFF' }, line: { color: bg || 'FFFFFF', width: 0 }, shadow: SH });
+    const k = Math.min(bw / shot.w, bh / shot.h), iw = shot.w * k, ih = shot.h * k;
+    s.addImage({ data: shot.data, x: bx + (bw - iw) / 2, y: by + (bh - ih) / 2, w: iw, h: ih });
+  };
+  // kiri: tabel AGING ARMADA + ATA (kotak garis putus-putus merah seperti PPT asli)
+  s.addShape(pres.ShapeType.rect, { x: 0.42, y: 1.55, w: 6.26, h: 3.3, fill: { color: 'FFFFFF' }, line: { color: 'E04A2F', width: 1, dashType: 'dash' } });
+  place(shots.g, 0.5, 1.62, 6.1, 3.16);
+  // kanan atas: kartu KPI + Detail Status per Armada
+  place(shots.h, 6.9, 1.00, 6.05, 2.45);
+  // kanan bawah: tab CBM
+  place(shots.i, 6.9, 3.55, 6.05, 3.55);
+
+  // teks ringkasan di bawah gambar kiri
+  const label = tt => ({ text: tt, options: { bold: true, italic: true, color: RED_LABEL } });
+  const para = (runs, bullet) => {
+    const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) }));
+    if (bullet) out.unshift({ text: '\u2022 ', options: { color: '111111', fontSize: 9 } });
+    out[out.length - 1].options.breakLine = true;
+    return out;
+  };
+  const t = st.total, baris = [];
+  baris.push(...para([{ text: 'Laporan Ringkasan Stock Transfer Inbound Monitoring', options: { bold: true, italic: true, fontSize: 11, paraSpaceAfter: 5 } }]));
+  baris.push(...para([{ text: '1. Jumlah Armada Berdasarkan Status Operasional', options: { bold: true, fontSize: 9.5, paraSpaceAfter: 3 } }]));
+  const ket = (nama, nilai) => {
+    const rinci = st.perType.filter(x => x[nama] > 0).map(x => x[nama] + ' ' + x.type).join(', ');
+    return para([label(({ prosesMuat: 'Proses Muat', onDelivery: 'On Delivery', ataDepo: 'ATA Depo', tungguBongkar: 'Tunggu Bongkar' })[nama] + ': '),
+      { text: nilai + ' armada' + (rinci ? ' (' + rinci + ')' : '') }], true);
+  };
+  baris.push(...ket('prosesMuat', t.prosesMuat));
+  baris.push(...ket('onDelivery', t.onDelivery));
+  baris.push(...ket('ataDepo', t.ataDepo));
+  baris.push(...ket('tungguBongkar', t.tungguBongkar));
+  baris.push(...para([{ text: '2. Detail Status ATA Depo (' + t.ataDepo + ' Armada)', options: { bold: true, fontSize: 9.5, paraSpaceBefore: 5, paraSpaceAfter: 3 } }]));
+  (st.ataDetail || []).forEach(d => {
+    const g = Object.keys(d.groups).map(k => k + ' (' + d.groups[k] + ')').join(', ');
+    baris.push(...para([label(d.type + ' (' + d.total + ' armada): '), { text: g }], true));
+  });
+  T(baris, { x: 0.5, y: 4.95, w: 6.2, h: 2.15, fontSize: 9, color: '111111', paraSpaceAfter: 2 });
+  s.addNotes('Gambar diambil otomatis dari halaman Outstanding Armada Stock Transfer (app Inbound).');
+}
+
+function buildStockTransferSlide(pres, st, bgData, shots) {
+  if (shots && shots.g && shots.h && shots.i) return buildStockTransferShotsSlide(pres, st, bgData, shots);
+  const FONT = 'Arial', W = 13.333, RED_LABEL = 'B4121F';
+  const s = pres.addSlide();
+  if (bgData) { s.background = { data: bgData }; s.addShape(pres.ShapeType.rect, { x: 0.30, y: 0.26, w: 12.76, h: 6.95, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } }); } else { s.background = { color: 'FFFFFF' }; }
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+  T('Stock Transfer Monitoring', { x: 0.5, y: 0.27, w: 11, h: 0.55, fontSize: 26.5, bold: true, color: '000000' });
+  T('Overview of Stock Transfer Progress & Status', { x: 0.5, y: 0.70, w: 11, h: 0.4, fontSize: 17.3, italic: true, color: '1A1A1A' });
+
+  const t = st.total;
+  const cardTop = [['ARMD BAKAL DELAY', 0, 'F87171'], ['PROSES MUAT', t.prosesMuat, '60A5FA'], ['ON DELIVERY', t.onDelivery, '34D399'], ['ATA DEPO TUNGGU BONGKAR', t.tungguBongkar, 'FBBF24']];
+  const LX = 0.5, PY = 1.15, RW = 7.55, RH = 0.9;
+  cardTop.forEach((c, i) => {
+    const cx = LX + i * (RW / 4);
+    T(String(c[1]), { x: cx, y: PY, w: RW / 4 - 0.1, h: 0.45, fontSize: 22, bold: true, color: c[2] });
+    T(c[0], { x: cx, y: PY + 0.48, w: RW / 4 - 0.1, h: 0.35, fontSize: 7, bold: true, color: '6B7280' });
+  });
+
+  // tabel jumlah armada per status
+  const ty = PY + RH + 0.1;
+  T('Jumlah Armada Berdasarkan Status Operasional', { x: LX, y: ty, w: RW, h: 0.25, fontSize: 10, bold: true, color: '111111' });
+  const cols = ['Jenis Armada', 'Proses Muat', 'On Delivery', 'ATA Depo', 'Tunggu Bongkar'];
+  const rows = st.perType.filter(x => x.prosesMuat + x.onDelivery + x.ataDepo + x.tungguBongkar > 0).map(x => [x.type, x.prosesMuat, x.onDelivery, x.ataDepo, x.tungguBongkar]);
+  rows.push(['GRAND TOTAL', t.prosesMuat, t.onDelivery, t.ataDepo, t.tungguBongkar]);
+  const tblRows = [cols.map(c => ({ text: c, options: { bold: true, color: 'FFFFFF', fill: { color: '374151' }, fontSize: 9 } }))];
+  rows.forEach((r, ri) => tblRows.push(r.map((v, ci) => ({ text: String(v), options: { fontSize: 9, bold: ri === rows.length - 1, fill: { color: ri === rows.length - 1 ? 'FEE2E2' : (ri % 2 ? 'F9FAFB' : 'FFFFFF') }, color: ci === 0 ? '111111' : '333333' } }))));
+  s.addTable(tblRows, { x: LX, y: ty + 0.3, w: RW, colW: [RW * 0.32, RW * 0.17, RW * 0.17, RW * 0.17, RW * 0.17], border: { type: 'solid', color: 'E5E7EB', pt: 0.5 }, autoPage: false, rowH: 0.32 });
+
+  // detail ATA Depo
+  const ay = ty + 0.3 + (rows.length + 1) * 0.32 + 0.25;
+  T('Detail Status ATA Depo (' + t.ataDepo + ' Armada)', { x: LX, y: ay, w: RW, h: 0.25, fontSize: 10, bold: true, color: '111111' });
+  const label = tt => ({ text: tt, options: { bold: true, italic: true, color: RED_LABEL } });
+  const para = (runs, bullet) => { const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) })); if (bullet) out.unshift({ text: '\u2022 ', options: { color: RED_LABEL, fontSize: 8 } }); out[out.length - 1].options.breakLine = true; return out; };
+  const ataLines = [];
+  st.ataDetail.forEach(d => { const g = Object.keys(d.groups).map(k => k + ' (' + d.groups[k] + ')').join(', '); ataLines.push(...para([label(d.type + ' (' + d.total + ' armada): '), { text: g }], true)); });
+  T(ataLines, { x: LX, y: ay + 0.3, w: RW, h: 7.1 - (ay + 0.3), fontSize: 9, color: '111111', paraSpaceAfter: 2 });
+
+  // panel kanan: CBM
+  const RX = LX + RW + 0.3, RW2 = W - RX - 0.4;
+  s.addShape(pres.ShapeType.roundRect, { x: RX, y: PY, w: RW2, h: 7.1 - PY, rectRadius: 0.05, fill: { color: '0D0D0F' }, line: { color: '3B82F6', width: 1 } });
+  T('TOTAL CBM\nOUTSTANDING', { x: RX + 0.15, y: PY + 0.12, w: RW2 - 0.3, h: 0.85, fontSize: 20, bold: true, color: 'FFFFFF', lineSpacingMultiple: 1.05 });
+  const cbm = st.cbm || {};
+  const rowsCbm = [['CBM Customer', cbm.cbmCustomer], ['CBM Astor', cbm.cbmAstor], ['CBM Area 1', cbm.cbmArea1], ['CBM Area 2', cbm.cbmArea2], ['CBM Area 3', cbm.cbmArea3]];
+  let ry = PY + 1.1;
+  rowsCbm.forEach(r => {
+    T(r[0], { x: RX + 0.15, y: ry, w: RW2 - 0.3, h: 0.2, fontSize: 8, color: '9CA3AF' });
+    T(fmt2(r[1] || 0) + ' CBM', { x: RX + 0.15, y: ry + 0.2, w: RW2 - 0.3, h: 0.3, fontSize: 14, bold: true, color: 'FFFFFF' });
+    ry += 0.58;
+  });
+}
+
+// ── SLIDE 7 versi screenshot asli (app Inbound: Inbound Planning) ──
+function buildInboundPlanningShotSlide(pres, ib, bgData, shots) {
+  const FONT = 'Arial', RED_LABEL = 'B4121F';
+  const s = pres.addSlide();
+  if (bgData) { s.background = { data: bgData }; }
+  s.addShape(pres.ShapeType.rect, { x: 0.30, y: 0.26, w: 12.76, h: 6.95, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } });
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+
+  T('Inbound Planning', { x: 0.5, y: 0.27, w: 11, h: 0.55, fontSize: 26.5, bold: true, color: '000000' });
+  T('Today\u2019s Inbound Plan & Operational Schedule', { x: 0.5, y: 0.70, w: 11, h: 0.4, fontSize: 17.3, italic: true, color: '1A1A1A' });
+
+  const SH = { type: 'outer', color: '000000', opacity: 0.35, blur: 5, offset: 2, angle: 90 };
+  const bx = 0.5, by = 1.18, bw = 12.33, bh = 3.75;
+  s.addShape(pres.ShapeType.rect, { x: bx, y: by, w: bw, h: bh, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 }, shadow: SH });
+  const k = Math.min(bw / shots.j.w, bh / shots.j.h), iw = shots.j.w * k, ih = shots.j.h * k;
+  s.addImage({ data: shots.j.data, x: bx + (bw - iw) / 2, y: by + (bh - ih) / 2, w: iw, h: ih });
+
+  // teks ringkasan dua kolom di bawah gambar
+  const label = tt => ({ text: tt, options: { bold: true, italic: true, color: RED_LABEL } });
+  const val = tt => ({ text: tt, options: { bold: true } });
+  const para = (runs, bullet) => {
+    const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) }));
+    if (bullet) out.unshift({ text: '\u00b7 ', options: { color: RED_LABEL, fontSize: 9 } });
+    out[out.length - 1].options.breakLine = true;
+    return out;
+  };
+  const kiri = [].concat(
+    para([{ text: 'Ringkasan Umum:', options: { bold: true, fontSize: 11, paraSpaceAfter: 4 } }]),
+    para([label('Total Kedatangan: '), val(ib.totalKedatangan + ' armada'),
+      { text: ' (' + ib.transfer + ' Transfer, ' + ib.importAhi + ' Import AHI, ' + ib.lokal + ' Lokal)' }], true),
+    para([label('Total Qty: '), val((ib.totalQty || 0).toLocaleString('id-ID') + ' pcs')], true),
+    para([label('Total SKU: '), val((ib.totalSKU || 0) + ' SKU')], true),
+    para([label('Total CBM: '), val(fmt2(ib.totalCBM) + ' CBM')], true)
+  );
+  T(kiri, { x: 0.5, y: 5.08, w: 5.9, h: 2.0, fontSize: 10, color: '111111', paraSpaceAfter: 2 });
+
+  const area = [['Customer', ib.cbmCustomer], ['Astor', ib.cbmAstor], ['Area 1', ib.cbmArea1], ['Area 2', ib.cbmArea2], ['Area 3', ib.cbmArea3]];
+  const kanan = [].concat(
+    para([{ text: 'Rincian Total CBM per Area:', options: { bold: true, fontSize: 11, paraSpaceAfter: 4 } }]),
+    area.map(c => para([label(c[0] + ': '), val(fmt2(c[1]) + ' CBM')], true)).reduce((x, y) => x.concat(y), [])
+  );
+  T(kanan, { x: 6.9, y: 5.08, w: 5.9, h: 2.0, fontSize: 10, color: '111111', paraSpaceAfter: 2 });
+  s.addNotes('Gambar diambil otomatis dari halaman Inbound Planning (app Inbound).');
+}
+
+function buildInboundPlanningSlide(pres, ib, bgData, shots) {
+  if (shots && shots.j) return buildInboundPlanningShotSlide(pres, ib, bgData, shots);
+  const FONT = 'Arial', W = 13.333, RED_LABEL = 'B4121F';
+  const s = pres.addSlide();
+  if (bgData) { s.background = { data: bgData }; s.addShape(pres.ShapeType.rect, { x: 0.30, y: 0.26, w: 12.76, h: 6.95, fill: { color: 'FFFFFF' }, line: { color: 'FFFFFF', width: 0 } }); } else { s.background = { color: 'FFFFFF' }; }
+  const T = (t, opt) => s.addText(t, Object.assign({ fontFace: FONT, margin: 0, isTextBox: true, valign: 'top' }, opt));
+  T('Inbound Planning', { x: 0.5, y: 0.27, w: 11, h: 0.55, fontSize: 26.5, bold: true, color: '000000' });
+  T('Today\u2019s Inbound Plan & Operational Schedule', { x: 0.5, y: 0.70, w: 11, h: 0.4, fontSize: 17.3, italic: true, color: '1A1A1A' });
+
+  const LX = 0.5, PY = 1.15, PW = 12.33;
+  function card(x, y, w, h, label, value, valColor, border) {
+    s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.05, fill: { color: 'FFFFFF' }, line: { color: border || 'E5E7EB', width: border ? 1.25 : 0.75 } });
+    // ukuran huruf menyesuaikan panjang teks, supaya angka panjang (mis. "57.183 pcs")
+    // tidak tumpah menimpa label di bawahnya
+    const tv = String(value), fs = tv.length <= 5 ? 20 : (tv.length <= 7 ? 16 : (tv.length <= 10 ? 13 : 11));
+    T(tv, { x: x + 0.12, y: y + 0.10, w: w - 0.24, h: 0.44, fontSize: fs, bold: true, color: valColor || '111111', valign: 'middle', fit: 'shrink' });
+    T(label, { x: x + 0.12, y: y + 0.56, w: w - 0.24, h: 0.28, fontSize: 7.5, bold: true, color: '6B7280' });
+  }
+  const row1 = [['TOTAL UNLOAD', ib.totalKedatangan, '111111'], ['TRANSFER', ib.transfer, '111111'], ['IMPORT AHI', ib.importAhi, '111111'], ['LOKAL', ib.lokal, '111111'], ['HIT', ib.hit, '10B981', '34D399'], ['MISS', ib.miss, 'EF4444', 'F87171'], ['TOTAL QTY', ib.totalQty.toLocaleString('id-ID') + ' pcs', '111111'], ['TOTAL SKU', ib.totalSKU, '111111']];
+  const cw1 = (PW - 0.7) / 8;
+  row1.forEach((c, i) => card(LX + i * (cw1 + 0.1), PY, cw1, 0.85, c[0], c[1], c[2], c[3]));
+
+  const py2 = PY + 1.0;
+  T('\uD83D\uDD52 STATUS PROSES UNLOADING \u2013 HARI INI', { x: LX, y: py2, w: PW, h: 0.25, fontSize: 9.5, bold: true, color: '374151' });
+  const stCards = [['DONE', ib.done, '10B981'], ['PROSES', ib.proses, '3B82F6'], ['ANTRI', ib.antri, '8B5CF6'], ['BELUM DATANG', ib.belumDatang, 'F59E0B']];
+  const cw2 = (PW - 0.3) / 4;
+  stCards.forEach((c, i) => {
+    const x = LX + i * (cw2 + 0.1);
+    s.addShape(pres.ShapeType.roundRect, { x, y: py2 + 0.3, w: cw2, h: 0.95, rectRadius: 0.05, fill: { color: 'FFFFFF' }, line: { color: 'E5E7EB', width: 0.75 } });
+    T(String(c[1]), { x: x + 0.12, y: py2 + 0.42, w: cw2 - 0.24, h: 0.4, fontSize: 22, bold: true, color: c[2] });
+    T(c[0], { x: x + 0.12, y: py2 + 0.85, w: cw2 - 0.24, h: 0.22, fontSize: 8, bold: true, color: '6B7280' });
+    const pct = ib.totalKedatangan > 0 ? c[1] / ib.totalKedatangan * 100 : 0;
+    T(pct.toFixed(1) + '% dari total', { x: x + 0.12, y: py2 + 1.05, w: cw2 - 0.24, h: 0.18, fontSize: 6.5, color: '9CA3AF' });
+  });
+
+  const py3 = py2 + 1.5;
+  s.addShape(pres.ShapeType.roundRect, { x: LX, y: py3, w: 3.0, h: 1.0, rectRadius: 0.05, fill: { color: 'FFFFFF' }, line: { color: 'E5E7EB', width: 0.75 } });
+  T(fmt2(ib.totalCBM), { x: LX + 0.15, y: py3 + 0.12, w: 2.7, h: 0.4, fontSize: 22, bold: true, color: 'EF4444' });
+  T('TOTAL CBM', { x: LX + 0.15, y: py3 + 0.55, w: 2.7, h: 0.2, fontSize: 8, bold: true, color: '6B7280' });
+  T('Est. Pallet: ~' + Math.round(ib.totalCBM / 1.2) + ' pallet', { x: LX + 0.15, y: py3 + 0.75, w: 2.7, h: 0.2, fontSize: 6.5, color: '9CA3AF' });
+
+  const areaKeys = [['CUSTOMER', ib.cbmPerArea.customer], ['ASTOR', ib.cbmPerArea.astor], ['AREA 1', ib.cbmPerArea.area1], ['AREA 2', ib.cbmPerArea.area2], ['AREA 3', ib.cbmPerArea.area3]];
+  const cw3 = (PW - 3.2) / 5;
+  areaKeys.forEach((c, i) => {
+    const x = LX + 3.2 + i * cw3;
+    s.addShape(pres.ShapeType.roundRect, { x, y: py3, w: cw3 - 0.1, h: 1.0, rectRadius: 0.05, fill: { color: 'FFFFFF' }, line: { color: 'E5E7EB', width: 0.75 } });
+    T(fmt2(c[1]), { x: x + 0.1, y: py3 + 0.12, w: cw3 - 0.3, h: 0.38, fontSize: 15, bold: true, color: '111111', fit: 'shrink' });
+    T(c[0], { x: x + 0.1, y: py3 + 0.55, w: cw3 - 0.3, h: 0.2, fontSize: 7, bold: true, color: '6B7280' });
+  });
+
+  const by = py3 + 1.25;
+  const label = t => ({ text: t, options: { bold: true, italic: true, color: RED_LABEL } });
+  const val = t => ({ text: t, options: { bold: true } });
+  const para = (runs, bullet) => { const out = runs.map(r => ({ text: r.text, options: Object.assign({}, r.options) })); if (bullet) out.unshift({ text: '\u2022 ', options: { color: RED_LABEL, fontSize: 8 } }); out[out.length - 1].options.breakLine = true; return out; };
+  const left = [].concat(
+    para([{ text: 'Ringkasan Umum:', options: { bold: true, fontSize: 11, paraSpaceAfter: 4 } }]),
+    para([label('Total Kedatangan: '), val(ib.totalKedatangan + ' armada'), { text: ' (' + (ib.transfer === ib.totalKedatangan ? 'seluruhnya Transfer' : ib.transfer + ' Transfer, ' + ib.importAhi + ' Import AHI, ' + ib.lokal + ' Lokal') + ')' }], true),
+    para([label('Total Qty: '), val((ib.totalQty || 0).toLocaleString('id-ID') + ' pcs')], true),
+    para([label('Total SKU: '), val(String(ib.totalSKU) + ' SKU')], true),
+    para([label('Total CBM: '), val(fmt2(ib.totalCBM) + ' CBM')], true)
+  );
+  T(left, { x: LX, y: by, w: (PW - 0.3) / 2, h: 1.4, fontSize: 10, color: '111111', paraSpaceAfter: 3 });
+  const right = [].concat(para([{ text: 'Rincian Total CBM per Area:', options: { bold: true, fontSize: 11, paraSpaceAfter: 4 } }]));
+  areaKeys.forEach(c => right.push(...para([label(toolsCapWord(c[0]) + ': '), val(fmt2(c[1]) + ' CBM')], true)));
+  T(right, { x: LX + (PW - 0.3) / 2 + 0.3, y: by, w: (PW - 0.3) / 2, h: 1.7, fontSize: 10, color: '111111', paraSpaceAfter: 3 });
+}
+function toolsCapWord(s) { return s.charAt(0) + s.slice(1).toLowerCase(); }
+
+// ◆ pada teks diberi indent gantung (baris yang membungkus rata di bawah teks, bukan di bawah ◆)
+// pptxgenjs menulis <a:pPr> di SETIAP potongan teks dalam satu paragraf. Untuk paragraf ber-bullet, sisakan pPr pertama
+// saja supaya bullet & indent konsisten (PowerPoint, LibreOffice, Google Slides) dan XML-nya valid.
+function toolsDedupeBulletPPr(xml) {
+  return xml.replace(/<a:p>[\s\S]*?<\/a:p>/g, function (p) {
+    if (p.indexOf('<a:buChar') < 0) return p;
+    let first = true;
+    return p.replace(/<a:pPr\b[^>]*\/>|<a:pPr\b[^>]*>[\s\S]*?<\/a:pPr>/g, function (m) { if (first) { first = false; return m; } return ''; });
+  });
+}
+
+// bullet ❖ (slide 2): hitam, sedikit lebih besar, posisi bullet & teks seperti PPT asli
+function toolsFixDiamondBullets(xml) {
+  return xml.replace(/<a:p>[\s\S]*?<\/a:p>/g, function (p) {
+    if (p.indexOf('<a:buChar char="&#x2756;"/>') >= 0) {
+      return p.replace(/marL="\d+" indent="-?\d+"/, 'marL="609905" indent="-399593"')
+        .replace('<a:buSzPct val="100000"/>', '<a:buClr><a:srgbClr val="000000"/></a:buClr><a:buSzPct val="125000"/>');
+    }
+    if (p.indexOf('<a:buChar char="&#x2022;"/>') >= 0) { // bullet bulat slide Trend Daily Vendor
+      return p.replace(/marL="\d+" indent="-?\d+"/, 'marL="609600" indent="-334772"')
+        .replace('<a:buSzPct val="100000"/>', '<a:buClr><a:srgbClr val="000000"/></a:buClr><a:buSzPct val="150000"/>');
+    }
+    return p;
+  });
+}
+
+async function toolsPostProcess(arrayBuffer) {
+  await toolsLoadScript(TOOLS_JSZIP_CDN);
+  const zip = await JSZip.loadAsync(arrayBuffer);
+  const f = zip.file('ppt/slides/slide1.xml');
+  if (f) {
+    const xml = await f.async('string');
+    const parts = xml.split('<a:p>');
+    for (let i = 1; i < parts.length; i++) {
+      const seg = parts[i], t = seg.indexOf('<a:t>');
+      if (t >= 0 && seg.indexOf('<a:t>◆ </a:t>', t) === t && seg.indexOf('indent="0" marL="0"') >= 0) {
+        parts[i] = seg.replace('indent="0" marL="0"', 'marL="171450" indent="-171450"');
+      }
+    }
+    zip.file('ppt/slides/slide1.xml', parts.join('<a:p>'));
+  }
+  const slideNames = Object.keys(zip.files).filter(n => /^ppt\/slides\/slide\d+\.xml$/.test(n));
+  for (const n of slideNames) {
+    const x0 = await zip.file(n).async('string'), x1 = toolsFixDiamondBullets(toolsDedupeBulletPPr(x0));
+    if (x1 !== x0) zip.file(n, x1);
+  }
+  await toolsFixJpegExt(zip);
+  return zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
+}
+
+/**
+ * pptxgenjs menamai gambar latar slide dengan akhiran .png padahal isinya JPEG,
+ * dan di [Content_Types].xml akhiran .png didaftarkan sebagai image/png.
+ * PowerPoint & LibreOffice tetap bisa buka karena mereka memeriksa isi filenya,
+ * tapi pembaca yang ketat (misalnya preview lampiran Gmail) jadi gagal.
+ * Di sini nama file yang isinya JPEG diubah ke .jpeg lalu acuannya ikut dibetulkan.
+ */
+async function toolsFixJpegExt(zip) {
+  const media = Object.keys(zip.files).filter(n => /^ppt\/media\/.+\.png$/i.test(n));
+  const ganti = {};
+  for (const n of media) {
+    const u8 = await zip.file(n).async('uint8array');
+    if (u8.length > 3 && u8[0] === 0xFF && u8[1] === 0xD8 && u8[2] === 0xFF) {  // tanda pengenal JPEG
+      const baru = n.replace(/\.png$/i, '.jpeg');
+      zip.file(baru, u8);
+      zip.remove(n);
+      ganti[n.split('/').pop()] = baru.split('/').pop();
+    }
+  }
+  const lama = Object.keys(ganti);
+  if (!lama.length) return 0;
+  const rels = Object.keys(zip.files).filter(n => /\.rels$/i.test(n));
+  for (const n of rels) {
+    const x0 = await zip.file(n).async('string');
+    let x1 = x0;
+    lama.forEach(function (nm) { if (x1.indexOf(nm) >= 0) x1 = x1.split(nm).join(ganti[nm]); });
+    if (x1 !== x0) zip.file(n, x1);
+  }
+  console.log('Perbaikan nama gambar JPEG di PPT:', lama.length, 'file');
+  return lama.length;
+}
+
+function toolsDownloadBlob(blob, fileName) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fileName; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+// ── AUTO-CAPTURE panel Profil DC & Daily Proses (tanpa paste manual) ──
+// Memuat app Profil DC di iframe tersembunyi; Main.html di sana (sudah ditambah rutin capture)
+// membalas dengan 2 gambar lewat postMessage.
+function toolsBcast(w, msg, d) {
+  if (d > 6) return;
+  let n = 0; try { n = w.length; } catch (e) { return; }
+  for (let i = 0; i < n; i++) {
+    let f; try { f = w[i]; } catch (e) { continue; }
+    try { f.postMessage(msg, '*'); } catch (e) { }
+    toolsBcast(f, msg, d + 1);
+  }
+}
+/* Batas atas ukuran tiap gambar capture. Normalnya gambar cuma ~220 KB, jadi
+   batas ini tidak pernah kepakai; cuma jaga-jaga kalau suatu saat ada capture
+   yang ukurannya meledak. Mutu gambar TIDAK diturunkan selama masih di bawah ini. */
+var TOOLS_SHOT_MAX_KB = 1500;
+
+/** Simpan sebagai JPEG; mutunya baru diturunkan kalau melebihi batas. */
+function toolsEncodeBudget(c, maxKb) {
+  const bytes = s => Math.round(s.length * 0.75);
+  let q = 0.92, u = c.toDataURL('image/jpeg', q);
+  while (bytes(u) > maxKb * 1024 && q > 0.5) {
+    q = Math.round((q - 0.07) * 100) / 100;
+    u = c.toDataURL('image/jpeg', q);
+  }
+  return { url: u, q: q, kb: Math.round(bytes(u) / 1024) };
+}
+
+function toolsShotFromUrl(url, key) {
+  return new Promise(function (resolve, reject) {
+    const im = new Image();
+    im.onerror = function () { reject(new Error('gambar capture gagal dibuka')); };
+    im.onload = function () {
+      const sc = Math.min(1, 1800 / im.naturalWidth), w = Math.max(1, Math.round(im.naturalWidth * sc)), h = Math.max(1, Math.round(im.naturalHeight * sc));
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const g = c.getContext('2d'); g.fillStyle = '#0a0508'; g.fillRect(0, 0, w, h); g.drawImage(im, 0, 0, w, h);
+      const enc = toolsEncodeBudget(c, TOOLS_SHOT_MAX_KB), u = enc.url, d = new Date();
+      console.log('Capture "' + key + '": ' + w + 'x' + h + ', ' + enc.kb + ' KB, mutu ' + enc.q);
+      TOOLS_SHOTS[key] = { url: u, data: u.replace(/^data:/, ''), w: w, h: h, auto: true, at: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') };
+      resolve();
+    };
+    im.src = url;
+  });
+}
+var toolsCapNote = '';
+function toolsAutoCaptureProfil(timeoutMs) {
+  return new Promise(function (resolve) {
+    const id = 'cap' + Date.now();
+    const fr = document.createElement('iframe');
+    fr.src = toolsNoCache(URLS.profildc);
+    fr.setAttribute('aria-hidden', 'true');
+    fr.style.cssText = 'position:fixed;left:0;top:0;width:1700px;height:1000px;border:0;opacity:0.01;pointer-events:none;z-index:-1;';
+    const got = {}; let acked = false, finished = false, poll = null, tmo = null;
+    const finish = function (ok) {
+      if (finished) return; finished = true;
+      clearInterval(poll); clearTimeout(tmo);
+      window.removeEventListener('message', onMsg);
+      setTimeout(function () { try { fr.remove(); } catch (e) { } }, 300);
+      resolve(ok);
+    };
+    function onMsg(e) {
+      const d = e.data; if (!d || d.id !== id) return;
+      if (d.type === 'wmsCapAck') acked = true;
+      else if (d.type === 'wmsCapRes' && (d.which === 'a' || d.which === 'b')) {
+        toolsShotFromUrl(d.url, d.which).then(function () { got[d.which] = 1; if (got.a && got.b) finish(true); }).catch(function () { });
+      } else if (d.type === 'wmsCapErr') { console.warn('Capture gagal:', d.msg); toolsCapNote = 'Auto-capture Slide 2 gagal: ' + d.msg + '. '; finish(false); }
+    }
+    window.addEventListener('message', onMsg);
+    document.body.appendChild(fr);
+    // iframe baru dimuat -> ulangi permintaan tiap 2 dtk sampai dijawab
+    poll = setInterval(function () {
+      if (acked) return;
+      const msg = { type: 'wmsCapReq', id: id };
+      try { fr.contentWindow.postMessage(msg, '*'); toolsBcast(fr.contentWindow, msg, 0); } catch (e) { }
+    }, 2000);
+    tmo = setTimeout(function () {
+      if (!(got.a && got.b)) toolsCapNote = 'Auto-capture Slide 2 gagal: ' + (acked ? 'app Profil DC membalas tapi gambar tidak lengkap (' + Object.keys(got).length + '/2)' : 'tidak ada balasan dari app Profil DC — Main.html belum di-deploy New version, atau iframe diblokir') + '. ';
+      finish(!!(got.a && got.b));
+    }, timeoutMs || 160000);
+  });
+}
+
+function toolsInboundPlanShotReady() { return TOOLS_SHOTS.j ? { j: TOOLS_SHOTS.j } : null; }
+
+// Capture halaman Inbound Planning (app Inbound) -> slide 7
+function toolsAutoCaptureInboundPlan(timeoutMs) {
+  return new Promise(function (resolve) {
+    const id = 'cap4' + Date.now();
+    const fr = document.createElement('iframe');
+    fr.src = toolsNoCache(URLS.inbound);
+    fr.setAttribute('aria-hidden', 'true');
+    fr.style.cssText = 'position:fixed;left:0;top:0;width:1700px;height:1200px;border:0;opacity:0.01;pointer-events:none;z-index:-1;';
+    let acked = false, finished = false, poll = null, tmo = null, langkah = '', dapat = false;
+    const finish = function (ok) {
+      if (finished) return; finished = true;
+      clearInterval(poll); clearTimeout(tmo);
+      window.removeEventListener('message', onMsg);
+      setTimeout(function () { try { fr.remove(); } catch (e) { } }, 300);
+      resolve(ok);
+    };
+    function onMsg(e) {
+      const d = e.data; if (!d || d.id !== id) return;
+      if (d.type === 'wmsCapAck') acked = true;
+      else if (d.type === 'wmsCapInfo') { langkah = String(d.step || ''); console.log('Capture Inbound Planning:', langkah); }
+      else if (d.type === 'wmsCapRes' && d.which === 'j') {
+        toolsShotFromUrl(d.url, 'j').then(function () { dapat = true; finish(true); }).catch(function () { });
+      } else if (d.type === 'wmsCapErr') { console.warn('Capture Inbound Planning gagal:', d.msg); toolsCapNote += 'Auto-capture Slide 7 gagal: ' + d.msg + '. '; finish(false); }
+    }
+    window.addEventListener('message', onMsg);
+    document.body.appendChild(fr);
+    poll = setInterval(function () {
+      if (acked) return;
+      const msg = { type: 'wmsCapReq4', id: id };
+      try { fr.contentWindow.postMessage(msg, '*'); toolsBcast(fr.contentWindow, msg, 0); } catch (e) { }
+    }, 2000);
+    tmo = setTimeout(function () {
+      if (!dapat) toolsCapNote += 'Auto-capture Slide 7 gagal: ' + (acked ? 'app Inbound Planning membalas tapi gambar tidak sampai' + (langkah ? ' (berhenti di: ' + langkah + ')' : '') : 'tidak ada balasan dari app Inbound Planning') + '. ';
+      finish(dapat);
+    }, timeoutMs || 150000);
+  });
+}
+
+// tambah penanda waktu di URL supaya browser TIDAK memakai salinan lama dari cache
+function toolsNoCache(u) { return u + (u.indexOf('?') >= 0 ? '&' : '?') + '_cap=' + Date.now(); }
+
+function toolsPlannerShotsReady() { return (TOOLS_SHOTS.e && TOOLS_SHOTS.f) ? { e: TOOLS_SHOTS.e, f: TOOLS_SHOTS.f } : null; }
+
+// Capture panel MAIN DASHBOARD app Planner (2x: tanggal kemarin & hari ini) -> slide 3
+function toolsAutoCapturePlanner(timeoutMs) {
+  return new Promise(function (resolve) {
+    const id = 'cap2' + Date.now();
+    const fr = document.createElement('iframe');
+    fr.src = toolsNoCache(URLS.planner);
+    fr.setAttribute('aria-hidden', 'true');
+    fr.style.cssText = 'position:fixed;left:0;top:0;width:1700px;height:1100px;border:0;opacity:0.01;pointer-events:none;z-index:-1;';
+    const got = {}; let acked = false, finished = false, poll = null, tmo = null, langkah = '';
+    const finish = function (ok) {
+      if (finished) return; finished = true;
+      clearInterval(poll); clearTimeout(tmo);
+      window.removeEventListener('message', onMsg);
+      setTimeout(function () { try { fr.remove(); } catch (e) { } }, 300);
+      resolve(ok);
+    };
+    function onMsg(e) {
+      const d = e.data; if (!d || d.id !== id) return;
+      if (d.type === 'wmsCapAck') acked = true;
+      else if (d.type === 'wmsCapInfo') { langkah = String(d.step || ''); console.log('Capture Planner:', langkah); }
+      else if (d.type === 'wmsCapRes' && (d.which === 'e' || d.which === 'f')) {
+        toolsShotFromUrl(d.url, d.which).then(function () { got[d.which] = 1; if (got.e && got.f) finish(true); }).catch(function () { });
+      } else if (d.type === 'wmsCapErr') { console.warn('Capture Planner gagal:', d.msg); toolsCapNote += 'Auto-capture Slide 3 gagal: ' + d.msg + '. '; finish(false); }
+    }
+    window.addEventListener('message', onMsg);
+    document.body.appendChild(fr);
+    poll = setInterval(function () {
+      if (acked) return;
+      const msg = { type: 'wmsCapReq2', id: id };
+      try { fr.contentWindow.postMessage(msg, '*'); toolsBcast(fr.contentWindow, msg, 0); } catch (e) { }
+    }, 2000);
+    tmo = setTimeout(function () {
+      if (!(got.e && got.f)) toolsCapNote += 'Auto-capture Slide 3 gagal: ' + (acked ? 'app Planner membalas tapi gambar tidak lengkap (' + Object.keys(got).length + '/2' + (langkah ? ', berhenti di: ' + langkah : '') + ')' : 'tidak ada balasan dari app Planner') + '. ';
+      finish(!!(got.e && got.f));
+    }, timeoutMs || 170000);
+  });
+}
+
+function toolsInboundShotsReady() { return (TOOLS_SHOTS.g && TOOLS_SHOTS.h && TOOLS_SHOTS.i) ? { g: TOOLS_SHOTS.g, h: TOOLS_SHOTS.h, i: TOOLS_SHOTS.i } : null; }
+
+// Capture halaman Outstanding Armada Stock Transfer (app Inbound) -> slide 6
+function toolsAutoCaptureInbound(timeoutMs) {
+  return new Promise(function (resolve) {
+    const id = 'cap3' + Date.now();
+    const fr = document.createElement('iframe');
+    fr.src = toolsNoCache(URLS.inbound);
+    fr.setAttribute('aria-hidden', 'true');
+    fr.style.cssText = 'position:fixed;left:0;top:0;width:1700px;height:1200px;border:0;opacity:0.01;pointer-events:none;z-index:-1;';
+    const got = {}; let acked = false, finished = false, poll = null, tmo = null, langkah = '';
+    const perlu = function () { return got.g && got.h && got.i; };
+    const finish = function (ok) {
+      if (finished) return; finished = true;
+      clearInterval(poll); clearTimeout(tmo);
+      window.removeEventListener('message', onMsg);
+      setTimeout(function () { try { fr.remove(); } catch (e) { } }, 300);
+      resolve(ok);
+    };
+    function onMsg(e) {
+      const d = e.data; if (!d || d.id !== id) return;
+      if (d.type === 'wmsCapAck') acked = true;
+      else if (d.type === 'wmsCapInfo') { langkah = String(d.step || ''); console.log('Capture Inbound:', langkah); }
+      else if (d.type === 'wmsCapRes' && (d.which === 'g' || d.which === 'h' || d.which === 'i')) {
+        toolsShotFromUrl(d.url, d.which).then(function () { got[d.which] = 1; if (perlu()) finish(true); }).catch(function () { });
+      } else if (d.type === 'wmsCapErr') { console.warn('Capture Inbound gagal:', d.msg); toolsCapNote += 'Auto-capture Slide 6 gagal: ' + d.msg + '. '; finish(false); }
+    }
+    window.addEventListener('message', onMsg);
+    document.body.appendChild(fr);
+    poll = setInterval(function () {
+      if (acked) return;
+      const msg = { type: 'wmsCapReq3', id: id };
+      try { fr.contentWindow.postMessage(msg, '*'); toolsBcast(fr.contentWindow, msg, 0); } catch (e) { }
+    }, 2000);
+    tmo = setTimeout(function () {
+      if (!perlu()) toolsCapNote += 'Auto-capture Slide 6 gagal: ' + (acked ? 'app Inbound membalas tapi gambar tidak lengkap (' + Object.keys(got).length + '/3' + (langkah ? ', berhenti di: ' + langkah : '') + ')' : 'tidak ada balasan dari app Inbound') + '. ';
+      finish(!!perlu());
+    }, timeoutMs || 180000);
+  });
+}
+
+// Mulai ambil gambar Profil DC di latar belakang (dipanggil saat halaman Tools dibuka),
+// supaya pas tombol Generate ditekan gambarnya sudah siap -> generate terasa cepat.
+function toolsPrewarmCapture() {
+  if (toolsCapPromise) return toolsCapPromise;
+  if (TOOLS_SHOTS.a && !TOOLS_SHOTS.a.auto && TOOLS_SHOTS.b && !TOOLS_SHOTS.b.auto) return null;
+  toolsCapNote = ''; TOOLS_SHOTS.a = null; TOOLS_SHOTS.b = null; TOOLS_SHOTS.e = null; TOOLS_SHOTS.f = null;
+  TOOLS_SHOTS.g = null; TOOLS_SHOTS.h = null; TOOLS_SHOTS.i = null; TOOLS_SHOTS.j = null; toolsCapAt = 0;
+  toolsCapPromise = toolsAutoCaptureProfil(160000).then(function (ok) {
+    // lanjut capture app Planner (slide 3), lalu app Inbound (slide 6)
+    return toolsAutoCapturePlanner(170000)
+      .then(function () { return toolsAutoCaptureInbound(180000); })
+      .then(function () { return toolsAutoCaptureInboundPlan(150000); })
+      .then(function () { return ok; });
+  }).then(function (ok) {
+    toolsCapPromise = null; toolsCapSudah = true;
+    toolsCapAt = (ok && TOOLS_SHOTS.a && TOOLS_SHOTS.b) ? Date.now() : 0;
+    try { toolsShotRender(); } catch (e) { }
+    return ok;
+  }).catch(function () { toolsCapPromise = null; return false; });
+  return toolsCapPromise;
+}
+
+async function toolsGeneratePpt() {
+  if (toolsBusy) return;
+  toolsBusy = true;
+  const gen = toolsEl('tlGenBtn'), ref = toolsEl('tlRefreshBtn');
+  const setBtn = t => { if (gen) gen.textContent = t; };
+  if (gen) gen.disabled = true; if (ref) ref.disabled = true;
+  toolsMsg('', '');
+  try {
+    setBtn('⏳ Mengambil data terbaru…');
+    toolsData = await toolsFetchData();
+    for (let coba = 0; coba < 2 && !toolsAllOk(toolsData); coba++) {
+      setBtn('⏳ Sebagian data gagal, mengambil ulang… (' + (coba + 1) + '/2)');
+      await new Promise(function (r) { setTimeout(r, 3000); });
+      try { toolsData = await toolsFetchData(); } catch (e2) { console.warn('Ambil ulang gagal:', e2); break; }
+    }
+    toolsRenderData();
+    if (!toolsAllOk(toolsData)) throw new Error('Data belum lengkap, PPT tidak dibuat (lihat bagian "Data yang dipakai").');
+
+    // gambar Profil DC & Daily Proses: otomatis (kecuali dua-duanya sudah ditempel manual)
+    if (!(TOOLS_SHOTS.a && !TOOLS_SHOTS.a.auto && TOOLS_SHOTS.b && !TOOLS_SHOTS.b.auto)) {
+      // tunggu capture latar belakang kalau masih jalan; kalau belum pernah jalan, jalankan sekarang
+      const capSegar = toolsCapSudah && toolsCapAt && (Date.now() - toolsCapAt) < 600000;
+      if (toolsCapPromise || !(toolsCapSudah && capSegar)) {
+        const capP = toolsCapPromise || (toolsCapSudah ? null : toolsPrewarmCapture());
+        if (capP) { setBtn('⏳ Mengambil gambar dashboard…'); try { await capP; } catch (e) { console.warn('Auto-capture dilewati:', e); } }
+      }
+      toolsShotRender();
+    }
+
+    setBtn('⏳ Menyusun slide…');
+    await toolsLoadScript(TOOLS_PPTX_CDN);
+    if (typeof PptxGenJS === 'undefined') throw new Error('Pustaka PPT tidak termuat.');
+    const pres = new PptxGenJS();
+    pres.layout = 'LAYOUT_WIDE';
+    pres.title = 'Daily Operational Report DC AHI Sidoarjo';
+    const now0 = new Date();
+    const tanggalLabel = now0.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    buildCoverSlide(pres, { tanggal: tanggalLabel });
+    toolsBuildProfilDailySlide(pres, toolsMapData(toolsData), toolsGradientBg(), toolsShotsReady());
+    buildPlannerSlideV2(pres, toolsData.planner || {}, toolsMapPlannerMaster(toolsData), toolsGradientBg(), toolsPlannerShotsReady());
+    buildOutstandingSlideV3(pres, toolsMapOutstanding(toolsData), toolsGradientBg());
+    buildVendorTrendSlide(pres, toolsMapVendorTrend(toolsData), toolsGradientBg(), toolsVendorShotsReady());
+    buildStockTransferSlide(pres, toolsMapStockTransfer(toolsData), toolsGradientBg(), toolsInboundShotsReady());
+    buildInboundPlanningSlide(pres, toolsMapInboundPlanning(toolsData), toolsGradientBg(), toolsInboundPlanShotReady());
+    const skipped = [];
+    if (toolsData.odGantung && toolsData.odGantung.ok) buildOdGantungSlide(pres, toolsData.odGantung, toolsGradientBg()); else skipped.push('OD Gantung');
+    if (toolsData.atk && toolsData.atk.ok) buildAtkSlide(pres, toolsData.atk, toolsGradientBg()); else skipped.push('ATK');
+    if (toolsData.reduce && toolsData.reduce.ok) buildReduceSlide(pres, toolsData.reduce, toolsGradientBg()); else skipped.push('Skema Reduce');
+    if (skipped.length) toolsCapNote += 'Slide dilewati (data belum tersedia): ' + skipped.join(', ') + '. ';
+    buildThankYouSlide(pres, toolsGradientBg());
+
+    setBtn('⏳ Menyiapkan file…');
+    const now = new Date();
+    const p2 = n => String(n).padStart(2, '0');
+    const fileName = 'Daily_Operational_Report_DC_AHI_Sidoarjo_' + now.getFullYear() + '-' + p2(now.getMonth() + 1) + '-' + p2(now.getDate()) + '_' + p2(now.getHours()) + p2(now.getMinutes()) + '.pptx';
+    let blob = null;
+    try {
+      const buf = await pres.write({ outputType: 'arraybuffer' });
+      blob = await toolsPostProcess(buf);
+    } catch (e) { console.warn('Post-proses PPT dilewati:', e); blob = null; }
+    if (blob) toolsDownloadBlob(blob, fileName); else await pres.writeFile({ fileName: fileName });
+
+    toolsSetPill('ok', 'PPT terunduh');
+    const ukuranMb = blob ? (blob.size / 1048576) : 0;
+    const infoUkuran = ukuranMb ? ' Ukuran ' + ukuranMb.toFixed(1) + ' MB' + (ukuranMb <= 15 ? ' (muat dilampirkan di email).' : ' (lebih dari 15 MB, email hanya berisi link).') : '';
+    toolsMsg('ok', toolsCapNote + 'PPT berhasil dibuat (' + (pres.slides ? pres.slides.length : '') + ' slide): ' + fileName + ' (cek folder Download).' + infoUkuran + ' Mengirim ke email\u2026');
+    const catatanRingkas = 'Rata-rata progres ' + (toolsData.rata != null ? toolsData.rata.toFixed(1) : '-') + '% (data pukul ' + toolsData.jam + ' WIB)';
+    const uploaded = blob ? await toolsUploadAndLog(blob, fileName, (pres.slides ? pres.slides.length : '') + ' slide', catatanRingkas) : null;
+    if (uploaded && uploaded.previewUrl) {
+      toolsMsg('ok', toolsCapNote + 'PPT berhasil dibuat (' + (pres.slides ? pres.slides.length : '') + ' slide): ' + fileName + ' (cek folder Download). Data pukul ' + toolsData.jam + ' WIB. Preview sudah tersedia di Riwayat PPT di bawah.');
+    } else {
+      toolsMsg('ok', toolsCapNote + 'PPT berhasil dibuat (' + (pres.slides ? pres.slides.length : '') + ' slide): ' + fileName + ' (cek folder Download). Data pukul ' + toolsData.jam + ' WIB. (Preview tidak tersedia \u2014 ' + (toolsUploadErr || 'gagal diunggah ke Drive') + ')');
+    }
+  } catch (e) {
+    toolsSetPill('err', 'Gagal membuat PPT');
+    toolsMsg('err', 'PPT gagal dibuat: ' + e.message);
+    toolsLogRun('gagal', '', '', e.message);
+  } finally {
+    toolsBusy = false;
+    setBtn('⬇️ Buat PPT sekarang');
+    if (ref) ref.disabled = false;
+    if (gen) gen.disabled = !toolsAllOk(toolsData);
+  }
+}
+
+// ── TAB di halaman Tools: (1) PPT Laporan Pagi otomatis, (2) PPT untuk Pak Rudi, Pak Husni & Pak Arson, (3) PPT Planner — dua terakhir tool HTML lama, dipasang utuh lewat iframe ──
+var TOOLS_PIMP_URL = 'ppt-pimpinan.html';
+var TOOLS_PLANNER_URL = 'ppt-planner.html';
+var toolsTab = 'pagi';
+
+function toolsSwitchTab(name) {
+  toolsTab = (name === 'pimpinan' || name === 'planner' || name === 'tes') ? name : 'pagi';
+  const panes = { pagi: toolsEl('tlPanePagi'), pimpinan: toolsEl('tlPanePimpinan'), planner: toolsEl('tlPanePlanner'), tes: toolsEl('tlPaneTes') };
+  const tabs = { pagi: toolsEl('tlTabPagi'), pimpinan: toolsEl('tlTabPimpinan'), planner: toolsEl('tlTabPlanner'), tes: toolsEl('tlTabTes') };
+  Object.keys(panes).forEach(k => { if (panes[k]) panes[k].style.display = (toolsTab === k) ? '' : 'none'; if (tabs[k]) tabs[k].classList.toggle('active', toolsTab === k); });
+  if (toolsTab === 'pimpinan') { toolsLoadPimpinan(false); toolsMuatRiwayatPimpinan(); }
+  if (toolsTab === 'planner') toolsLoadPlanner(false);
+  if (toolsTab === 'tes') {
+    const t = toolsEl('tiTanggal'); if (t && !t.value) t.value = new Date().toISOString().slice(0, 10);
+    if (!tiRiwayat.length) toolsMuatRiwayatInterview();
+  }
+}
+
+/** Muat satu tool HTML (Pimpinan/Planner) ke dalam iframe-nya, dengan pengecekan file ada dulu. */
+async function toolsLoadFrameTool(url, frameId, msgId, force, namaTool) {
+  const fr = toolsEl(frameId), msg = toolsEl(msgId);
+  if (!fr) return;
+  if (fr.dataset.loaded === '1' && !force) return;
+  const setMsg = (cls, text) => { if (msg) { msg.className = 'tl-msg ' + cls + ' tl-frame-msg'; msg.textContent = text; } };
+  try {
+    const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    setMsg('tl-msg-wait', '⏳ Memuat ' + namaTool + '… (kalau lebih dari 8 detik tidak muncul, akan ada pesan di sini)');
+    fr.style.display = '';
+    fr.dataset.loaded = '1';
+    let selesai = false;
+    fr.onload = () => { selesai = true; setMsg('tl-msg-frame', ''); };
+    fr.onerror = () => { selesai = true; fr.style.display = 'none'; setMsg('tl-msg-err', 'Tool ' + namaTool + ' gagal dimuat (iframe error). Coba buka langsung: ' + url); };
+    setTimeout(() => {
+      if (!selesai) setMsg('tl-msg-err', '⚠️ ' + namaTool + ' sudah diminta tapi belum selesai dimuat setelah 8 detik. Kemungkinan diblokir jaringan/firewall, atau file terlalu berat. Coba klik "Buka di tab baru" untuk cek langsung, atau tunggu lebih lama.');
+    }, 8000);
+    // Selalu pakai penanda waktu, bukan cuma saat "Muat ulang".
+    // Tanpa ini GitHub Pages bisa menyajikan versi lama tool-nya sampai ~10 menit,
+    // dan perbaikan di ppt-pimpinan.html / ppt-planner.html seolah tidak berefek.
+    fr.src = url + '?v=' + Date.now();
+  } catch (e) {
+    fr.style.display = 'none';
+    setMsg('tl-msg-err', 'Tool ' + namaTool + ' belum bisa dimuat (' + e.message + '). Pastikan file ' + url + ' sudah di-upload ke repo GitHub, sejajar dengan index.html.');
+  }
+}
+
+function toolsLoadPimpinan(force) { return toolsLoadFrameTool(TOOLS_PIMP_URL, 'tlPimpFrame', 'tlPimpMsg', force, 'PPT untuk pimpinan'); }
+function toolsReloadPimpinan() { const fr = toolsEl('tlPimpFrame'); if (fr) fr.dataset.loaded = '0'; toolsLoadPimpinan(true); }
+
+function toolsLoadPlanner(force) { return toolsLoadFrameTool(TOOLS_PLANNER_URL, 'tlPlannerFrame', 'tlPlannerMsg', force, 'PPT Planner'); }
+function toolsReloadPlanner() { const fr = toolsEl('tlPlannerFrame'); if (fr) fr.dataset.loaded = '0'; toolsLoadPlanner(true); }
+
+// ══════════════════════════════════════════════════════════════════
+//  TES INTERVIEW — STAFF PLANNING
+//  Tiap kandidat dapat DATA yang berbeda (diacak dari nama + tanggal),
+//  jadi jawabannya ikut berbeda walaupun dikerjakan bersamaan.
+//  Hasil bisa langsung jadi Google Sheet (lewat Apps Script) atau
+//  diunduh sebagai file Excel.
+// ══════════════════════════════════════════════════════════════════
+const TI_XLSX_CDN = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+
+// Acakan yang bisa diulang: nama yang sama + tanggal yang sama = data yang sama.
+function tiSeed(teks) {
+  let h = 2166136261;
+  for (let i = 0; i < teks.length; i++) { h ^= teks.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function tiRng(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const tiPick = (r, arr) => arr[Math.floor(r() * arr.length)];
+const tiInt = (r, a, b) => a + Math.floor(r() * (b - a + 1));
+const tiDec = (r, a, b) => Math.round((a + r() * (b - a)) * 100) / 100;
+
+const TI_EXPEDISI = ['PT.DANEX', '1D-INTERNAL (SDA)', 'WPS', 'AHI', 'BS', 'KEMASINDO', 'PT AMANAH', 'MIF', 'PT SML', 'DKL', 'JT', 'TPIL'];
+const TI_JALUR = ['Bali', 'Makassar', 'JOGYAKARTA', 'SEMARANG', 'MALANG', 'SURABAYA PUSAT', 'SURABAYA SELATAN', 'SOLO', 'Manado', 'SURABAYA TIMUR ZONA1', 'SURABAYA BARAT ZONA1', 'GRESIK'];
+const TI_TYPE_LAND = ['CDD LONG CHASSIS', 'WINGBOX', 'CDE LONG CHASSIS', 'FUSO', 'CDE'];
+const TI_TYPE_SEA = ['CONT-20', 'CONT-40'];
+const TI_STATUS = ['Checkout', 'Checkout', 'Checkout', 'Checkout', 'Checkout', 'Close', 'New', 'Checkin'];
+const TI_STORE = [
+  ['A305', 'ST AHI SBY PAKUWON'], ['A307', 'ST AHI SURABAYA GALAXY'], ['A312', 'ST AHI SBY TUNJUNGAN PLAZA'],
+  ['A321', 'ST AHI ROYAL PLAZA SURABAYA'], ['A339', 'ST AHI SIDOARJO'], ['A367', 'ST AHI TEUKU UMAR DPS'],
+  ['A379', 'ST AHI NUSA DUA BALI'], ['A435', 'ST AHI BATU BULAN BALI'], ['A480', 'ST AHI MALANG'],
+  ['A551', 'ST AHI JOGJA'], ['A597', 'ST AHI GIANYAR BALI'], ['A615', 'ST AHI SOLO'],
+  ['A635', 'ST AHI SEMARANG'], ['A652', 'ST AHI MAKASSAR'], ['A668', 'ST AHI MANADO'],
+  ['A671', 'ST AHI GRESIK'], ['A684', 'ST AHI KEDIRI'], ['A690', 'ST AHI BANYUWANGI'],
+  ['A702', 'ST AHI JEMBER'], ['A714', 'ST AHI MADIUN']
+];
+const TI_HEADER = ['LC', 'NAMA EXPEDISI', 'TRANSPORTTYPE', 'NOPOL', 'TYPE', 'SHIP TO', 'JALUR', 'JML LC',
+  'ADD DATE', 'DELIV DATE', 'LOAD DATE', 'TOTTAL STOP', 'TOTALORDER', 'INFOR', 'RT TD', 'RTA', 'RTB',
+  'ORDER NDC', 'TOTAL CASE ID', 'CBM', 'RELEAS', '% RELEAS', 'PICKED', '% PICKED', 'BOOM STATUS', '% BOOM',
+  'STAGE', '% STAGE', 'LOADED', '%LOADED', 'SHIP', '% SHIP', 'STATUS'];
+
+/** Bikin tabel DATA dummy yang bentuknya meniru sheet DATA asli. */
+function tiBuatData(r, jml) {
+  const rows = [];
+  const pad = n => String(n).padStart(2, '0');
+  for (let i = 0; i < jml; i++) {
+    const bulan = tiInt(r, 1, 4), tgl = tiInt(r, 1, 28);
+    const lc = '26' + pad(bulan) + pad(tgl) + 'L' + pad(tiInt(r, 1, 99));
+    const sea = r() < 0.26;
+    const type = sea ? tiPick(r, TI_TYPE_SEA) : tiPick(r, TI_TYPE_LAND);
+    const st = tiPick(r, TI_STORE);
+    const totalOrder = tiInt(r, 20, 250);
+    const caseId = tiInt(r, 10, 120);
+    const cbm = r() < 0.08 ? '' : tiDec(r, 2, 38); // sebagian dikosongkan supaya soal COUNT & AVERAGE tidak asal jumlah baris
+    const status = tiPick(r, TI_STATUS);
+    const selesai = status === 'Checkout' || status === 'Close';
+    const pct = selesai ? 100 : (r() < 0.4 ? tiInt(r, 80, 99) : 0);
+    const ship = Math.round(totalOrder * pct / 100);
+    const nopol = ['L', 'W', 'N', 'S'][tiInt(r, 0, 3)] + tiInt(r, 1000, 9999) + String.fromCharCode(65 + tiInt(r, 0, 25)) + String.fromCharCode(65 + tiInt(r, 0, 25));
+    rows.push([
+      lc, tiPick(r, TI_EXPEDISI), sea ? 'Sea' : 'Land', nopol, type,
+      st[0] + ' ' + st[1], tiPick(r, TI_JALUR), 1,
+      pad(tgl) + '-' + pad(bulan) + '-26 ' + pad(tiInt(r, 6, 20)) + ':' + pad(tiInt(r, 0, 59)),
+      pad(tgl) + '-' + pad(bulan) + '-26', pad(tgl) + '-' + pad(bulan) + '-26 08:00',
+      tiInt(r, 1, 4), totalOrder, tiInt(r, 0, totalOrder), 0, 0, tiInt(r, 0, 6), 0,
+      caseId, cbm,
+      ship, pct, ship, pct, 'NOT CHECKED', '', ship, pct, ship, pct, ship, pct, status
+    ]);
+  }
+  // nomor LC dibuat unik supaya VLOOKUP tidak ambigu
+  const dipakai = {};
+  rows.forEach(function (row) {
+    let lc = row[0], n = 1;
+    while (dipakai[lc]) { lc = row[0] + '-' + (++n); }
+    dipakai[lc] = 1; row[0] = lc;
+  });
+  return rows;
+}
+
+/** Hitung semua jawaban dari data yang baru dibuat. */
+function tiHitung(rows, pil) {
+  const kol = { exp: 1, tt: 2, jalur: 6, totOrder: 12, cbm: 19, pctShip: 31, status: 32 };
+  const num = v => (typeof v === 'number' ? v : parseFloat(v) || 0);
+  const sum = (f, g) => rows.filter(g).reduce((s, x) => s + num(x[f]), 0);
+  const jmlCbm = rows.filter(x => num(x[kol.cbm]) > 0).length;
+  const totCbm = sum(kol.cbm, () => true);
+  const a = {
+    totalOrder: sum(kol.totOrder, () => true),
+    avgCbm: Math.round((totCbm / (jmlCbm || 1)) * 100) / 100,
+    jmlCbm: jmlCbm,
+    cJalur: rows.filter(x => x[kol.jalur] === pil.jalur).length,
+    cExp: rows.filter(x => x[kol.exp] === pil.exp1).length,
+    cStatus: rows.filter(x => x[kol.status] === pil.status).length,
+    sOrderExp: sum(kol.totOrder, x => x[kol.exp] === pil.exp2),
+    sCbmTt: Math.round(sum(kol.cbm, x => x[kol.tt] === pil.tt) * 100) / 100
+  };
+  // Bagian 5 - pivot: ekspedisi dengan LC terbanyak
+  const perExp = {};
+  rows.forEach(x => {
+    const k = x[kol.exp];
+    if (!perExp[k]) perExp[k] = { n: 0, order: 0 };
+    perExp[k].n++; perExp[k].order += num(x[kol.totOrder]);
+  });
+  let top = null;
+  Object.keys(perExp).forEach(k => { if (!top || perExp[k].n > perExp[top].n) top = k; });
+  a.pivotExp = top; a.pivotJml = perExp[top].n; a.pivotOrder = perExp[top].order;
+  // Bagian 6 - filter & sort
+  const fil = rows.filter(x => x[kol.jalur] === pil.jalurFilter)
+    .slice().sort((x, y) => num(y[kol.cbm]) - num(x[kol.cbm]));
+  a.filJml = fil.length;
+  a.filLc = fil.length ? fil[0][0] : '-';
+  a.filCbm = fil.length ? num(fil[0][kol.cbm]) : 0;
+  return a;
+}
+
+/** Susun satu paket soal (+ kunci) untuk satu kandidat. */
+function tiBuatPaket(nama, tanggal, durasi, jmlBaris) {
+  const r = tiRng(tiSeed(nama + '|' + tanggal));
+  const rows = tiBuatData(r, jmlBaris);
+  const adaJalur = Array.from(new Set(rows.map(x => x[6])));
+  const adaExp = Array.from(new Set(rows.map(x => x[1])));
+  const adaStatus = Array.from(new Set(rows.map(x => x[32])));
+  const pil = {
+    jalur: tiPick(r, adaJalur), exp1: tiPick(r, adaExp), exp2: tiPick(r, adaExp),
+    status: tiPick(r, adaStatus.filter(s => s !== 'Checkout')) || 'New',
+    tt: r() < 0.5 ? 'Sea' : 'Land', jalurFilter: tiPick(r, adaJalur)
+  };
+  const jwb = tiHitung(rows, pil);
+  // 10 LC untuk soal IF, 5 kode store + 5 LC untuk VLOOKUP
+  const acakAmbil = (arr, n) => { const c = arr.slice(); const out = []; while (out.length < n && c.length) out.push(c.splice(Math.floor(r() * c.length), 1)[0]); return out; };
+  const ifRows = acakAmbil(rows, 10);
+  const vlStore = acakAmbil(TI_STORE, 5);
+  const vlLc = acakAmbil(rows, 5);
+  return { nama: nama, tanggal: tanggal, durasi: durasi, rows: rows, pil: pil, jwb: jwb, ifRows: ifRows, vlStore: vlStore, vlLc: vlLc };
+}
+
+function tiTglIndo(iso) {
+  const B = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const p = String(iso || '').split('-');
+  if (p.length !== 3) return String(iso || '');
+  return parseInt(p[2], 10) + ' ' + (B[parseInt(p[1], 10) - 1] || p[1]) + ' ' + p[0];
+}
+
+/** Sheet PETUNJUK — urutan barisnya sama dengan file contoh. */
+function tiSheetPetunjuk(p, kunci) {
+  const a = [];
+  a.push([]);                                                                      // 1
+  a.push(['', 'INTERVIEW TEST — STAFF PLANNING' + (kunci ? '  (KUNCI JAWABAN)' : '')]); // 2
+  a.push(['', 'DC AHI Sidoarjo · Tes Praktek Microsoft Excel']);              // 3
+  a.push([]);                                                                      // 4
+  a.push(['', 'Nama Kandidat', p.nama]);                                           // 5
+  a.push(['', 'Tanggal Tes', tiTglIndo(p.tanggal)]);                               // 6
+  a.push(['', 'Jam Mulai', '']);                                                   // 7
+  a.push(['', 'Jam Selesai', '']);                                                 // 8
+  a.push(['', 'Interviewer', '']);                                                 // 9
+  a.push([]);                                                                      // 10
+  a.push(['', 'PETUNJUK PENGERJAAN']);                                             // 11
+  a.push(['', '1.  Waktu pengerjaan ' + p.durasi + ' menit.']);                    // 12
+  a.push(['', '2.  Kerjakan semua soal di sheet SOAL. Isi jawaban pada kotak berwarna KUNING.']); // 13
+  a.push(['', '3.  Wajib menggunakan RUMUS Excel (bukan diketik manual), kecuali soal Pivot dan Filter & Sort.']); // 14
+  a.push(['', '4.  Sumber data: sheet DATA (data Load Control / LC) dan sheet MASTER STORE.']); // 15
+  a.push(['', '5.  Untuk soal Pivot Table, buat pivot di sheet PIVOT.']);          // 16
+  a.push(['', '6.  Untuk soal Filter & Sort, lakukan langsung di sheet DATA, lalu tulis hasilnya di sheet SOAL.']); // 17
+  a.push(['', '7.  Simpan file setelah selesai.']);                                // 18
+  a.push([]);                                                                      // 19
+  a.push([]);                                                                      // 20
+  a.push(['', 'MATERI & BOBOT NILAI']);                                            // 21
+  a.push(['', 'Bagian', 'Rumus / Fitur', 'Nilai']);                                // 22
+  a.push(['', '1', 'SUM, AVERAGE, COUNT', 15]);                                    // 23
+  a.push(['', '2', 'SUMIF, COUNTIF', 25]);                                         // 24
+  a.push(['', '3', 'IF', 10]);                                                     // 25
+  a.push(['', '4', 'VLOOKUP', 20]);                                                // 26
+  a.push(['', '5', 'Pivot Table', 15]);                                            // 27
+  a.push(['', '6', 'Filter & Sort', 15]);                                          // 28
+  a.push(['', '', 'TOTAL', 100]);                                                  // 29
+  return a;
+}
+
+/**
+ * Sheet SOAL — urutan baris persis sama dengan file contoh (62 baris),
+ * jadi alamat kotak jawabannya tetap: C6-C8, C12-C16, D21-D30, dst.
+ * Mengembalikan { aoa, kuning } supaya Apps Script tahu sel mana yang dikuning.
+ */
+function tiSheetSoal(p, kunci) {
+  const j = p.jwb, K = v => kunci ? v : '';
+  const a = [], kuning = [];
+  const kun = (ref, fmt, merge) => kuning.push({ s: 'SOAL', r: ref, f: fmt || '', m: !!merge });
+
+  a.push(['SOAL TES EXCEL — STAFF PLANNING' + (kunci ? '  (KUNCI JAWABAN)' : '')]);                 // 1
+  a.push([kunci ? 'Kunci dihitung langsung dari sheet DATA file ini. Toleransi pembulatan 0,01.'
+    : 'Isi jawaban di kotak KUNING. Gunakan rumus Excel. Sumber data: sheet DATA & MASTER STORE.']);      // 2
+  a.push([]);                                                                                            // 3
+  a.push(['BAGIAN 1 — SUM, AVERAGE, COUNT   (15 poin)']);                                           // 4
+  a.push(['No', 'Pertanyaan', 'Jawaban', '', 'Poin']);                                                   // 5
+  a.push([1, 'Berapa TOTAL seluruh TOTALORDER (kolom M)?', K(j.totalOrder), '', '5 poin']);              // 6
+  a.push([2, 'Berapa RATA-RATA CBM per LC (kolom T)? (2 angka di belakang koma)', K(j.avgCbm), '', '5 poin']); // 7
+  a.push([3, 'Berapa JUMLAH LC yang memiliki data CBM (kolom T)?', K(j.jmlCbm), '', '5 poin']);          // 8
+  kun('C6', '#,##0', true); kun('C7', '0.00', true); kun('C8', '#,##0', true);
+  a.push([]);                                                                                            // 9
+  a.push(['BAGIAN 2 — SUMIF, COUNTIF   (25 poin)']);                                                // 10
+  a.push(['No', 'Pertanyaan', 'Jawaban', '', 'Poin']);                                                   // 11
+  a.push([4, 'Berapa jumlah LC dengan JALUR = "' + p.pil.jalur + '"?', K(j.cJalur), '', '5 poin']);      // 12
+  a.push([5, 'Berapa jumlah LC dengan NAMA EXPEDISI = "' + p.pil.exp1 + '"?', K(j.cExp), '', '5 poin']); // 13
+  a.push([6, 'Berapa jumlah LC dengan STATUS = "' + p.pil.status + '"?', K(j.cStatus), '', '5 poin']);   // 14
+  a.push([7, 'Berapa total TOTALORDER untuk NAMA EXPEDISI = "' + p.pil.exp2 + '"?', K(j.sOrderExp), '', '5 poin']); // 15
+  a.push([8, 'Berapa total CBM untuk TRANSPORTTYPE = "' + p.pil.tt + '"?', K(j.sCbmTt), '', '5 poin']);  // 16
+  kun('C12', '#,##0', true); kun('C13', '#,##0', true); kun('C14', '#,##0', true);
+  kun('C15', '#,##0', true); kun('C16', '#,##0.00', true);
+  a.push([]);                                                                                            // 17
+  a.push(['BAGIAN 3 — IF   (10 poin)']);                                                            // 18
+  a.push(['Isi kolom KETERANGAN: jika % SHIP = 100 maka "SELESAI", selain itu "BELUM SELESAI".']);       // 19
+  a.push(['No', 'LC', '% SHIP', 'KETERANGAN', 'Poin']);                                                  // 20
+  p.ifRows.forEach(function (row, i) {                                                                   // 21-30
+    a.push([i + 1, row[0], row[31], K(row[31] === 100 ? 'SELESAI' : 'BELUM SELESAI'), '1 poin']);
+    kun('D' + (21 + i), '', false);
+  });
+  a.push([]);                                                                                            // 31
+  a.push(['BAGIAN 4 — VLOOKUP   (20 poin)']);                                                       // 32
+  a.push(['4A. Cari NAMA STORE dari sheet MASTER STORE berdasarkan KODE STORE.']);                       // 33
+  a.push(['No', 'KODE STORE', 'NAMA STORE', '', 'Poin']);                                                // 34
+  p.vlStore.forEach(function (s, i) {                                                                    // 35-39
+    a.push([i + 1, s[0], K(s[1]), '', '2 poin']); kun('C' + (35 + i), '', true);
+  });
+  a.push([]);                                                                                            // 40
+  a.push(['4B. Cari NAMA EXPEDISI dan JALUR dari sheet DATA berdasarkan nomor LC.']);                    // 41
+  a.push(['No', 'LC', 'NAMA EXPEDISI', 'JALUR', 'Poin']);                                                // 42
+  p.vlLc.forEach(function (row, i) {                                                                     // 43-47
+    a.push([i + 1, row[0], K(row[1]), K(row[6]), '2 poin']);
+    kun('C' + (43 + i), '', false); kun('D' + (43 + i), '', false);
+  });
+  a.push([]);                                                                                            // 48
+  a.push(['BAGIAN 5 — PIVOT TABLE   (15 poin)']);                                                   // 49
+  a.push(['Buat Pivot Table di sheet PIVOT: Rows = NAMA EXPEDISI, Values = Count of LC dan Sum of TOTALORDER. Lalu jawab:']); // 50
+  a.push(['No', 'Pertanyaan', 'Jawaban', '', 'Poin']);                                                   // 51
+  a.push(['5.1', 'Pivot Table sudah dibuat di sheet PIVOT dengan susunan yang benar (dinilai interviewer).', '(dinilai interviewer)', '', '5 poin']); // 52
+  a.push(['5.2', 'NAMA EXPEDISI dengan jumlah LC TERBANYAK?', K(j.pivotExp), '', '3 poin']);             // 53
+  a.push(['5.3', 'Berapa jumlah LC ekspedisi tersebut?', K(j.pivotJml), '', '3 poin']);                  // 54
+  a.push(['5.4', 'Berapa total TOTALORDER ekspedisi tersebut?', K(j.pivotOrder), '', '4 poin']);         // 55
+  kun('C53', '', true); kun('C54', '#,##0', true); kun('C55', '#,##0', true);
+  a.push([]);                                                                                            // 56
+  a.push(['BAGIAN 6 — FILTER & SORT   (15 poin)']);                                                 // 57
+  a.push(['Di sheet DATA: Filter JALUR = "' + p.pil.jalurFilter + '", lalu Sort kolom CBM dari TERBESAR ke TERKECIL. Lalu jawab:']); // 58
+  a.push(['No', 'Pertanyaan', 'Jawaban', '', 'Poin']);                                                   // 59
+  a.push(['6.1', 'Berapa jumlah baris (LC) hasil filter JALUR tersebut?', K(j.filJml), '', '5 poin']);   // 60
+  a.push(['6.2', 'LC dengan CBM TERBESAR di jalur tersebut (urutan paling atas)?', K(j.filLc), '', '5 poin']); // 61
+  a.push(['6.3', 'Berapa CBM dari LC tersebut?', K(j.filCbm), '', '5 poin']);                            // 62
+  kun('C60', '#,##0', true); kun('C61', '', true); kun('C62', '#,##0.00', true);
+
+  return { aoa: a, kuning: kuning };
+}
+
+/** Semua bahan satu file: 5 sheet + daftar kotak kuning. */
+function tiBahanFile(p, kunci) {
+  const soal = tiSheetSoal(p, kunci);
+  const kuning = soal.kuning.concat([
+    { s: 'PETUNJUK', r: 'C5', f: '', m: false },
+    { s: 'PETUNJUK', r: 'C6', f: '', m: false },
+    { s: 'PETUNJUK', r: 'C7', f: '', m: false },
+    { s: 'PETUNJUK', r: 'C8', f: '', m: false },
+    { s: 'PETUNJUK', r: 'C9', f: '', m: false }
+  ]);
+  return {
+    petunjuk: tiSheetPetunjuk(p, kunci),
+    soal: soal.aoa,
+    data: [TI_HEADER].concat(p.rows),
+    master: [['KODE STORE', 'NAMA STORE']].concat(TI_STORE),
+    pivot: [['Buat Pivot Table untuk Soal Bagian 5 di sheet ini.']],
+    kuning: kuning
+  };
+}
+
+function tiBuatWorkbook(p, kunci) {
+  const b = tiBahanFile(p, kunci);
+  const wb = XLSX.utils.book_new();
+  const add = (nama, aoa) => XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), nama);
+  add('PETUNJUK', b.petunjuk);
+  add('SOAL', b.soal);
+  add('DATA', b.data);
+  add('MASTER STORE', b.master);
+  add('PIVOT', b.pivot);
+  return wb;
+}
+
+function tiNamaBersih(nama) {
+  return String(nama).replace(/[^A-Za-z0-9 _-]/g, '').trim().replace(/\s+/g, '_') || 'Kandidat';
+}
+function tiNamaFile(awalan, nama, tanggal) { return awalan + '_' + tiNamaBersih(nama) + '_' + tanggal + '.xlsx'; }
+function tiJudulSheet(awalan, nama, tanggal) {
+  return awalan + ' INTERVIEW TEST STAFF PLANNING - ' + String(nama).trim() + ' (' + tanggal + ')';
+}
+
+/** Baca isi form tab Tes Interview. */
+function tiBacaForm() {
+  const namaRaw = (toolsEl('tiNama') || {}).value || '';
+  return {
+    daftar: namaRaw.split('\n').map(s => s.trim()).filter(Boolean),
+    tanggal: (toolsEl('tiTanggal') || {}).value || new Date().toISOString().slice(0, 10),
+    durasi: parseInt((toolsEl('tiDurasi') || {}).value, 10) || 30,
+    baris: Math.min(Math.max(parseInt((toolsEl('tiBaris') || {}).value, 10) || 400, 100), 2000),
+    ikutKunci: !(toolsEl('tiKunci') && !toolsEl('tiKunci').checked)
+  };
+}
+function tiMsg(cls, t) {
+  const el = toolsEl('tiMsg');
+  if (el) { el.className = 'tl-msg ' + cls; el.innerHTML = t; }
+}
+
+/* ── Gembok file KUNCI JAWABAN ──────────────────────────────────────
+   Dua lapis:
+   1. File kunci dibuat PRIVAT di Drive (tidak dibagikan ke siapa pun),
+      jadi walaupun linknya bocor, kandidat tetap tidak bisa membukanya.
+   2. Linknya tidak ditampilkan di halaman ini sampai NIP dimasukkan,
+      supaya tidak kebaca kalau layar kelihatan kandidat.
+   NIP yang diterima: NIP akun yang sedang login, atau yang terdaftar
+   di TI_NIP_BOLEH di bawah (tambah NIP interviewer lain di sini). */
+var TI_NIP_BOLEH = ['182126', '098592'];
+/** Samakan bentuk NIP: buang non-angka dan nol di depan, jadi 098592 = 98592. */
+function tiNipKunci(n) { return String(n || '').replace(/\D/g, '').replace(/^0+/, ''); }
+var TI_KUNCI_URL = [];
+var tiKunciSalah = 0;
+
+function tiNipLogin() {
+  try { return String(localStorage.getItem('wms_nip') || '').replace(/\D/g, ''); }
+  catch (e) { return ''; }
+}
+/** NIP disamarkan untuk petunjuk: 182126 -> 182••6 */
+function tiNipSamar(n) {
+  const s = String(n || '');
+  if (s.length < 4) return s;
+  return s.slice(0, 3) + '•'.repeat(s.length - 4) + s.slice(-1);
+}
+/**
+ * Penjaga KUNCI JAWABAN: hanya NIP yang terdaftar di TI_NIP_BOLEH.
+ * NIP akun yang sedang login SENGAJA tidak diterima begitu saja — kalau iya,
+ * semua karyawan yang login di dashboard ini bisa melihat kunci jawaban.
+ */
+function tiNipDiterima(nip) {
+  const bersih = tiNipKunci(nip);
+  if (!bersih) return false;
+  return TI_NIP_BOLEH.map(tiNipKunci).indexOf(bersih) >= 0;
+}
+/** Penjelasan kenapa NIP ditolak, supaya tidak cuma "tidak cocok". */
+function tiNipKenapaGagal() {
+  return 'NIP tidak berhak melihat kunci jawaban. Yang boleh hanya NIP yang terdaftar di '
+    + '<code>TI_NIP_BOLEH</code> pada script.js (saat ini ' + TI_NIP_BOLEH.length + ' NIP: '
+    + TI_NIP_BOLEH.map(x => tiNipSamar(String(x))).join(', ') + ').';
+}
+
+function tiBukaKunci() {
+  const area = toolsEl('tiKunciArea');
+  if (!TI_KUNCI_URL.length) { if (area) area.innerHTML = '<i>Belum ada file kunci di sesi ini.</i>'; return; }
+  if (tiKunciSalah >= 3) {
+    if (area) area.innerHTML = '<b>NIP salah 3 kali.</b> Muat ulang halaman dulu, atau buka langsung dari Google Drive kamu.';
+    return;
+  }
+  const isi = prompt('Masukkan NIP kamu untuk membuka kunci jawaban:');
+  if (isi === null) return;
+  if (!tiNipDiterima(isi)) {
+    tiKunciSalah++;
+    if (area) area.innerHTML = tiNipKenapaGagal() + ' Sisa percobaan: ' + Math.max(0, 3 - tiKunciSalah) + '.';
+    return;
+  }
+  tiKunciSalah = 0;
+  if (area) {
+    area.innerHTML = '🔓 Kunci terbuka:<br>' + TI_KUNCI_URL.map(function (h) {
+      return '• <a href="' + h.url + '" target="_blank" rel="noopener"><b>' + toolsEsc(h.label) + '</b></a>';
+    }).join('<br>') + '<br><button class="tl-btn tl-btn-sm" onclick="tiTutupKunci()">🔒 Sembunyikan lagi</button>';
+  }
+}
+
+function tiTutupKunci() {
+  const area = toolsEl('tiKunciArea');
+  if (area) area.innerHTML = '';
+}
+function tiSibuk(on) {
+  ['tiBtnSheet', 'tiBtnExcel'].forEach(function (id) { const b = toolsEl(id); if (b) b.disabled = !!on; });
+}
+
+// ── 1) Langsung jadi Google Sheet (lewat Apps Script) ──────────────
+async function toolsBuatSheetInterview() {
+  const f = tiBacaForm();
+  if (!f.daftar.length) { tiMsg('tl-msg-err', 'Isi dulu nama kandidatnya, satu nama per baris.'); return; }
+  tiSibuk(true);
+  const hasil = [];
+  TI_SESI = [];
+  let gagal = '';
+  try {
+    for (let i = 0; i < f.daftar.length; i++) {
+      const nama = f.daftar[i];
+      const p = tiBuatPaket(nama, f.tanggal, f.durasi, f.baris);
+      const tugas = [{ awalan: 'SOAL', kunci: false }];
+      if (f.ikutKunci) tugas.push({ awalan: 'KUNCI', kunci: true });
+      let urlSoal = '', idSoal = '', urlKunci = '';
+      for (let t = 0; t < tugas.length; t++) {
+        tiMsg('tl-msg-wait', '⏳ Membuat ' + tugas[t].awalan + ' untuk <b>' + toolsEsc(nama) + '</b>… (kandidat ' + (i + 1) + '/' + f.daftar.length + ')');
+        const b = tiBahanFile(p, tugas[t].kunci);
+        const res = await toolsXhrPost(GAS_DASHBOARD_URL, {
+          action: 'buatSheetInterview',
+          judul: tiJudulSheet(tugas[t].awalan, nama, f.tanggal),
+          privat: tugas[t].kunci,   // file kunci tidak dibagikan ke siapa pun
+          petunjuk: b.petunjuk, soal: b.soal, data: b.data, master: b.master, pivot: b.pivot, kuning: b.kuning
+        }, 180000);
+        if (!res || res.ok === false) throw new Error((res && res.error) || 'Server tidak membalas');
+        if (tugas[t].kunci) { urlKunci = res.url || ''; } else { urlSoal = res.url || ''; idSoal = res.id || ''; }
+        hasil.push({ label: tugas[t].awalan + ' — ' + nama, url: res.url, catatan: res.catatan || '', kunci: tugas[t].kunci });
+      }
+      TI_SESI.push({ nama: nama, tanggal: f.tanggal, durasi: f.durasi, jmlBaris: f.baris, idSoal: idSoal, urlSoal: urlSoal });
+      await tiCatatKeRiwayat(nama, f, urlSoal, idSoal, urlKunci);
+    }
+  } catch (e) {
+    console.error(e);
+    gagal = String((e && e.message) || e);
+  }
+  tiSibuk(false);
+
+  let html = '';
+  if (hasil.length) {
+    TI_KUNCI_URL = hasil.filter(h => h.kunci).map(h => ({ label: h.label, url: h.url }));
+    const terbuka = hasil.filter(h => !h.kunci);
+    html += '✅ ' + hasil.length + ' Google Sheet dibuat di Drive kamu:<br>';
+    html += terbuka.map(h => '• <a href="' + h.url + '" target="_blank" rel="noopener"><b>' + toolsEsc(h.label) + '</b></a>' + (h.catatan ? ' <i>(' + toolsEsc(h.catatan) + ')</i>' : '')).join('<br>');
+    if (TI_KUNCI_URL.length) {
+      html += (terbuka.length ? '<br>' : '') + '• <b>' + TI_KUNCI_URL.length + ' file KUNCI JAWABAN</b> — terkunci. '
+        + '<button class="tl-btn tl-btn-sm" onclick="tiBukaKunci()">🔒 Buka pakai NIP</button>'
+        + '<br><span id="tiKunciArea"></span>';
+    }
+    if (TI_SESI.length) {
+      html += '<br><br><b>Sudah selesai dikerjakan? Nilai di sini:</b><br>'
+        + TI_SESI.map(function (s, i) {
+          return '<button class="tl-btn tl-btn-sm" onclick="toolsNilaiSesi(' + i + ')">📝 Nilai ' + toolsEsc(s.nama) + '</button>';
+        }).join(' ');
+    }
+  }
+  if (gagal) {
+    html += (html ? '<br><br>' : '') + '⚠️ Berhenti di tengah: ' + toolsEsc(gagal)
+      + '<br>Kalau pesannya soal izin, jalankan <b>authorizeSheetInterview</b> di editor Apps Script lalu deploy versi baru. Sementara itu bisa pakai tombol <b>Unduh Excel</b>.';
+  }
+  tiMsg(gagal ? (hasil.length ? 'tl-msg-wait' : 'tl-msg-err') : 'tl-msg-ok', html || 'Tidak ada yang dibuat.');
+  if (hasil.length) toolsMuatRiwayatInterview();
+}
+
+// ── 2) Unduh sebagai file Excel (cadangan, tanpa pewarnaan) ────────
+async function toolsBuatTesInterview() {
+  const f = tiBacaForm();
+  if (!f.daftar.length) { tiMsg('tl-msg-err', 'Isi dulu nama kandidatnya, satu nama per baris.'); return; }
+  tiSibuk(true);
+  try {
+    tiMsg('tl-msg-wait', '⏳ Menyiapkan pustaka Excel…');
+    await toolsLoadScript(TI_XLSX_CDN);
+    if (typeof XLSX === 'undefined') throw new Error('Pustaka Excel tidak termuat.');
+    let n = 0;
+    for (const nama of f.daftar) {
+      tiMsg('tl-msg-wait', '⏳ Membuat soal untuk <b>' + toolsEsc(nama) + '</b>… (' + (n + 1) + '/' + f.daftar.length + ')');
+      const p = tiBuatPaket(nama, f.tanggal, f.durasi, f.baris);
+      XLSX.writeFile(tiBuatWorkbook(p, false), tiNamaFile('SOAL', nama, f.tanggal));
+      if (f.ikutKunci) {
+        await new Promise(res => setTimeout(res, 400));
+        XLSX.writeFile(tiBuatWorkbook(p, true), tiNamaFile('KUNCI', nama, f.tanggal));
+      }
+      n++;
+      await new Promise(res => setTimeout(res, 400));
+    }
+    tiMsg('tl-msg-ok', '✅ Selesai. ' + n + ' kandidat, ' + (f.ikutKunci ? n * 2 : n) + ' file terunduh. Tiap kandidat memakai data yang berbeda, jadi jawabannya tidak bisa disamakan. <i>Catatan: file unduhan tidak berwarna kuning seperti versi Google Sheet.</i>');
+  } catch (e) {
+    console.error(e);
+    tiMsg('tl-msg-err', 'Gagal membuat file: ' + toolsEsc(String(e.message || e)));
+  } finally {
+    tiSibuk(false);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  RIWAYAT & PENILAIAN OTOMATIS
+//  Data tiap kandidat bisa dibangkitkan ulang dari (nama + tanggal +
+//  jumlah baris), jadi kunci jawabannya selalu bisa dihitung ulang
+//  persis — tidak perlu disimpan di mana pun.
+// ══════════════════════════════════════════════════════════════════
+
+/** Daftar sel jawaban + nilai benarnya + bobot poinnya. */
+function tiDaftarKunci(p) {
+  const j = p.jwb, d = [];
+  const t = (ref, benar, poin, bagian, jenis) => d.push({ ref: ref, benar: benar, poin: poin, bagian: bagian, jenis: jenis || 'angka' });
+  t('C6', j.totalOrder, 5, 1); t('C7', j.avgCbm, 5, 1); t('C8', j.jmlCbm, 5, 1);
+  t('C12', j.cJalur, 5, 2); t('C13', j.cExp, 5, 2); t('C14', j.cStatus, 5, 2);
+  t('C15', j.sOrderExp, 5, 2); t('C16', j.sCbmTt, 5, 2);
+  p.ifRows.forEach(function (row, i) {
+    t('D' + (21 + i), row[31] === 100 ? 'SELESAI' : 'BELUM SELESAI', 1, 3, 'teks');
+  });
+  p.vlStore.forEach(function (s, i) { t('C' + (35 + i), s[1], 2, 4, 'teks'); });
+  p.vlLc.forEach(function (row, i) {
+    t('C' + (43 + i), row[1], 1, 4, 'teks');
+    t('D' + (43 + i), row[6], 1, 4, 'teks');
+  });
+  t('C53', j.pivotExp, 3, 5, 'teks'); t('C54', j.pivotJml, 3, 5); t('C55', j.pivotOrder, 4, 5);
+  t('C60', j.filJml, 5, 6); t('C61', j.filLc, 5, 6, 'teks'); t('C62', j.filCbm, 5, 6);
+  return d;
+}
+
+/** Ambil isi satu sel dari grid hasil pembacaan Apps Script. */
+function tiSelDariGrid(grid, ref) {
+  const m = String(ref).match(/^([A-Z])(\d+)$/);
+  if (!m) return '';
+  const kol = m[1].charCodeAt(0) - 65, bar = parseInt(m[2], 10) - 1;
+  const baris = grid[bar];
+  if (!baris) return '';
+  const v = baris[kol];
+  return v === null || v === undefined ? '' : v;
+}
+
+function tiSamaAngka(jawab, benar) {
+  const n = parseFloat(String(jawab).replace(/\s/g, '').replace(/\.(?=\d{3}\b)/g, '').replace(',', '.'));
+  if (isNaN(n)) return false;
+  return Math.abs(n - Number(benar)) <= 0.011;
+}
+function tiSamaTeks(jawab, benar) {
+  const b = s => String(s === null || s === undefined ? '' : s).replace(/\s+/g, ' ').trim().toUpperCase();
+  return b(jawab) !== '' && b(jawab) === b(benar);
+}
+
+/* Bagian 1-4 wajib pakai rumus Excel (sesuai PETUNJUK).
+   Bagian 5 Pivot dan 6 Filter & Sort memang dijawab dengan mengetik hasilnya. */
+var TI_BAGIAN_WAJIB_RUMUS = [1, 2, 3, 4];
+function tiWajibRumus(bagian) { return TI_BAGIAN_WAJIB_RUMUS.indexOf(bagian) >= 0; }
+
+/**
+ * Dianggap rumus kalau diawali '=' DAN memuat huruf — artinya ada nama fungsi
+ * (SUM, VLOOKUP, ...) atau acuan sel (M2, DATA!T:T).
+ * Rumus apa pun diterima; isinya tidak dibandingkan dengan rumus tertentu,
+ * karena satu soal bisa dikerjakan dengan banyak cara yang sama-sama benar.
+ * Yang ditolak hanya angka yang disamarkan jadi rumus, misalnya "=53571"
+ * atau "=20.82*1" — itu sama saja mengetik manual.
+ */
+function tiPakaiRumus(f) {
+  const s = String(f || '').trim();
+  if (s.indexOf('=') !== 0) return false;
+  return /[A-Za-z]/.test(s.slice(1));
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  KUNCI JAWABAN DIHITUNG DARI ISI FILE KANDIDAT
+//  Dulu kunci dibuat ulang dari benih acakan (nama + tanggal + baris).
+//  Cara itu rapuh: beda versi kode atau beda satu huruf pada nama bikin
+//  datanya lain, dan kunci jadi meleset padahal kandidat sudah benar.
+//  Sekarang: soal dibaca dari sheet SOAL, jawabannya dihitung langsung
+//  dari sheet DATA & MASTER STORE milik file itu juga. Apa pun isinya,
+//  kuncinya pasti cocok.
+// ══════════════════════════════════════════════════════════════════
+
+/** Ambil teks dalam tanda kutip: 'JALUR = "Manado"?' -> Manado */
+function tiDalamKutip(teks) {
+  const m = String(teks == null ? '' : teks).match(/"([^"]+)"/);
+  return m ? m[1] : '';
+}
+function tiAngka(v) {
+  if (typeof v === 'number') return v;
+  const s = String(v == null ? '' : v).replace(/\s/g, '').replace(/\.(?=\d{3}\b)/g, '').replace(',', '.');
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+const TI_KOL = { lc: 0, exp: 1, tt: 2, jalur: 6, totOrder: 12, cbm: 19, pctShip: 31, status: 32 };
+
+/**
+ * Susun daftar kunci dari file kandidat.
+ * soal   = grid sheet SOAL (array of array, baris 1 di index 0)
+ * data   = sheet DATA termasuk baris judul
+ * master = sheet MASTER STORE termasuk baris judul
+ * Mengembalikan null kalau datanya tidak memadai, supaya pemanggil bisa
+ * kembali ke cara lama.
+ */
+function tiKunciDariFile(soal, data, master) {
+  if (!soal || !soal.length || !data || data.length < 2) return null;
+  const baris = data.slice(1).filter(function (r) { return r && String(r[TI_KOL.lc] || '').trim() !== ''; });
+  if (!baris.length) return null;
+
+  const sel = function (ref) {
+    const m = String(ref).match(/^([A-Z])(\d+)$/);
+    if (!m) return '';
+    const b = soal[parseInt(m[2], 10) - 1];
+    if (!b) return '';
+    const v = b[m[1].charCodeAt(0) - 65];
+    return v === null || v === undefined ? '' : v;
+  };
+  const d = [];
+  const t = function (ref, benar, poin, bagian, jenis) {
+    d.push({ ref: ref, benar: benar, poin: poin, bagian: bagian, jenis: jenis || 'angka' });
+  };
+  const jumlah = function (kol, saring) {
+    return baris.filter(saring || function () { return true; })
+      .reduce(function (s, x) { return s + tiAngka(x[kol]); }, 0);
+  };
+  const bulat2 = function (n) { return Math.round(n * 100) / 100; };
+  const sama = function (a, b) { return String(a == null ? '' : a).trim().toUpperCase() === String(b == null ? '' : b).trim().toUpperCase(); };
+
+  // ── Bagian 1 ──────────────────────────────────────────────────
+  const adaCbm = baris.filter(function (x) { return String(x[TI_KOL.cbm]).trim() !== '' && tiAngka(x[TI_KOL.cbm]) > 0; });
+  t('C6', jumlah(TI_KOL.totOrder), 5, 1);
+  t('C7', bulat2(adaCbm.reduce(function (s, x) { return s + tiAngka(x[TI_KOL.cbm]); }, 0) / (adaCbm.length || 1)), 5, 1);
+  t('C8', adaCbm.length, 5, 1);
+
+  // ── Bagian 2 (parameternya dibaca dari teks soal) ─────────────
+  const pJalur = tiDalamKutip(sel('B12'));
+  const pExp1 = tiDalamKutip(sel('B13'));
+  const pStatus = tiDalamKutip(sel('B14'));
+  const pExp2 = tiDalamKutip(sel('B15'));
+  const pTt = tiDalamKutip(sel('B16'));
+  t('C12', baris.filter(function (x) { return sama(x[TI_KOL.jalur], pJalur); }).length, 5, 2);
+  t('C13', baris.filter(function (x) { return sama(x[TI_KOL.exp], pExp1); }).length, 5, 2);
+  t('C14', baris.filter(function (x) { return sama(x[TI_KOL.status], pStatus); }).length, 5, 2);
+  t('C15', jumlah(TI_KOL.totOrder, function (x) { return sama(x[TI_KOL.exp], pExp2); }), 5, 2);
+  t('C16', bulat2(jumlah(TI_KOL.cbm, function (x) { return sama(x[TI_KOL.tt], pTt); })), 5, 2);
+
+  // ── Bagian 3: jawabannya dari kolom % SHIP di soal itu sendiri ─
+  for (let i = 0; i < 10; i++) {
+    const r = 21 + i;
+    if (String(sel('B' + r)).trim() === '') continue;
+    t('D' + r, tiAngka(sel('C' + r)) === 100 ? 'SELESAI' : 'BELUM SELESAI', 1, 3, 'teks');
+  }
+
+  // ── Bagian 4A: cari di MASTER STORE ───────────────────────────
+  const petaStore = {};
+  (master || []).slice(1).forEach(function (r) {
+    if (r && String(r[0] || '').trim()) petaStore[String(r[0]).trim().toUpperCase()] = String(r[1] == null ? '' : r[1]).trim();
+  });
+  for (let i = 0; i < 5; i++) {
+    const r = 35 + i, kode = String(sel('B' + r)).trim().toUpperCase();
+    if (!kode) continue;
+    const nama = petaStore[kode];
+    if (nama) t('C' + r, nama, 2, 4, 'teks');
+  }
+
+  // ── Bagian 4B: cari di DATA berdasarkan nomor LC ──────────────
+  const petaLc = {};
+  baris.forEach(function (x) { petaLc[String(x[TI_KOL.lc]).trim().toUpperCase()] = x; });
+  for (let i = 0; i < 5; i++) {
+    const r = 43 + i, lc = String(sel('B' + r)).trim().toUpperCase();
+    if (!lc || !petaLc[lc]) continue;
+    t('C' + r, String(petaLc[lc][TI_KOL.exp]), 1, 4, 'teks');
+    t('D' + r, String(petaLc[lc][TI_KOL.jalur]), 1, 4, 'teks');
+  }
+
+  // ── Bagian 5: ekspedisi dengan LC terbanyak ───────────────────
+  const perExp = {};
+  baris.forEach(function (x) {
+    const k = String(x[TI_KOL.exp]).trim();
+    if (!perExp[k]) perExp[k] = { n: 0, order: 0 };
+    perExp[k].n++; perExp[k].order += tiAngka(x[TI_KOL.totOrder]);
+  });
+  let top = null;
+  Object.keys(perExp).forEach(function (k) { if (!top || perExp[k].n > perExp[top].n) top = k; });
+  if (top) {
+    t('C53', top, 3, 5, 'teks');
+    t('C54', perExp[top].n, 3, 5);
+    t('C55', perExp[top].order, 4, 5);
+  }
+
+  // ── Bagian 6: filter jalur lalu urutkan CBM terbesar ──────────
+  // teks Bagian 6 ada di kolom A (barisnya tidak bertabel), bukan kolom B
+  const pFilter = tiDalamKutip(sel('A58')) || tiDalamKutip(sel('B58'));
+  if (pFilter) {
+    const fil = baris.filter(function (x) { return sama(x[TI_KOL.jalur], pFilter); })
+      .slice().sort(function (a, b) { return tiAngka(b[TI_KOL.cbm]) - tiAngka(a[TI_KOL.cbm]); });
+    t('C60', fil.length, 5, 6);
+    t('C61', fil.length ? String(fil[0][TI_KOL.lc]) : '-', 5, 6, 'teks');
+    t('C62', fil.length ? bulat2(tiAngka(fil[0][TI_KOL.cbm])) : 0, 5, 6);
+  }
+  return d.length >= 20 ? d : null;   // terlalu sedikit = pembacaan gagal
+}
+
+/** Bandingkan jawaban kandidat dengan kunci. */
+function tiNilaiDariGrid(p, grid, rumusGrid, tegakkanRumus, daftarKunci) {
+  const daftar = daftarKunci && daftarKunci.length ? daftarKunci : tiDaftarKunci(p);
+  const perBagian = { 1: { dapat: 0, maks: 0 }, 2: { dapat: 0, maks: 0 }, 3: { dapat: 0, maks: 0 }, 4: { dapat: 0, maks: 0 }, 5: { dapat: 0, maks: 0 }, 6: { dapat: 0, maks: 0 } };
+  const salah = [], benarList = [], tanpaRumus = [];
+  let total = 0, maks = 0, kosong = 0;
+  daftar.forEach(function (k) {
+    const jawab = tiSelDariGrid(grid, k.ref);
+    const benar = k.jenis === 'teks' ? tiSamaTeks(jawab, k.benar) : tiSamaAngka(jawab, k.benar);
+    const pakaiRumus = tiPakaiRumus(tiSelDariGrid(rumusGrid || [], k.ref));
+    perBagian[k.bagian].maks += k.poin;
+    maks += k.poin;
+    if (benar && tiWajibRumus(k.bagian) && !pakaiRumus) {
+      // nilainya benar tapi diketik manual, padahal bagian ini wajib rumus
+      tanpaRumus.push({ ref: k.ref, bagian: k.bagian, jawab: jawab, poin: k.poin });
+      if (!tegakkanRumus) { perBagian[k.bagian].dapat += k.poin; total += k.poin; }
+    } else if (benar) {
+      perBagian[k.bagian].dapat += k.poin; total += k.poin;
+      benarList.push({ ref: k.ref, bagian: k.bagian, jawab: jawab, poin: k.poin, rumus: tiSelDariGrid(rumusGrid || [], k.ref) || '' });
+    } else {
+      if (String(jawab).trim() === '') kosong++;
+      salah.push({
+        ref: k.ref, bagian: k.bagian, jawab: jawab, benar: k.benar,
+        rumus: tiSelDariGrid(rumusGrid || [], k.ref) || ''   // rumusnya ikut, supaya kelihatan melesetnya di mana
+      });
+    }
+  });
+  perBagian[5].maks += 5; // soal 5.1 dinilai interviewer
+  return { total: total, maks: maks, perBagian: perBagian, salah: salah, benar: benarList, tanpaRumus: tanpaRumus, kosong: kosong };
+}
+
+// ── Riwayat ───────────────────────────────────────────────────────
+var tiRiwayat = [];
+var TI_SESI = [];   // kandidat yang dibuatkan soal di sesi ini (dipakai tombol Nilai langsung)
+
+async function tiCatatKeRiwayat(nama, f, urlSoal, idSoal, urlKunci) {
+  try {
+    await toolsXhrPost(GAS_DASHBOARD_URL, {
+      action: 'logInterview', nama: nama, tanggal: f.tanggal, durasi: f.durasi, baris: f.baris,
+      urlSoal: urlSoal || '', urlKunci: urlKunci || '', idSoal: idSoal || '',
+      oleh: localStorage.getItem('wms_name') || ''
+    }, 30000);
+  } catch (e) { console.warn('Gagal mencatat riwayat interview:', e); }
+}
+
+async function toolsMuatRiwayatInterview() {
+  const box = toolsEl('tiRiwayat');
+  if (box) box.innerHTML = '<div class="tl-empty">Memuat riwayat…</div>';
+  try {
+    const res = await toolsXhrPost(GAS_DASHBOARD_URL, { action: 'riwayatInterview' }, 30000);
+    if (!res || res.ok === false) throw new Error((res && res.error) || 'Server tidak membalas');
+    tiRiwayat = res.rows || [];
+    tiGambarRiwayat();
+  } catch (e) {
+    console.warn('Riwayat interview gagal dimuat:', e);
+    const sebab = String((e && e.message) || e);
+    const belumDeploy = /tidak dikenali|action/i.test(sebab);
+    if (box) {
+      box.innerHTML = '<div class="tl-empty tl-empty-err"><b>Riwayat belum bisa dimuat.</b><br>' + toolsEsc(sebab)
+        + (belumDeploy ? '<br>Sepertinya Apps Script belum di-<b>deploy versi baru</b> setelah Code.gs diganti.' : '')
+        + '<br>Nilai tetap bisa dihitung lewat kotak <b>Nilai dari link</b> di atas.</div>';
+    }
+  }
+}
+
+function tiGambarRiwayat() {
+  const box = toolsEl('tiRiwayat');
+  if (!box) return;
+  if (!tiRiwayat.length) { box.innerHTML = '<div class="tl-empty">Belum ada kandidat yang dibuatkan soal.</div>'; return; }
+  let h = '<div class="tl-table-wrap"><table class="tl-table"><thead><tr><th>Tanggal</th><th>Nama Kandidat</th><th>Nilai</th><th>Status</th><th>Soal</th><th></th></tr></thead><tbody>';
+  tiRiwayat.forEach(function (r, i) {
+    const sudah = String(r.status || '').indexOf('Sudah') === 0;
+    const nilai = sudah ? tiNilaiWarna(r.nilaiAkhir) : '—';
+    h += '<tr>'
+      + '<td>' + toolsEsc(tiTglNormal(r.tanggal)) + '</td>'
+      + '<td><b>' + toolsEsc(r.nama) + '</b></td>'
+      + '<td>' + nilai + '</td>'
+      + '<td>' + (sudah ? '✅ ' : '⏳ ') + toolsEsc(r.status) + '</td>'
+      + '<td>' + (r.urlSoal
+        ? (sudah ? '<button class="tl-btn tl-btn-sm" onclick="toolsBukaSoal(' + i + ')">👁️ Lihat soal (NIP)</button>'
+          : '<a href="' + r.urlSoal + '" target="_blank" rel="noopener">buka</a>')
+        : '—') + '</td>'
+      + '<td>'
+      + (sudah
+        ? '<button class="tl-btn tl-btn-sm" onclick="toolsDetailNilai(' + i + ')">👁️ Lihat detail nilai</button>'
+          + ' <button class="tl-btn tl-btn-sm" onclick="toolsKunciSoal(' + i + ')">🔒 Kunci file</button>'
+        : '<button class="tl-btn tl-btn-sm" onclick="toolsNilaiKandidat(' + i + ')">📝 Nilai sekarang</button>')
+      + ' <button class="tl-btn tl-btn-sm" onclick="toolsHapusRiwayat(' + i + ')">🗑️ Hapus</button>'
+      + '</td>'
+      + '</tr>';
+    if (r.rincian) h += '<tr><td colspan="6" class="tl-muted" style="font-size:12px">' + toolsEsc(r.rincian) + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  box.innerHTML = h;
+}
+
+/** Baca jawaban kandidat, bandingkan dengan kunci, simpan nilainya. */
+/** Periksa izin Drive dari sisi WEB APP, untuk tahu persis apa yang kurang. */
+async function toolsCekIzinDrive() {
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, t) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = t; } };
+  try {
+    pesan('tl-msg-wait', '⏳ Memeriksa izin dari sisi web app…');
+    const res = await toolsXhrPost(GAS_DASHBOARD_URL, { action: 'cekIzinDrive' }, 60000);
+    if (!res || res.ok === false) throw new Error((res && res.error) || 'Server tidak membalas');
+    const h = res.hasil || {};
+    const tandai = v => (String(v).indexOf('OK') === 0 ? '✅ ' : '❌ ') + toolsEsc(String(v));
+    let html = '<b>Hasil pemeriksaan izin (dari web app):</b><br>'
+      + '• Dijalankan sebagai (effective): <b>' + toolsEsc(h.efektif || '-') + '</b><br>'
+      + '• Pengguna yang mengakses (active): <b>' + toolsEsc(h.aktif || '-') + '</b><br>'
+      + '• Baca Drive: ' + tandai(h.driveBaca) + '<br>'
+      + '• Tulis Drive: ' + tandai(h.driveTulis) + '<br>'
+      + '• Buat Google Sheet: ' + tandai(h.sheetBuat);
+    const scope = String(h.scope || '');
+    const punyaDrive = scope.indexOf('/auth/drive') >= 0;
+    html += '<br>• Punya izin Drive: ' + (punyaDrive ? '✅ YA' : '❌ TIDAK')
+      + '<br>• Daftar izin web app:<br><span class="tl-muted" style="font-size:11px">'
+      + (scope ? scope.split(' ').map(x => '&nbsp;&nbsp;' + toolsEsc(x)).join('<br>') : '(kosong)') + '</span>';
+
+    const driveOk = String(h.driveTulis || '').indexOf('OK') === 0;
+    if (driveOk) {
+      html += '<br><br>✅ Izin Drive sudah aktif. Preview PPT dan 🔒 Kunci file seharusnya jalan sekarang.';
+    } else if (!punyaDrive) {
+      html += '<br><br><b>Ketemu:</b> deployment ini <b>tidak memegang izin Drive sama sekali</b>, '
+        + 'makanya DriveApp selalu ditolak padahal dari editor berhasil. '
+        + 'Izin dibekukan saat deploy, jadi perbaikannya:<br>'
+        + '1. Apps Script → <b>Deploy → Manage deployments → ikon pensil</b><br>'
+        + '2. <b>Version: New version</b> → <b>Deploy</b> (wajib New version, Save saja tidak cukup)<br>'
+        + '3. Kalau muncul <b>Authorize access</b> / <b>Review permissions</b> → pilih akunmu → Advanced → Allow<br>'
+        + '4. Klik tombol ini lagi, pastikan "Punya izin Drive" sudah ✅';
+    } else {
+      html += '<br><br><b>Aneh:</b> izin Drive ada, tapi DriveApp tetap ditolak. '
+        + 'Biasanya ini soal <b>Execute as</b>. Di Manage deployments pastikan <b>Execute as: Me ('
+        + toolsEsc(h.efektif || 'akun kamu') + ')</b>, bukan "User accessing the web app", lalu deploy New version.';
+    }
+    pesan(driveOk ? 'tl-msg-ok' : 'tl-msg-err', html);
+  } catch (e) {
+    pesan('tl-msg-err', 'Pemeriksaan gagal: ' + toolsEsc(String(e.message || e))
+      + '<br>Kalau pesannya "action tidak dikenali", berarti Code.gs terbaru belum di-deploy versi baru.');
+  }
+}
+
+/* Membuka FILE SOAL boleh untuk semua NIP yang terdaftar di dashboard —
+   cukup masukkan NIP apa saja yang wajar, lalu dibuka dalam mode lihat saja.
+   Ini beda dengan KUNCI JAWABAN & hapus riwayat, yang tetap dibatasi NIP tertentu. */
+function tiNipApaSaja(nip) {
+  return String(nip || '').replace(/\D/g, '').length >= 4;
+}
+
+/** Ubah link jadi mode lihat saja (tidak membuka editor). */
+function tiUrlLihatSaja(u) {
+  const id = tiIdDariLink(u);
+  return id ? 'https://docs.google.com/spreadsheets/d/' + id + '/preview' : u;
+}
+
+/** Soal yang sudah dinilai: dibuka setelah isi NIP, dan hanya mode lihat. */
+function toolsBukaSoal(idx) {
+  const r = tiRiwayat[idx];
+  if (!r || !r.urlSoal) return;
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, t) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = t; } };
+  const isi = prompt('Masukkan NIP kamu untuk membuka file soal:');
+  if (isi === null) return;
+  if (!tiNipApaSaja(isi)) { pesan('tl-msg-err', 'NIP tidak valid — minimal 4 angka. File soal tidak dibuka.'); return; }
+  // NIP interviewer dibuka penuh supaya RUMUS tiap sel kelihatan di formula bar.
+  // NIP lain cukup mode lihat (/preview), yang memang tidak menampilkan rumus.
+  const interviewer = tiNipDiterima(isi);
+  window.open(interviewer ? r.urlSoal : tiUrlLihatSaja(r.urlSoal), '_blank', 'noopener');
+  pesan('tl-msg-ok', '👁️ File soal <b>' + toolsEsc(r.nama) + '</b> dibuka oleh NIP <b>'
+    + toolsEsc(tiNipKunci(isi)) + '</b> — '
+    + (interviewer ? '<b>mode penuh</b>, klik selnya untuk melihat rumus di formula bar.'
+      : 'mode lihat saja (rumus tidak ditampilkan).'));
+}
+
+/** Kunci ulang file soal secara manual (kalau penguncian otomatis tadi gagal). */
+async function toolsKunciSoal(idx) {
+  const r = tiRiwayat[idx];
+  if (!r || !r.idSoal) return;
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, t) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = t; } };
+  const izin = tiMintaNipNilai();
+  if (izin === null) { pesan('tl-msg-err', tiNipKenapaGagal()); return; }
+  if (!izin) return;
+  try {
+    pesan('tl-msg-wait', '⏳ Mengunci file soal <b>' + toolsEsc(r.nama) + '</b>…');
+    const k = await toolsXhrPost(GAS_DASHBOARD_URL, { action: 'kunciFileInterview', idSoal: r.idSoal }, 30000);
+    if (!k || k.ok === false) throw new Error((k && k.error) || 'Server tidak membalas');
+    pesan('tl-msg-ok', '🔒 File soal <b>' + toolsEsc(r.nama) + '</b> sudah dikunci — sekarang hanya bisa dibuka akun kamu'
+      + (k.dikeluarkan ? ' (' + k.dikeluarkan + ' orang dikeluarkan aksesnya)' : '') + '.');
+  } catch (e) {
+    pesan('tl-msg-err', 'Gagal mengunci: ' + toolsEsc(String(e.message || e)) + '<br>Kunci manual: buka filenya → Share → ubah jadi <b>Restricted</b>.');
+  }
+}
+
+/* KKM (nilai minimum lulus). Di bawah ini ditandai merah. */
+var TI_KKM = 80;
+function tiNilaiWarna(nilai) {
+  if (nilai === null || nilai === undefined || String(nilai).trim() === '') return '—';
+  const n = Number(nilai);
+  if (isNaN(n)) return '—';
+  const lulus = n >= TI_KKM;
+  return '<b style="color:var(--' + (lulus ? 'green' : 'red') + ')">' + n + '</b>'
+    + '<span class="tl-muted"> / 100</span>'
+    + ' <span style="color:var(--' + (lulus ? 'green' : 'red') + ');font-size:11px">'
+    + (lulus ? '✅ LULUS' : '❌ DI BAWAH KKM') + '</span>';
+}
+
+/** Dari tabel riwayat — penilaian pertama kali. */
+function toolsNilaiKandidat(idx) {
+  const r = tiRiwayat[idx];
+  if (r) tiNilai(r);
+}
+
+/* Hasil hitung ulang terakhir, dipakai tombol "Simpan nilai". */
+var TI_NILAI_TERAKHIR = null;
+
+/**
+ * Hitung ulang SEMUA kandidat yang sudah dinilai, lalu simpan.
+ * Dipakai setelah perbaikan kunci: nilai lama dihitung dengan kunci dari acakan
+ * yang bisa meleset, yang baru dihitung dari sheet DATA tiap file.
+ * Nilai soal 5.1 (manual) tidak diubah — dipakai yang sudah tersimpan.
+ */
+async function toolsNilaiUlangSemua() {
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, s) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = s; } };
+  const izin = tiMintaNipNilai();
+  if (izin === null) { pesan('tl-msg-err', tiNipKenapaGagal()); return; }
+  if (!izin) return;
+
+  const antre = tiRiwayat.filter(r => String(r.status || '').indexOf('Sudah') === 0 && r.idSoal && r.baris);
+  if (!antre.length) { pesan('tl-msg-wait', 'Tidak ada kandidat yang sudah dinilai.'); return; }
+  if (!confirm('Hitung ulang nilai ' + antre.length + ' kandidat dengan kunci dari sheet DATA masing-masing file?\n\nNilai soal 5.1 (Pivot) tidak diubah.')) return;
+
+  const el = toolsEl('tiWajibRumus');
+  const tegakkan = el ? !!el.checked : true;
+  const hasil = [];
+  for (let i = 0; i < antre.length; i++) {
+    const r = antre[i];
+    pesan('tl-msg-wait', '⏳ Menghitung ulang <b>' + toolsEsc(r.nama) + '</b>… (' + (i + 1) + '/' + antre.length + ')');
+    try {
+      const res = await toolsXhrPost(GAS_DASHBOARD_URL, { action: 'jawabanInterview', idSoal: r.idSoal }, 60000);
+      if (!res || res.ok === false) throw new Error((res && res.error) || 'tidak terbaca');
+      const p = tiBuatPaket(r.nama, tiTglNormal(r.tanggal), Number(r.durasi) || 30, Number(r.jmlBaris) || 400);
+      const kunciFile = tiKunciDariFile(res.grid || [], res.data || [], res.master || []);
+      const n = tiNilaiDariGrid(p, res.grid || [], res.rumus || [], tegakkan, kunciFile);
+      const n51 = Math.max(0, Math.min(5, parseInt(r.nilai51, 10) || 0));
+      const akhir = n.total + n51;
+      const rincian = [1, 2, 3, 4, 5, 6].map(b => 'B' + b + ': ' + n.perBagian[b].dapat + (b === 5 ? '+' + n51 : '') + '/' + n.perBagian[b].maks).join(' · ');
+      await toolsXhrPost(GAS_DASHBOARD_URL, {
+        action: 'simpanNilaiInterview', baris: r.baris, nilaiOtomatis: n.total, nilai51: n51,
+        rincian: rincian, oleh: localStorage.getItem('wms_name') || ''
+      }, 30000);
+      hasil.push({ nama: r.nama, lama: Number(r.nilaiAkhir), baru: akhir, sumber: kunciFile ? 'file' : 'acakan' });
+    } catch (e) {
+      hasil.push({ nama: r.nama, gagal: String(e.message || e) });
+    }
+  }
+  const baris = hasil.map(h => h.gagal
+    ? '• <b>' + toolsEsc(h.nama) + '</b> — gagal: ' + toolsEsc(h.gagal)
+    : '• <b>' + toolsEsc(h.nama) + '</b> — ' + h.lama + ' → <b>' + h.baru + '</b>/100'
+      + (h.baru !== h.lama ? ' <span style="color:var(--green)">(berubah)</span>' : ' <span class="tl-muted">(tetap)</span>')
+      + (h.sumber === 'acakan' ? ' <span style="color:var(--orange)">⚠️ sheet DATA tidak terbaca</span>' : ''));
+  pesan('tl-msg-ok', '✅ Selesai menghitung ulang ' + hasil.length + ' kandidat:<br>' + baris.join('<br>'));
+  await toolsMuatRiwayatInterview();
+}
+
+/** Simpan hasil hitung ulang ke sheet riwayat. */
+async function toolsSimpanNilaiTerakhir() {
+  const t = TI_NILAI_TERAKHIR;
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, s) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = s; } };
+  if (!t || !t.baris) { pesan('tl-msg-err', 'Tidak ada hasil hitung ulang untuk disimpan.'); return; }
+  try {
+    pesan('tl-msg-wait', '⏳ Menyimpan nilai <b>' + toolsEsc(t.nama) + '</b>…');
+    const res = await toolsXhrPost(GAS_DASHBOARD_URL, {
+      action: 'simpanNilaiInterview', baris: t.baris, nilaiOtomatis: t.nilaiOtomatis, nilai51: t.nilai51,
+      rincian: t.rincian, oleh: localStorage.getItem('wms_name') || ''
+    }, 30000);
+    if (!res || res.ok === false) throw new Error((res && res.error) || 'Server tidak membalas');
+    pesan('tl-msg-ok', '💾 Nilai <b>' + toolsEsc(t.nama) + '</b> diperbarui jadi <b>' + t.akhir + ' / 100</b>.');
+    TI_NILAI_TERAKHIR = null;
+    await toolsMuatRiwayatInterview();
+  } catch (e) {
+    pesan('tl-msg-err', 'Gagal menyimpan: ' + toolsEsc(String(e.message || e)));
+  }
+}
+
+/** Lihat rincian nilai yang sudah ada: tidak menanyakan nilai 5.1 lagi,
+    tidak menyimpan ulang, dan tidak mengubah apa pun. */
+function toolsDetailNilai(idx) {
+  const r = tiRiwayat[idx];
+  if (r) tiNilai(r, { lihatSaja: true });
+}
+
+/** Hapus satu baris riwayat — hanya NIP yang terdaftar di server. */
+async function toolsHapusRiwayat(idx) {
+  const r = tiRiwayat[idx];
+  if (!r) return;
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, t) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = t; } };
+  if (!confirm('Hapus baris riwayat "' + r.nama + '" (' + tiTglNormal(r.tanggal) + ')?\n\nFile Google Sheet-nya TIDAK ikut terhapus, hanya catatannya.')) return;
+  const nip = prompt('Masukkan NIP kamu untuk menghapus:');
+  if (nip === null) return;
+  try {
+    pesan('tl-msg-wait', '⏳ Menghapus riwayat <b>' + toolsEsc(r.nama) + '</b>…');
+    const res = await toolsXhrPost(GAS_DASHBOARD_URL, {
+      action: 'hapusRiwayatInterview', baris: r.baris, nama: r.nama, nip: nip
+    }, 30000);
+    if (!res || res.ok === false) throw new Error((res && res.error) || 'Server tidak membalas');
+    pesan('tl-msg-ok', '🗑️ Riwayat <b>' + toolsEsc(r.nama) + '</b> sudah dihapus. File Google Sheet-nya masih ada di Drive.');
+    await toolsMuatRiwayatInterview();
+  } catch (e) {
+    pesan('tl-msg-err', 'Gagal menghapus: ' + toolsEsc(String(e.message || e)));
+  }
+}
+
+/** Dari daftar kandidat yang baru dibuat di sesi ini (tidak butuh tabel riwayat). */
+function toolsNilaiSesi(i) {
+  const r = TI_SESI[i];
+  if (r) tiNilai(r);
+}
+
+/** Dari link file yang ditempel manual. */
+function toolsNilaiDariLink() {
+  const nama = (toolsEl('tiNilaiNama') || {}).value || '';
+  const tanggal = (toolsEl('tiNilaiTgl') || {}).value || '';
+  const jmlBaris = parseInt((toolsEl('tiNilaiBaris') || {}).value, 10) || 400;
+  const link = (toolsEl('tiNilaiLink') || {}).value || '';
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, t) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = t; } };
+  const id = tiIdDariLink(link);
+  if (!id) { pesan('tl-msg-err', 'Link file soal tidak dikenali. Tempel link Google Sheet kandidat (yang ada /spreadsheets/d/...).'); return; }
+  // Nama & tanggal sekarang hanya label: kunci dihitung dari isi file yang dilink.
+  tiNilai({
+    nama: nama.trim() || 'Kandidat (dari link)',
+    tanggal: tanggal || new Date().toISOString().slice(0, 10),
+    durasi: 30, jmlBaris: jmlBaris, idSoal: id
+  });
+}
+
+/** Ambil ID spreadsheet dari link, atau terima ID mentah. */
+function tiIdDariLink(link) {
+  const s = String(link || '').trim();
+  const m = s.match(/\/spreadsheets\/d\/([A-Za-z0-9_-]{20,})/);
+  if (m) return m[1];
+  return /^[A-Za-z0-9_-]{20,}$/.test(s) ? s : '';
+}
+
+/* Hasil penilaian memuat jawaban yang benar, jadi dikunci NIP seperti file kunci.
+   Sekali terbuka, berlaku sampai halaman di-refresh. */
+var tiNilaiTerbuka = false;
+function tiMintaNipNilai() {
+  if (tiNilaiTerbuka) return true;
+  const isi = prompt('Hasil penilaian memuat KUNCI JAWABAN.\n'
+    + 'Hanya NIP interviewer yang berhak melihat.\n\nMasukkan NIP kamu:');
+  if (isi === null) return false;
+  if (!tiNipDiterima(isi)) return null;   // null = NIP salah
+  tiNilaiTerbuka = true;
+  return true;
+}
+
+/** Pastikan tanggal berbentuk yyyy-MM-dd; kalau tidak, acakan datanya jadi beda.
+    Tanggal dibaca dari tulisannya langsung, bukan lewat zona waktu, supaya
+    'Wed Oct 21 2026 00:00:00 GMT+0700' tidak jadi mundur sehari. */
+var TI_BULAN_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function tiTglNormal(v) {
+  const s = String(v == null ? '' : v).trim();
+  const p = n => String(n).padStart(2, '0');
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return m[1] + '-' + m[2] + '-' + m[3];
+  m = s.match(/\b([A-Z][a-z]{2}) (\d{1,2}) (\d{4})\b/);          // "Oct 21 2026"
+  if (m) { const b = TI_BULAN_EN.indexOf(m[1]); if (b >= 0) return m[3] + '-' + p(b + 1) + '-' + p(+m[2]); }
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);                // "21/10/2026"
+  if (m) return m[3] + '-' + p(+m[2]) + '-' + p(+m[1]);
+  return s;
+}
+
+async function tiNilai(r, opsi) {
+  const lihatSaja = !!(opsi && opsi.lihatSaja);
+  const box = toolsEl('tiRiwayatMsg');
+  const pesan = (cls, t) => { if (box) { box.className = 'tl-msg ' + cls; box.innerHTML = t; } };
+  if (!r.idSoal) { pesan('tl-msg-err', 'Baris ini tidak menyimpan ID file soal, jadi tidak bisa dinilai otomatis.'); return; }
+
+  const izin = tiMintaNipNilai();
+  if (izin === null) { pesan('tl-msg-err', tiNipKenapaGagal() + ' Hasil penilaian tidak ditampilkan.'); return; }
+  if (!izin) { pesan('tl-msg-wait', 'Dibatalkan.'); return; }
+
+  try {
+    pesan('tl-msg-wait', '⏳ Membaca jawaban <b>' + toolsEsc(r.nama) + '</b>…');
+    const res = await toolsXhrPost(GAS_DASHBOARD_URL, { action: 'jawabanInterview', idSoal: r.idSoal }, 60000);
+    if (!res || res.ok === false) throw new Error((res && res.error) || 'Server tidak membalas');
+
+    const p = tiBuatPaket(r.nama, tiTglNormal(r.tanggal), Number(r.durasi) || 30, Number(r.jmlBaris) || 400);
+    const el = toolsEl('tiWajibRumus');
+    const tegakkan = el ? !!el.checked : true;
+    // Kunci diambil dari ISI FILE kandidat. Kalau sheet DATA-nya tidak terbaca,
+    // baru pakai cara lama (dihitung ulang dari acakan nama+tanggal).
+    const kunciFile = tiKunciDariFile(res.grid || [], res.data || [], res.master || []);
+    const n = tiNilaiDariGrid(p, res.grid || [], res.rumus || [], tegakkan, kunciFile);
+
+    let n51 = 0;
+    if (lihatSaja) {
+      n51 = Math.max(0, Math.min(5, parseInt(r.nilai51, 10) || 0));   // pakai nilai yang sudah tersimpan
+    } else {
+      const isi = prompt('Nilai otomatis: ' + n.total + ' dari ' + n.maks + '.\n\n'
+        + 'Soal 5.1 (Pivot Table dibuat dengan benar) dinilai manual, maksimal 5.\nBerapa nilainya? (0-5)', '5');
+      if (isi === null) { pesan('tl-msg-wait', 'Penilaian dibatalkan — belum disimpan.'); return; }
+      n51 = Math.max(0, Math.min(5, parseInt(isi, 10) || 0));
+    }
+
+    const rincian = [1, 2, 3, 4, 5, 6].map(b => 'B' + b + ': ' + n.perBagian[b].dapat + (b === 5 ? '+' + n51 : '') + '/' + n.perBagian[b].maks).join(' · ');
+    // dihitung di sini karena sudah dipakai di bagian catatan penyimpanan di bawah
+    const terisi = 39 - n.kosong, akhir = n.total + n51, lulus = akhir >= TI_KKM;
+
+    // Penyimpanan ke sheet riwayat bersifat tambahan: kalau gagal, nilainya tetap ditampilkan.
+    let catatanSimpan = '';
+    if (lihatSaja) {
+      const lama = Number(r.nilaiAkhir);
+      if (r.baris && !isNaN(lama) && lama !== akhir) {
+        // hasil hitung ulang beda dari yang tersimpan — tawarkan menyimpannya
+        TI_NILAI_TERAKHIR = { baris: r.baris, nama: r.nama, nilaiOtomatis: n.total, nilai51: n51, rincian: rincian, akhir: akhir };
+        catatanSimpan = '<br><b>Nilai tersimpan di tabel: ' + lama + '/100, hasil hitung ulang sekarang: ' + akhir + '/100.</b>'
+          + ' <button class="tl-btn tl-btn-sm" onclick="toolsSimpanNilaiTerakhir()">💾 Simpan nilai ' + akhir + '/100</button>';
+      } else {
+        catatanSimpan = '<br><i>Mode lihat saja — nilai tersimpan tidak diubah.</i>';
+      }
+    } else if (r.baris) {
+      try {
+        const simpan = await toolsXhrPost(GAS_DASHBOARD_URL, {
+          action: 'simpanNilaiInterview', baris: r.baris, nilaiOtomatis: n.total, nilai51: n51,
+          rincian: rincian, oleh: localStorage.getItem('wms_name') || ''
+        }, 30000);
+        if (!simpan || simpan.ok === false) throw new Error((simpan && simpan.error) || 'gagal menyimpan');
+      } catch (e2) { catatanSimpan = '<br><i>Nilai belum tersimpan ke riwayat (' + toolsEsc(String(e2.message || e2)) + ').</i>'; }
+    } else {
+      catatanSimpan = '<br><i>Nilai ini tidak disimpan ke riwayat (dinilai dari link langsung).</i>';
+    }
+
+    let html = (lulus ? '✅' : '❌') + ' <b>' + toolsEsc(r.nama) + '</b> — nilai akhir ' + tiNilaiWarna(akhir)
+      + ' <span class="tl-muted">(KKM ' + TI_KKM + ')</span><br>'
+      + '<span class="tl-muted">' + n.total + ' poin dari jawaban yang benar + ' + n51 + ' poin soal 5.1 (Pivot Table, kamu yang menilai) = <b>'
+      + akhir + '</b></span><br>' + toolsEsc(rincian);
+    // Keterangan sumber: biar ketahuan kalau yang kebaca ternyata file yang salah.
+    html += '<br><span class="tl-muted">Dibaca dari: '
+      + (res.urlFile ? '<a href="' + res.urlFile + '" target="_blank" rel="noopener">' + toolsEsc(res.namaFile || 'file soal') + '</a>' : toolsEsc(res.namaFile || r.idSoal))
+      + ' · tanggal dipakai: <b>' + toolsEsc(tiTglNormal(r.tanggal)) + '</b> · baris data: <b>' + (Number(r.jmlBaris) || 400) + '</b>'
+      + ' · kotak terisi: <b>' + terisi + '</b> dari 39'
+      + ' · kunci: <b>' + (kunciFile ? 'dihitung dari sheet DATA file ini' : 'dibuat ulang dari acakan nama+tanggal') + '</b></span>'
+      + (kunciFile ? '' : '<br><span style="color:var(--orange)">⚠️ Sheet DATA tidak terbaca, jadi kunci dibuat ulang dari acakan — kalau file ini dibuat dengan versi lain, kuncinya bisa meleset.</span>');
+    if (terisi === 0) {
+      html += '<br><b>⚠️ Semua kotak jawaban terbaca kosong.</b> Kemungkinan yang dinilai bukan file yang dikerjakan kandidat — cek nama file di atas.';
+    }
+
+    // Setelah dinilai, file soalnya dikunci supaya tidak bisa dibuka/dicontek kandidat berikutnya.
+    // Mode lihat saja tidak mengubah apa pun, termasuk sharing.
+    if (!lihatSaja) try {
+      const k = await toolsXhrPost(GAS_DASHBOARD_URL, { action: 'kunciFileInterview', idSoal: r.idSoal }, 30000);
+      if (k && k.ok) {
+        html += '<br>🔒 <b>File soal sudah dikunci</b> — sekarang hanya bisa dibuka akun kamu'
+          + (k.dikeluarkan ? ' (' + k.dikeluarkan + ' orang dikeluarkan aksesnya)' : '') + '.';
+        r.terkunci = true;
+      } else {
+        html += '<br>⚠️ <b>File soal BELUM terkunci:</b> ' + toolsEsc((k && k.error) || 'server tidak membalas')
+          + '<br>Kunci manual: buka filenya → Share → ubah jadi <b>Restricted</b>.';
+      }
+    } catch (e3) {
+      html += '<br>⚠️ <b>File soal BELUM terkunci</b> (' + toolsEsc(String(e3.message || e3)) + '). Kunci manual lewat tombol Share di filenya.';
+    }
+    if (n.kosong) html += '<br><i>' + n.kosong + ' kotak jawaban dibiarkan kosong.</i>';
+    if (n.benar.length) {
+      html += '<br><br><span style="color:var(--green)"><b>✅ Yang benar (' + n.benar.length + ' soal, ' + n.total + ' poin — belum termasuk ' + n51 + ' poin soal 5.1):</b><br>'
+        + n.benar.map(s => '• ' + s.ref + ' (B' + s.bagian + ') — dijawab <b>' + toolsEsc(String(s.jawab)) + '</b> · +' + s.poin
+          + (s.rumus ? '<br>&nbsp;&nbsp;&nbsp;<span class="tl-muted"><code>' + toolsEsc(String(s.rumus).slice(0, 90)) + '</code></span>' : '')).join('<br>') + '</span>';
+    }
+    if (n.tanpaRumus && n.tanpaRumus.length) {
+      const poinHangus = n.tanpaRumus.reduce((s, x) => s + x.poin, 0);
+      html += '<br><br><span style="color:var(--orange)"><b>⚠️ Benar tapi TANPA RUMUS (' + n.tanpaRumus.length + ' soal, ' + poinHangus + ' poin)</b> — '
+        + (tegakkan ? '<b>tidak dihitung</b>' : 'tetap dihitung')
+        + ', karena Bagian 1–4 wajib pakai rumus Excel:<br>'
+        + n.tanpaRumus.map(s => '• ' + s.ref + ' (B' + s.bagian + ') — diketik manual <b>' + toolsEsc(String(s.jawab)) + '</b>').join('<br>') + '</span>';
+    }
+    if (n.salah.length) {
+      html += '<br><br><span style="color:var(--red)"><b>❌ Yang salah (' + n.salah.length + '):</b><br>'
+        + n.salah.slice(0, 20).map(s => '• ' + s.ref + ' (B' + s.bagian + ') — dijawab <i>' + toolsEsc(String(s.jawab) || '(kosong)') + '</i>, seharusnya <b>' + toolsEsc(String(s.benar)) + '</b>'
+          + (s.rumus ? '<br>&nbsp;&nbsp;&nbsp;<span class="tl-muted">rumusnya: <code>' + toolsEsc(String(s.rumus).slice(0, 90)) + '</code></span>' : '')).join('<br>');
+      if (n.salah.length > 20) html += '<br>… dan ' + (n.salah.length - 20) + ' lagi.';
+      html += '</span>';
+    }
+    pesan('tl-msg-ok', html + catatanSimpan);
+    if (r.baris) toolsMuatRiwayatInterview();
+  } catch (e) {
+    console.error(e);
+    pesan('tl-msg-err', 'Gagal menilai: ' + toolsEsc(String(e.message || e)));
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  RIWAYAT PPT PIMPINAN
+//  Tool-nya dimuat lewat iframe dan filenya diunduh langsung ke komputer,
+//  jadi halaman ini tidak tahu apa-apa. Yang mencatat adalah ppt-pimpinan.html
+//  sendiri (action=logPpt, catatan diawali "PPT Pimpinan"), ke sheet riwayat
+//  yang sama dengan PPT Laporan Pagi. Di sini tinggal disaring dan ditampilkan.
+// ══════════════════════════════════════════════════════════════════
+async function toolsMuatRiwayatPimpinan() {
+  const box = toolsEl('tlPimpRiwayat');
+  if (!box) return;
+  box.innerHTML = '<div class="tl-empty">Memuat riwayat…</div>';
+  try {
+    const res = await fetch(GAS_DASHBOARD_URL + '?action=getPptHistory&limit=60&_=' + Date.now());
+    const json = await res.json();
+    if (!json || json.ok === false) throw new Error((json && json.error) || 'Respons server tidak valid');
+    const rows = (json.rows || []).filter(r => String(r.catatan || '').indexOf('PPT Pimpinan') === 0);
+    if (!rows.length) {
+      box.innerHTML = '<div class="tl-empty">Belum ada PPT Pimpinan yang tercatat. PPT yang dibuat lewat tombol <b>Download PPT</b> di atas akan muncul di sini.</div>';
+      return;
+    }
+    tiRiwayatPpt = rows;
+    box.innerHTML = '<div class="tl-table-wrap"><table class="tl-table"><thead><tr><th>Waktu</th><th>File</th><th>Keterangan</th><th>Oleh</th><th>Preview</th><th></th></tr></thead><tbody>'
+      + rows.map((r, i) => '<tr>'
+        + '<td>' + toolsEsc(r.waktu || '') + '</td>'
+        + '<td><b>' + toolsEsc(r.file || '') + '</b></td>'
+        // Keterangan memuat hasil Drive, email, dan Slack — di situ alasan kalau ada yang gagal.
+        + '<td class="tl-ket">' + toolsEsc(String(r.catatan || '').replace(/^PPT Pimpinan\s*—\s*/, '')) + '</td>'
+        + '<td>' + toolsEsc(r.oleh || '—') + '</td>'
+        + '<td>' + (toolsDriveFileId(r.link)
+          ? '<button class="tl-btn tl-btn-sm" onclick="toolsPreviewPimpinan(' + i + ')">▶ Preview</button>'
+            + ' <a class="tl-btn tl-btn-sm" href="' + r.link + '" target="_blank" rel="noopener">↗</a>'
+          : '<span class="tl-muted" title="File ini belum pernah diunggah ke Drive">—</span>') + '</td>'
+        + '<td><button class="tl-btn tl-btn-sm" onclick="toolsHapusRiwayatPpt(' + i + ')">🗑️ Hapus</button></td>'
+        + '</tr>').join('')
+      + '</tbody></table></div>';
+  } catch (e) {
+    box.innerHTML = '<div class="tl-empty tl-empty-err">Riwayat tidak bisa dimuat: ' + toolsEsc(String(e.message || e)) + '</div>';
+  }
+}
+
+/* ppt-pimpinan.html mengabari lewat postMessage setelah berhasil mencatat,
+   supaya tabelnya ikut segar tanpa perlu diklik Muat ulang. */
+window.addEventListener('message', function (e) {
+  const d = e.data;
+  if (d && d.type === 'wmsPptPimpinanTercatat') setTimeout(toolsMuatRiwayatPimpinan, 1200);
+});
+
+/* Baris riwayat PPT Pimpinan yang sedang tampil (untuk tombol hapus). */
+var tiRiwayatPpt = [];
+
+/** Hapus satu baris Riwayat PPT. Dijaga NIP di server, bukan cuma di sini. */
+async function toolsHapusRiwayatPpt(idx) {
+  const r = tiRiwayatPpt[idx];
+  if (!r) return;
+  const box = toolsEl('tlPimpRiwayat');
+  if (!confirm('Hapus catatan riwayat "' + (r.file || '') + '"?\n\nFile PPT di Drive TIDAK ikut terhapus, hanya catatannya.')) return;
+  const nip = prompt('Masukkan NIP kamu untuk menghapus:');
+  if (nip === null) return;
+  try {
+    const res = await toolsXhrPost(GAS_DASHBOARD_URL, {
+      action: 'hapusRiwayatPpt', baris: r.baris, file: r.file || '', nip: nip
+    }, 30000);
+    if (!res || res.ok === false) throw new Error((res && res.error) || 'Server tidak membalas');
+    await toolsMuatRiwayatPimpinan();
+  } catch (e) {
+    if (box) box.insertAdjacentHTML('afterbegin',
+      '<div class="tl-msg tl-msg-err">Gagal menghapus: ' + toolsEsc(String(e.message || e)) + '</div>');
+  }
+}
+
+/** Preview inline untuk Riwayat PPT Pimpinan — memakai modal yang sama
+    dengan Riwayat PPT utama, supaya tidak perlu pindah tab ke Drive. */
+function toolsPreviewPimpinan(i) {
+  const r = (tiRiwayatPpt || [])[i]; if (!r) return;
+  const fid = toolsDriveFileId(r.link); if (!fid) return;
+  let modal = toolsEl('tlPreviewModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'tlPreviewModal';
+    modal.className = 'tl-modal-backdrop';
+    modal.innerHTML = '<div class="tl-modal"><div class="tl-modal-bar"><b id="tlPreviewTitle"></b><button class="tl-btn tl-btn-sm" onclick="toolsClosePreview()">✕ Tutup</button></div><iframe id="tlPreviewFrame" allow="fullscreen"></iframe></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) toolsClosePreview(); });
+  }
+  toolsEl('tlPreviewTitle').textContent = r.file || 'Preview PPT';
+  toolsEl('tlPreviewFrame').src = 'https://drive.google.com/file/d/' + fid + '/preview';
+  modal.style.display = 'flex';
+}
+
+/** Batas atas sumbu Occupancy: minimal 100%, dibulatkan ke kelipatan 25
+    di atas nilai tertinggi, plus sedikit ruang supaya titiknya tidak menempel
+    di tepi grafik. */
+function toolsMaxOcc(rows) {
+  let maks = 0;
+  (rows || []).forEach(function (r) {
+    const v = Number(r && r.occupancy);
+    if (!isNaN(v) && v > maks) maks = v;
+  });
+  if (maks <= 100) return 100;
+  return Math.ceil((maks + 5) / 25) * 25;
+}
